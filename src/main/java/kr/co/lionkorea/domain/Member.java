@@ -7,24 +7,29 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 @Entity
-@Table(name="translator")
+@Table(name = "member")
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
-public class Translator extends BaseEntity{
+public class Member {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "translator_id")
+    @Column(name = "member_id")
     private Long id;
-    @Column(name = "name")
-    private String name;
-    @Column(name="gender")
+    @Column(name="member_name")
+    private String memberName;
     @Enumerated(value = EnumType.STRING)
+    @Column(name="gender")
     private Gender gender;
-    @Column(name = "email")
+    @Column(name="email")
     private String email;
-    @Column(name = "phone_number")
+    @Column(name="phone_number")
     private String phoneNumber;
-    @Column(name="memo")
+    @Column(name = "memo")
     private String memo;
+
+    @OneToMany(mappedBy = "member")
+    private Set<Account> account;
 }
