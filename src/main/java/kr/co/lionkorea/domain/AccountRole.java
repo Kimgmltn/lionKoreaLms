@@ -6,20 +6,22 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
-@Table(name = "role_menu")
+@Table(name = "account_role")
 @Getter
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class RoleMenu {
+public class AccountRole {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "role_menu_id")
+    @Column(name = "account_role_id")
     private Long id;
-
-    @OneToMany(fetch = FetchType.LAZY)
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "account_id")
+    private Account account;
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Roles roles;
-    @OneToMany(fetch = FetchType.LAZY)
-    @JoinColumn(name = "menu_id")
-    private Menu menu;
 }

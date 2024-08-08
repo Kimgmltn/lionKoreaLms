@@ -7,6 +7,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Entity
 @Table(name = "role")
 @Getter
@@ -19,4 +22,9 @@ public class Roles {
     @Column(name = "role_name")
     @Enumerated(value = EnumType.STRING)
     private Role roleName;
+
+    @OneToMany(mappedBy = "roles")
+    private List<AccountRole> accountRoles = new ArrayList<>();
+    @OneToMany(mappedBy = "roles")
+    private List<RoleMenu> roleMenus = new ArrayList<>();
 }

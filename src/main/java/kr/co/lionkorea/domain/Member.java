@@ -7,7 +7,8 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "member")
@@ -31,5 +32,5 @@ public class Member {
     private String memo;
 
     @OneToMany(mappedBy = "member")
-    private Set<Account> account;
+    private List<Account> account = new ArrayList<>();
 }
