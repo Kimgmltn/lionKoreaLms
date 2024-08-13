@@ -53,4 +53,17 @@ public class Company extends BaseEntity {
                 .memo(request.getMemo())
                 .build();
     }
+
+    public void changeInfo(SaveCompanyRequest request) {
+        this.companyName = getCompanyName().equals(request.getCompanyName()) ? getCompanyName() : request.getCompanyName();
+        this.englishName = getEnglishName().equals(request.getEnglishName()) ? getEnglishName() : request.getEnglishName();
+        this.companyRegistrationNumber = getCompanyRegistrationNumber().equals(request.getCompanyRegistrationNumber()) ? getCompanyRegistrationNumber() : request.getCompanyRegistrationNumber();
+        this.roadNameAddress = getRoadNameAddress().equals(request.getRoadNameAddress()) ? getRoadNameAddress() : request.getRoadNameAddress();
+        this.products = getProducts().equals(request.getProducts()) ? getProducts() : request.getProducts();
+        this.homepageUrl = getHomepageUrl().equals(request.getHomepageUrl()) ? getHomepageUrl() : request.getHomepageUrl();
+        this.manager = getManager().equals(request.getManager()) ? getManager() : request.getManager();
+        this.email = getEmail().equals(request.getEmail()) ? getEmail() : request.getEmail();
+        this.phoneNumber = getPhoneNumber().equals(request.getPhoneNumber()) ? getPhoneNumber() : request.getPhoneNumber();
+        this.memo = getMemo().equals(request.getMemo()) ? getMemo() : request.getMemo();
+    }
 }

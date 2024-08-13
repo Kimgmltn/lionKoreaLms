@@ -6,4 +6,6 @@ import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 public interface CompanyService {
 
     SaveCompanyResponse saveCompany(SaveCompanyRequest request);
+
+    SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request);
 }

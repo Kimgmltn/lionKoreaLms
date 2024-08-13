@@ -1,13 +1,11 @@
 package kr.co.lionkorea.controller;
 
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
+import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import kr.co.lionkorea.service.CompanyService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -16,8 +14,13 @@ public class CompanyController {
     private final CompanyService companyService;
 
     @PostMapping("/save")
-    public ResponseEntity<?> saveCompany(@RequestBody SaveCompanyRequest request){
+    public ResponseEntity<SaveCompanyResponse> saveCompany(@RequestBody SaveCompanyRequest request){
         return ResponseEntity.ok(companyService.saveCompany(request));
+    }
+
+    @PatchMapping("/save/{companyId}")
+    public ResponseEntity<SaveCompanyResponse> updateCompany(@PathVariable("companyId") Long companyId, @RequestBody SaveCompanyRequest request){
+        return ResponseEntity.ok(companyService.updateCompany(companyId, request));
     }
 
 }
