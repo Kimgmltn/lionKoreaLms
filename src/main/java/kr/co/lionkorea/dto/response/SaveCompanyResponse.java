@@ -10,5 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class SaveCompanyResponse {
+    private Long companyId;
     private String result;
 }

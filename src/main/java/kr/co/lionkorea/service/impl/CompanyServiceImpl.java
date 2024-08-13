@@ -23,7 +23,7 @@ public class CompanyServiceImpl implements CompanyService {
     @Transactional
     public SaveCompanyResponse saveCompany(SaveCompanyRequest request) {
         Company savedCompany = companyRepository.save(Company.dtoToEntity(request));
-        return new SaveCompanyResponse("저장되었습니다.");
+        return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
     }
 
     @Override
@@ -32,6 +32,6 @@ public class CompanyServiceImpl implements CompanyService {
         Company findCompany = companyRepository.findById(companyId).orElseThrow(() -> new CompanyException("등록되지 않은 회사입니다."));
         findCompany.changeInfo(request);
         companyRepository.save(findCompany);
-        return new SaveCompanyResponse("수정되었습니다.");
+        return new SaveCompanyResponse(findCompany.getId(), "수정되었습니다.");
     }
 }
