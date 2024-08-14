@@ -33,7 +33,7 @@ public class Account {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "accountRole")
+    @OneToMany(mappedBy = "account")
     private List<AccountRole> accountRoles = new ArrayList<>();
 
 

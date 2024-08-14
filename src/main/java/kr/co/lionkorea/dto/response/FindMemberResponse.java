@@ -10,4 +10,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FindMemberResponse {
+    private Long memberId;
+    private String result;
 }
