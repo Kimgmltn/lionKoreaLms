@@ -20,5 +20,10 @@ public class IndexController {
         return "login";
     }
 
+    @GetMapping("/members")
+    public String member(){
+        return "members";
+    }
+
 
 }

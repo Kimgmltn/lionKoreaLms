@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -19,6 +20,13 @@ import java.util.List;
 public class MemberServiceImpl implements MemberService {
 
     private final MemberRepository memberRepository;
+
+    @Override
+    @Transactional
+    public void saveMemberAll(List<SaveMemberRequest> requests) {
+        List<Member> collect = requests.stream().map(request -> Member.dtoToEntity(request)).collect(Collectors.toList());
+        memberRepository.saveAll(collect);
+    }
 
     @Override
     @Transactional
