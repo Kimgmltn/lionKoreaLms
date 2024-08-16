@@ -2,26 +2,14 @@
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
 <head th:fragment="login_header">
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <th:block th:replace="~{common :: common_header}"></th:block>
     <title>Login - Lion Korea</title>
-    <link href="/css/styles.css" rel="stylesheet" />
-    <script src="/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 <head th:fragment="dashboard_header">
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
+    <th:block th:replace="~{common :: common_header}"></th:block>
     <title>Dashboard - Lion Korea</title>
 <!--    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
-    <link href="/css/styles.css" rel="stylesheet" />
-    <script src="/js/all.js" crossorigin="anonymous"></script>
 </head>
 
 </html>

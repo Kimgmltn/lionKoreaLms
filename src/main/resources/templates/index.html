@@ -565,13 +565,12 @@
                         </div>
                     </div>
                 </main>
-                <footer th:replace="~{footer :: footer}">
+                <footer th:replace="~{footer :: main_footer}">
 
                 </footer>
             </div>
         </div>
-        <script src="/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-        <script src="/js/scripts.js"></script>
+        <th:block th:replace="~{common :: common_js}"></th:block>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js" crossorigin="anonymous"></script>
         <script src="assets/demo/chart-area-demo.js"></script>
         <script src="assets/demo/chart-bar-demo.js"></script>
