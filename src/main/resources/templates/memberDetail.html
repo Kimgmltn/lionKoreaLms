@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko" xmlns:th="http://www.thymeleaf.org">
+    <head th:replace="~{header :: dashboard_header}">
+    </head>
+    <body class="sb-nav-fixed">
+        <nav th:replace="~{nav :: top_nav}">
+
+        </nav>
+        <div id="layoutSidenav">
+            <div th:replace="~{nav :: side_nav}">
+
+            </div>
+            <div id="layoutSidenav_content">
+                <main>
+                    <div class="container-fluid px-4">
+                        <h1 class="mt-4">회원관리</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/members}">회원관리</a></li>
+                            <li class="breadcrumb-item active">회원명</li>
+                        </ol>
+                        <div class="card mb-4">
+                            <div class="card-header">
+                                <i class="fas fa-table me-1"></i>
+                                회원 목록
+                            </div>
+                        </div>
+                    </div>
+                </main>
+                <footer th:replace="~{footer :: main_footer}">
+                </footer>
+            </div>
+        </div>
+        <th:block th:replace="~{common :: common_js}"></th:block>
+        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
+        <script src="js/datatables-simple-demo.js"></script>
+    </body>
+</html>
