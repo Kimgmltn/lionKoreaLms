@@ -4,10 +4,7 @@ import jakarta.persistence.*;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Gender;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
@@ -36,6 +33,7 @@ public class Member {
     private String memo;
 
     @OneToMany(mappedBy = "member")
+    @Builder.Default
     private List<Account> account = new ArrayList<>();
 
     public static Member dtoToEntity(SaveMemberRequest request) {

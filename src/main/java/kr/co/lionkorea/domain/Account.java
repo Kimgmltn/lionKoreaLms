@@ -1,10 +1,9 @@
 package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -13,6 +12,7 @@ import java.util.List;
 @Entity
 @Table(name = "account")
 @Getter
+@SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Account {
@@ -33,8 +33,27 @@ public class Account {
     @JoinColumn(name = "member_id")
     private Member member;
 
-    @OneToMany(mappedBy = "account")
+    @OneToMany(mappedBy = "account",cascade = CascadeType.ALL)
+    @Builder.Default
     private List<AccountRole> accountRoles = new ArrayList<>();
 
+    public static Account dtoToEntity(GrantNewAccountRequest request, Member member, Roles roles) {
+        Account account = Account.builder()
+                .loginId(request.getLoginId())
+                .password(request.getPassword())
+                .joinDate(LocalDateTime.now())
+                .expireDate(LocalDateTime.MAX)
+                .member(member)
+                .build();
+        account.addRole(roles);
+        return account;
+    }
 
+    public void addRole(Roles roles){
+        this.accountRoles.add(new AccountRole(this, roles));
+    }
+
+    public void removeRole(Roles roles) {
+        getAccountRoles().removeIf(accountRole -> accountRole.getRoles().equals(roles));
+    }
 }

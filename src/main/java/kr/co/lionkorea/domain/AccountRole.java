@@ -24,4 +24,9 @@ public class AccountRole {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "role_id")
     private Roles roles;
+
+    public AccountRole(Account account, Roles roles) {
+        this.account = account;
+        this.roles = roles;
+    }
 }

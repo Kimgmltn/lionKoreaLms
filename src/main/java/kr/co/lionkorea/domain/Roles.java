@@ -2,10 +2,8 @@ package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
 import kr.co.lionkorea.enums.Role;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,6 +11,7 @@ import java.util.List;
 @Entity
 @Table(name = "role")
 @Getter
+@SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Roles {
@@ -24,7 +23,15 @@ public class Roles {
     private Role roleName;
 
     @OneToMany(mappedBy = "roles")
+    @Builder.Default
     private List<AccountRole> accountRoles = new ArrayList<>();
     @OneToMany(mappedBy = "roles")
+    @Builder.Default
     private List<RoleMenu> roleMenus = new ArrayList<>();
+
+    public static Roles create(Role roleName) {
+        return Roles.builder()
+                .roleName(roleName)
+                .build();
+    }
 }
