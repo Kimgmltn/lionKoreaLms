@@ -18,14 +18,14 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
     })
         .then(response => {
             console.log(response)
-            // if (response.ok) {
-            //     window.location.href = '/'; // 로그인 성공 시 리다이렉트
-            // } else {
-            //     return response.json().then(data => {
-            //         // 실패 처리 (예: 메시지 표시)
-            //         alert('Login failed: ' + data.message);
-            //     });
-            // }
+            if (response.ok) {
+                window.location.href = '/'; // 로그인 성공 시 리다이렉트
+            } else {
+                return response.json().then(data => {
+                    // 실패 처리 (예: 메시지 표시)
+                    alert('Login failed: ' + data.message);
+                });
+            }
         })
         .catch(error => {
             console.error('Error:', error);
