@@ -1,6 +1,7 @@
 package kr.co.lionkorea.config;
 
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.filter.JwtFilter;
 import kr.co.lionkorea.filter.LoginFilter;
 import kr.co.lionkorea.jwt.JwtUtil;
@@ -76,8 +77,14 @@ public class SecurityConfig {
                 .rememberMe(Customizer.withDefaults())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(((request, response, authException) -> {
-                            response.sendRedirect("/login");
-                        })));
+                            // 인증 실패시 401 error 반환
+                            response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+                        }))
+                        .accessDeniedHandler(((request, response, accessDeniedException) -> {
+                            // 권한이 없는 경우 403 error 반환
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN, "Forbidden");
+                        }))
+                );
 
         return http.build();
     }

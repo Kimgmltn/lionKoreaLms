@@ -69,7 +69,6 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         log.info("access token : {}", token);
         response.addHeader("Authorization", "Bearer " + token);
 //        super.successfulAuthentication(request, response, chain, authResult);
-        response.sendRedirect("/");
     }
 
     @Override

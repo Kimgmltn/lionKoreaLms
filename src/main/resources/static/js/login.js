@@ -1,4 +1,6 @@
-document.getElementById('loginForm').addEventListener('submit', function(event) {
+import { post } from './api.js';
+
+document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
 
     const formData = new FormData(this);
@@ -8,27 +10,25 @@ document.getElementById('loginForm').addEventListener('submit', function(event) 
         // 'remember-me': formData.get('remember-me') ? true : false
     };
 
-    fetch('/api/login', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Accept': 'application/json'
-        },
-        body: JSON.stringify(loginData)
-    })
-        .then(response => {
-            console.log(response)
-            if (response.ok) {
-                window.location.href = '/'; // 로그인 성공 시 리다이렉트
-            } else {
-                return response.json().then(data => {
-                    // 실패 처리 (예: 메시지 표시)
-                    alert('Login failed: ' + data.message);
-                });
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-            alert('Login failed: An unexpected error occurred.');
-        });
+    try {
+        const response = await post('/login', loginData);
+
+        console.log(response)
+        // 서버에서 Authorization 헤더에 담겨 온 JWT 토큰을 localStorage에 저장
+        const token = response.headers.get('Authorization');
+        console.log(token)
+        if (token) {
+            localStorage.setItem('jwt', token);
+        } else {
+            throw new Error('Authorization token not found in response.');
+        }
+
+        // 로그인 성공 시 리다이렉트
+        window.location.href = '/';
+    } catch (error) {
+        console.error('Error:', error);
+
+        // 실패 처리 (예: 메시지 표시)
+        alert('Login failed: ' + error.message);
+    }
 });
