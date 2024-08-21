@@ -25,10 +25,15 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
+
+        if(requestURI.equals("/api/login")){
+            filterChain.doFilter(request, response);
+            return;
+        }
         if(requestURI.startsWith("/api/")){
             String authorization = request.getHeader("Authorization");
             if(authorization == null || authorization.startsWith("Bearer ")){
-                log.info("token null");
+                log.info("Invalid or missing token");
                 filterChain.doFilter(request, response);
 
                 return;

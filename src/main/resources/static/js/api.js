@@ -2,16 +2,34 @@
 
 const BASE_URL = '/api'; // 기본 API 경로 설정
 
-async function get(endpoint, params = {}) {
-    const url = new URL(`${BASE_URL}${endpoint}`);
-    Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+async function fetchWithAuth(url, options = {}){
+
+    // 기본 헤더에 Authorization 추가
+    const headers = {
+        ...options.headers,
+        'Content-Type': 'application/json',
+        'Authorization': `${localStorage.getItem('jwt')}`
+    }
 
     const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('jwt')}` // JWT 토큰을 헤더에 포함
-        }
+        ...options,
+        headers: headers,
+    });
+
+    if(response.status === 401){
+        window.location.href = '/login';
+        return Promise.reject(new Error('Unauthorized'));
+    }
+
+    return response;
+}
+
+async function get(endpoint, params = {}) {
+    const url = new URL(`${BASE_URL}${endpoint}`);
+    // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
+
+    const response = await fetchWithAuth(url, {
+        method: 'GET'
     });
 
     if (!response.ok) {
@@ -22,12 +40,8 @@ async function get(endpoint, params = {}) {
 }
 
 async function post(endpoint, data = {}) {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
         method: 'POST',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('jwt')}` // JWT 토큰을 헤더에 포함
-        },
         body: JSON.stringify(data)
     });
 
@@ -39,12 +53,8 @@ async function post(endpoint, data = {}) {
 }
 
 async function patch(endpoint, data = {}) {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
+    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
         method: 'PATCH',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('jwt')}` // JWT 토큰을 헤더에 포함
-        },
         body: JSON.stringify(data)
     });
 
@@ -56,12 +66,8 @@ async function patch(endpoint, data = {}) {
 }
 
 async function remove(endpoint) {
-    const response = await fetch(`${BASE_URL}${endpoint}`, {
-        method: 'DELETE',
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': `${localStorage.getItem('jwt')}` // JWT 토큰을 헤더에 포함
-        }
+    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
+        method: 'DELETE'
     });
 
     if (!response.ok) {

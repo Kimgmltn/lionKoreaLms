@@ -1,6 +1,5 @@
 package kr.co.lionkorea.config;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.filter.JwtFilter;
 import kr.co.lionkorea.filter.LoginFilter;
@@ -20,8 +19,6 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 @Configuration
 @EnableWebSecurity
@@ -47,8 +44,10 @@ public class SecurityConfig {
         loginFilter.setFilterProcessesUrl("/api/login");
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**").permitAll()
-                        .anyRequest().authenticated())
+                        .requestMatchers("/api/login").permitAll()
+                        .requestMatchers("/api/**").authenticated()
+//                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**", "/").permitAll()
+                        .anyRequest().permitAll())
                 // 로그인 관련 설정
                 // jwt에서는 form 로그인 방식이 아니기 때문에 disable 처리
                 .formLogin(AbstractHttpConfigurer::disable)

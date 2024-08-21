@@ -46,8 +46,6 @@ public class DataInitializationConfig {
             String loginId = "admin";
             SaveMemberResponse superAdmin = memberService.saveMember(new SaveMemberRequest("최상위 관리자", Gender.MAIL, "", "", ""));
             memberService.grantNewAccount(new GrantNewAccountRequest(loginId, superAdmin.getMemberId(), Role.ROLE_SUPER_ADMIN));
-            List<SaveMemberRequest> list = new ArrayList<>();
-            List<Long> memberIds = new ArrayList<>();
             for (int i = 0; i < 50; i++) {
                 String name = "회원" + i;
                 SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MAIL, "", "", ""));

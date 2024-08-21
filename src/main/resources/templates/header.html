@@ -17,4 +17,9 @@
 <!--    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
 </head>
 
+<head th:fragment="error_header(error_number)">
+    <th:block th:replace="~{common :: common_header}"></th:block>
+    <title>${error_number} error page</title>
+</head>
+
 </html>

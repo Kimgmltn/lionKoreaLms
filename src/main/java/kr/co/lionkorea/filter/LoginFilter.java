@@ -36,7 +36,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 
     @Override
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
-        if(request.getContentType().equals(MediaType.APPLICATION_JSON_VALUE)){
+        if(MediaType.APPLICATION_JSON_VALUE.equals(request.getContentType())){
             try {
                 Map<String, String> credentials = objectMapper.readValue(request.getInputStream(), Map.class);
                 String loginId = credentials.get("loginId");
