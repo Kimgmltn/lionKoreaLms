@@ -3,11 +3,14 @@ package kr.co.lionkorea.config;
 import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
+import kr.co.lionkorea.dto.request.SaveMenuRequest;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Gender;
 import kr.co.lionkorea.enums.Role;
+import kr.co.lionkorea.repository.MenuRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.MemberService;
+import kr.co.lionkorea.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -26,6 +29,7 @@ public class DataInitializationConfig {
 
     private final MemberService memberService;
     private final RolesRepository rolesRepository;
+    private final MenuService menuService;
 
     @Bean
     public ApplicationRunner initializer(){
@@ -58,6 +62,15 @@ public class DataInitializationConfig {
             }
 
             log.info("Member 데이터 삽입 끝");
+
+            log.info("Menu 데이터 삽입");
+            menuService.saveMenu(new SaveMenuRequest("프로젝트"));
+            menuService.saveMenu(new SaveMenuRequest("회원 관리"));
+            menuService.saveMenu(new SaveMenuRequest("메뉴 관리"));
+            log.info("Menu 데이터 삽입 끝");
+
+
+
         };
     }
 }

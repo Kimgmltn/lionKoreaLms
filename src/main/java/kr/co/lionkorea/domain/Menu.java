@@ -1,6 +1,7 @@
 package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
+import kr.co.lionkorea.dto.request.SaveMenuRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -20,8 +21,13 @@ public class Menu {
     @Column(name = "menu_name")
     private String menuName;
 
-    @OneToMany(mappedBy = "menu")
+    @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @Builder.Default
     private List<RoleMenu> roleMenus = new ArrayList<>();
 
+    public static Menu dtoToEntity(SaveMenuRequest request) {
+        return Menu.builder()
+                .menuName(request.getMenuName())
+                .build();
+    }
 }

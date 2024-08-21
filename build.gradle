@@ -34,6 +34,12 @@ dependencies {
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-api:0.12.3'
     // JWT 의존성 추가 끝
+    // querydsl 추가
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor "com.querydsl:querydsl-apt:5.0.0:jakarta"
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
+    // querydsl 끝
     compileOnly 'org.projectlombok:lombok'
 //    runtimeOnly 'org.postgresql:postgresql'
     runtimeOnly 'com.h2database:h2'
@@ -45,4 +51,16 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+}
+
+// querydsl QClass 파일 생성 위치 지정
+def generated = 'src/main/generated'
+
+tasks.withType(JavaCompile).configureEach {
+    options.getGeneratedSourceOutputDirectory().set(file(generated))
+}
+
+// gradle clean 시에 QClass 디렉토리 삭제
+clean{
+    delete file(generated)
 }
