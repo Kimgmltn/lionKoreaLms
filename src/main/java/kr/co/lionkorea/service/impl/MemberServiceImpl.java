@@ -89,10 +89,13 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public MemberDetails findUserDetails(String loginId){
         Account account = accountRepository.findByLoginId(loginId).orElseThrow(() -> new MemberException("존재하지 않는 아이디입니다."));
+        Member member = account.getMember();
         Set<Role> roles = account.getAccountRoles().stream().map(AccountRole::getRoles).map(Roles::getRoleName).collect(Collectors.toSet());
 
         return MemberDetails.builder()
                 .loginId(account.getLoginId())
+                .memberName(member.getMemberName())
+                .memberId(member.getId())
                 .roles(roles)
                 .password(account.getPassword())
                 .build();

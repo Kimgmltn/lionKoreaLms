@@ -35,10 +35,15 @@ public class CustomUserDetails implements UserDetails {
 
     @Override
     public String getUsername() {
-        return memberDetails.getLoginId();
+        return memberDetails.getMemberName();
     }
 
     public Set<Role> getRoles(){
         return memberDetails.getRoles();
     }
+
+    public Long getMemberId(){
+        return memberDetails.getMemberId();
+    }
+
 }

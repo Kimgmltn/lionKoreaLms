@@ -1,7 +1,7 @@
 package kr.co.lionkorea.jwt;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.security.Keys;
+import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.enums.Role;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -10,7 +10,6 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
-import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -29,6 +28,14 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("loginId", String.class);
     }
 
+    public String getMemberName(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("memberName", String.class);
+    }
+
+    public Long getMemberId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("memberId", Long.class);
+    }
+
     public Set<Role> getRoles(String token){
         Set<String> roles = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roles", Set.class);
         return roles.stream().map(Role::valueOf).collect(Collectors.toSet());
@@ -39,10 +46,11 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(String loginId, List<Role> roles){
+    public String createJwt(CustomUserDetails customUserDetails){
         return Jwts.builder()
-                .claim("loginId", loginId)
-                .claim("roles", roles)
+                .claim("memberName", customUserDetails.getUsername())
+                .claim("roles", customUserDetails.getRoles())
+                .claim("memberId", customUserDetails.getMemberId())
                 .issuedAt(new Date(System.currentTimeMillis()))
                 .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
                 .signWith(secretKey)

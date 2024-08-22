@@ -50,6 +50,8 @@ public class JwtFilter extends OncePerRequestFilter {
             // 토큰에서 username과 role 획득하여 securityContext에 저장
             MemberDetails memberDetails = MemberDetails.builder()
                     .loginId(jwtUtil.getLoginId(token))
+                    .memberId(jwtUtil.getMemberId(token))
+                    .memberName(jwtUtil.getMemberName(token))
                     .roles(jwtUtil.getRoles(token))
                     .password(null)
                     .build();

@@ -6,20 +6,17 @@ import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
-import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.jwt.JwtUtil;
-import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.*;
+import java.util.Map;
 
 @Slf4j
 public class LoginFilter extends UsernamePasswordAuthenticationFilter {
@@ -56,16 +53,16 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain, Authentication authResult) throws IOException, ServletException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authResult.getPrincipal();
 
-        String loginId = customUserDetails.getUsername();
+//        String loginId = customUserDetails.getUsername();
+//
+//        List<Role> roles = new ArrayList<>();
+//        Collection<? extends GrantedAuthority> authorities =
+//                customUserDetails.getAuthorities();
+//        for (GrantedAuthority authority : authorities) {
+//            roles.add(Role.valueOf(authority.getAuthority()));
+//        }
 
-        List<Role> roles = new ArrayList<>();
-        Collection<? extends GrantedAuthority> authorities =
-                customUserDetails.getAuthorities();
-        for (GrantedAuthority authority : authorities) {
-            roles.add(Role.valueOf(authority.getAuthority()));
-        }
-
-        String token = jwtUtil.createJwt(loginId, roles);
+        String token = jwtUtil.createJwt(customUserDetails);
         log.info("access token : {}", token);
         response.addHeader("Authorization", "Bearer " + token);
 //        super.successfulAuthentication(request, response, chain, authResult);

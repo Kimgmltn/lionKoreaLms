@@ -20,7 +20,7 @@ public class MenuRestController {
 
     private MenuService menuService;
 
-    @GetMapping("/")
+    @GetMapping("/my")
     public ResponseEntity<List<FindMenuResponse>> findAllMenuByAuth(@AuthenticationPrincipal CustomUserDetails userDetails){
         return ResponseEntity.ok(menuService.findMenuByAuth(userDetails));
     }
