@@ -20,14 +20,21 @@ public class Menu {
     private Long id;
     @Column(name = "menu_name")
     private String menuName;
+    @Column(name = "menu_link")
+    private String menuLink;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @Builder.Default
     private List<RoleMenu> roleMenus = new ArrayList<>();
 
+    public Menu(Long menuId) {
+        this.id = menuId;
+    }
+
     public static Menu dtoToEntity(SaveMenuRequest request) {
         return Menu.builder()
                 .menuName(request.getMenuName())
+                .menuLink(request.getMenuLink())
                 .build();
     }
 }

@@ -11,12 +11,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     };
 
     try {
-        const response = await post('/login', loginData);
+        const response = await post('/api/login', loginData);
 
-        console.log(response)
         // 서버에서 Authorization 헤더에 담겨 온 JWT 토큰을 localStorage에 저장
         const token = response.headers.get('Authorization');
-        console.log(token)
         if (token) {
             localStorage.setItem('jwt', token);
         } else {

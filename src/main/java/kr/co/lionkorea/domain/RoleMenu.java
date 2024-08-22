@@ -22,4 +22,9 @@ public class RoleMenu {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "menu_id")
     private Menu menu;
+
+    public RoleMenu(Roles roles, Menu menu) {
+        this.roles = roles;
+        this.menu = menu;
+    }
 }

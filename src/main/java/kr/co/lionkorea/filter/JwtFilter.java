@@ -32,7 +32,7 @@ public class JwtFilter extends OncePerRequestFilter {
         }
         if(requestURI.startsWith("/api/")){
             String authorization = request.getHeader("Authorization");
-            if(authorization == null || authorization.startsWith("Bearer ")){
+            if(authorization == null || !authorization.startsWith("Bearer ")){
                 log.info("Invalid or missing token");
                 filterChain.doFilter(request, response);
 

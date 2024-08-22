@@ -1,4 +1,4 @@
-package kr.co.lionkorea.dto.request;
+package kr.co.lionkorea.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,7 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveMenuRequest {
-    private String menuName;
-    private String menuLink;
+public class MatchRolesAndMenusResponse {
+    private String result;
 }

@@ -12,4 +12,5 @@ import lombok.Setter;
 public class FindMenuResponse {
     private Long menuId;
     private String menuName;
+    private String menuLink;
 }

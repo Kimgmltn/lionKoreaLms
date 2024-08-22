@@ -25,7 +25,7 @@ public class MenuQueryDslRepositoryImpl implements MenuQueryDslRepository {
 
         return query
                 .select(Projections.constructor(FindMenuResponse.class,
-                        menu.id, menu.menuName))
+                        menu.id, menu.menuName, menu.menuLink))
                 .from(menu)
                 .innerJoin(roleMenu).on(menu.id.eq(roleMenu.menu.id))
                 .innerJoin(roles).on(roleMenu.roles.id.eq(roles.id))

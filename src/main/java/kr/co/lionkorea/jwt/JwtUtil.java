@@ -1,6 +1,8 @@
 package kr.co.lionkorea.jwt;
 
 import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.jackson.io.JacksonDeserializer;
+import io.jsonwebtoken.lang.Maps;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.enums.Role;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
+import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -37,7 +40,7 @@ public class JwtUtil {
     }
 
     public Set<Role> getRoles(String token){
-        Set<String> roles = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roles", Set.class);
+        List<String> roles = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roles", List.class);
         return roles.stream().map(Role::valueOf).collect(Collectors.toSet());
 
     }

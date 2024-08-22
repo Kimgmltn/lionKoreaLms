@@ -1,34 +1,34 @@
 // api.js
 
-const BASE_URL = '/api'; // 기본 API 경로 설정
+const EXCLUDE_URL_LIST = ['/api/login']
 
-async function fetchWithAuth(url, options = {}){
+const fetchWithAuth = async (url, options = {}) => {
 
+    const token = localStorage.getItem('jwt');
+
+
+    if(!token && !url.includes(EXCLUDE_URL_LIST)){
+        window.location.href = '/login';
+        return Promise.reject(new Error('No JWT token found. Redirecting to login.'));
+    }
     // 기본 헤더에 Authorization 추가
     const headers = {
         ...options.headers,
         'Content-Type': 'application/json',
-        'Authorization': `${localStorage.getItem('jwt')}`
+        'Authorization': token ? `${token}` : ''
     }
 
-    const response = await fetch(url, {
+    return await fetch(url, {
         ...options,
         headers: headers,
     });
-
-    if(response.status === 401){
-        window.location.href = '/login';
-        return Promise.reject(new Error('Unauthorized'));
-    }
-
-    return response;
 }
 
-async function get(endpoint, params = {}) {
-    const url = new URL(`${BASE_URL}${endpoint}`);
+const get = async (endpoint, params = {}) => {
+    // const url = new URL(`${endpoint}`);
     // Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-    const response = await fetchWithAuth(url, {
+    const response = await fetchWithAuth(`${endpoint}`, {
         method: 'GET'
     });
 
@@ -39,8 +39,8 @@ async function get(endpoint, params = {}) {
     return response;
 }
 
-async function post(endpoint, data = {}) {
-    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
+const post = async (endpoint, data = {}) => {
+    const response = await fetchWithAuth(`${endpoint}`, {
         method: 'POST',
         body: JSON.stringify(data)
     });
@@ -52,8 +52,8 @@ async function post(endpoint, data = {}) {
     return response;
 }
 
-async function patch(endpoint, data = {}) {
-    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
+const patch = async (endpoint, data = {}) => {
+    const response = await fetchWithAuth(`${endpoint}`, {
         method: 'PATCH',
         body: JSON.stringify(data)
     });
@@ -65,8 +65,8 @@ async function patch(endpoint, data = {}) {
     return response;
 }
 
-async function remove(endpoint) {
-    const response = await fetchWithAuth(`${BASE_URL}${endpoint}`, {
+const remove = async (endpoint) => {
+    const response = await fetchWithAuth(`${endpoint}`, {
         method: 'DELETE'
     });
 

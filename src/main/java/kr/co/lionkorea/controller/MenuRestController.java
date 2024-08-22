@@ -18,7 +18,7 @@ import java.util.List;
 @RequestMapping("/api/menu")
 public class MenuRestController {
 
-    private MenuService menuService;
+    private final MenuService menuService;
 
     @GetMapping("/my")
     public ResponseEntity<List<FindMenuResponse>> findAllMenuByAuth(@AuthenticationPrincipal CustomUserDetails userDetails){

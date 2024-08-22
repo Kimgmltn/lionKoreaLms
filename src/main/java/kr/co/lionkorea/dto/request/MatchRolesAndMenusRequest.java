@@ -5,11 +5,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveMenuRequest {
-    private String menuName;
-    private String menuLink;
+public class MatchRolesAndMenusRequest {
+    private Long roleId;
+    private List<Long> menuIds;
 }

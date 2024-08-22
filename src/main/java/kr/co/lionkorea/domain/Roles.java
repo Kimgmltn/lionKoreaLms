@@ -22,10 +22,10 @@ public class Roles {
     @Enumerated(value = EnumType.STRING)
     private Role roleName;
 
-    @OneToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "roles", orphanRemoval = true)
     @Builder.Default
     private List<AccountRole> accountRoles = new ArrayList<>();
-    @OneToMany(mappedBy = "roles")
+    @OneToMany(mappedBy = "roles", cascade = CascadeType.MERGE, orphanRemoval = true)
     @Builder.Default
     private List<RoleMenu> roleMenus = new ArrayList<>();
 
@@ -33,5 +33,15 @@ public class Roles {
         return Roles.builder()
                 .roleName(roleName)
                 .build();
+    }
+
+    public void addMenu(Menu menu) {
+        RoleMenu roleMenu = new RoleMenu(this, menu);
+        this.roleMenus.add(roleMenu);
+    }
+    public void addMenus(List<Menu> menus) {
+        for (Menu menu : menus) {
+            addMenu(menu);
+        }
     }
 }

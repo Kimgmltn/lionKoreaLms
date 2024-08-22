@@ -21,6 +21,7 @@ public class MenuServiceImpl implements MenuService {
     private final MenuRepository menuRepository;
 
     @Override
+    @Transactional
     public SaveMenuResponse saveMenu(SaveMenuRequest request){
         menuRepository.save(Menu.dtoToEntity(request));
         return new SaveMenuResponse(request.getMenuName() + " 메뉴가 생성되었습니다");
