@@ -31,5 +31,10 @@ public class IndexController {
         return "memberDetail";
     }
 
+    @GetMapping("/project")
+    public String project(){
+        return "project";
+    }
+
 
 }

@@ -22,7 +22,7 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         }
 
         // 로그인 성공 시 리다이렉트
-        window.location.href = '/';
+        window.location.href = '/project';
     } catch (error) {
         console.error('Error:', error);
 

@@ -6,7 +6,6 @@ const fetchWithAuth = async (url, options = {}) => {
 
     const token = localStorage.getItem('jwt');
 
-
     if(!token && !url.includes(EXCLUDE_URL_LIST)){
         window.location.href = '/login';
         return Promise.reject(new Error('No JWT token found. Redirecting to login.'));
