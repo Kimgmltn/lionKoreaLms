@@ -8,13 +8,13 @@
 
 <head th:fragment="main_header(title_name)">
     <th:block th:replace="~{common :: common_header}"></th:block>
-    <title>${title_name} - Lion Korea</title>
+    <title th:text="${title_name} + ' - Lion Korea'">${title_name} - Lion Korea</title>
 <!--    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
 </head>
 
 <head th:fragment="error_header(error_number)">
     <th:block th:replace="~{common :: common_header}"></th:block>
-    <title>${error_number} error page</title>
+    <title th:text="${error_number} + ' - Lion Korea'">${error_number} error page</title>
 </head>
 
 </html>

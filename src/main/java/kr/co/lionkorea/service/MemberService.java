@@ -14,7 +14,7 @@ public interface MemberService {
 
     SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request);
 
-    FindMemberResponse findAllMember();
+    List<FindMemberResponse> findAllMember();
     void saveMemberAll(List<SaveMemberRequest> requests);
 
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);

@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{header :: main_header('회원관리')}">
+    <head th:replace="~{header :: main_header(title_name ='회원관리')}">
     </head>
     <body class="sb-nav-fixed">
         <nav th:replace="~{nav :: top_nav}">
@@ -25,7 +25,7 @@
                                 회원 목록
                             </div>
                             <div class="card-body">
-                                <table id="datatablesSimple" th:remove="all">
+                                <table id="datatablesSimple">
                                     <thead>
                                         <tr>
                                             <th>이름</th>
@@ -58,7 +58,8 @@
             </div>
         </div>
         <th:block th:replace="~{common :: common_js}"></th:block>
-        <script src="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/umd/simple-datatables.min.js" crossorigin="anonymous"></script>
-        <script src="js/datatables-simple-demo.js"></script>
+        <script src="/js/datatables.min.js"></script>
+        <script src="/js/members.js" type="module"></script>
+        <script src="/js/sideNav.js" type="module"></script>
     </body>
 </html>

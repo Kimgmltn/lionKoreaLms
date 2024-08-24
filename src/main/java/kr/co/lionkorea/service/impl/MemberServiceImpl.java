@@ -63,9 +63,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public FindMemberResponse findAllMember() {
+    public List<FindMemberResponse> findAllMember() {
         List<Member> members = memberRepository.findAll();
-        return null;
+        return members.stream().map(member -> new FindMemberResponse(member.getId(), member.getMemberName(), member.getGender(), member.getEmail())).collect(Collectors.toList());
     }
 
     @Override
