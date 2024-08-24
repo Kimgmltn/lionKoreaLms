@@ -32,8 +32,6 @@ const renderMembers = async () => {
 
         tbody.appendChild(tr);
     });
-
-    new DataTable(datatablesSimple);
 }
 
 
