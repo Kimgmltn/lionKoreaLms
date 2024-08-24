@@ -13,10 +13,10 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
     try {
         const response = await post('/api/login', loginData);
 
-        // 서버에서 Authorization 헤더에 담겨 온 JWT 토큰을 localStorage에 저장
+        // 서버에서 Authorization 헤더에 담겨 온 JWT 토큰을 sessionStorage에 저장
         const token = response.headers.get('Authorization');
         if (token) {
-            localStorage.setItem('jwt', token);
+            sessionStorage.setItem('jwt', token);
         } else {
             throw new Error('Authorization token not found in response.');
         }

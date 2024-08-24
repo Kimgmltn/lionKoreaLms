@@ -11,14 +11,14 @@ let menuCache = {
 };
 
 const loadCache = () => {
-    const cachedData = localStorage.getItem(CACHE_KEY);
+    const cachedData = sessionStorage.getItem(CACHE_KEY);
     if (cachedData) {
         menuCache = JSON.parse(cachedData);
     }
 };
 
 const saveCache = () => {
-    localStorage.setItem(CACHE_KEY, JSON.stringify(menuCache));
+    sessionStorage.setItem(CACHE_KEY, JSON.stringify(menuCache));
 };;
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -61,7 +61,7 @@ const renderSideNavMenu = (menuData) => {
     // Clear any existing menu items
     sideNavContainer.innerHTML = '';
 
-    menuData.forEach(({ menuId, menuName, menuLink}) => {
+    menuData.forEach(({ menuId, menuName, menuLink, menuIkon}) => {
 
         const anchorElement = document.createElement('a');
         anchorElement.classList.add('nav-link');
@@ -71,7 +71,7 @@ const renderSideNavMenu = (menuData) => {
         divElement.classList.add('sb-nav-link-icon');
 
         const iconElement = document.createElement('i');
-        iconElement.classList.add('fas'); // 아이콘 클래스를 추가합니다.
+        iconElement.classList.add('fas', menuIkon); // 아이콘 클래스를 추가합니다.
 
         // 요소들 조립
         divElement.appendChild(iconElement);

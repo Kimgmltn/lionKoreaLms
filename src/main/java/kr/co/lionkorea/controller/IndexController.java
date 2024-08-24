@@ -36,5 +36,10 @@ public class IndexController {
         return "project";
     }
 
+    @GetMapping("/dashboard")
+    public String dashboard(){
+        return "dashboard";
+    }
+
 
 }

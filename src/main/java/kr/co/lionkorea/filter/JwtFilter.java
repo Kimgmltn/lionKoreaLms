@@ -40,12 +40,17 @@ public class JwtFilter extends OncePerRequestFilter {
             }
             // Bearer 접두사 제거후 토큰 획득
             String token = authorization.split(" ")[1];
-            if (jwtUtil.isExpire(token)) {
-                log.info("token expire");
-                filterChain.doFilter(request, response);
-
+            try {
+                if (jwtUtil.isExpire(token)) {
+                    log.info("token expire");
+                    filterChain.doFilter(request, response);
+                    return;
+                }
+            } catch (Exception e) {
+                response.sendRedirect("/login");
                 return;
             }
+
 
             // 토큰에서 username과 role 획득하여 securityContext에 저장
             MemberDetails memberDetails = MemberDetails.builder()

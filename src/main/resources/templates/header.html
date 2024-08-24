@@ -6,14 +6,9 @@
     <title>Login - Lion Korea</title>
 </head>
 
-<head th:fragment="members_header">
+<head th:fragment="main_header(title_name)">
     <th:block th:replace="~{common :: common_header}"></th:block>
-    <title>회원관리 - Lion Korea</title>
-</head>
-
-<head th:fragment="dashboard_header">
-    <th:block th:replace="~{common :: common_header}"></th:block>
-    <title>Dashboard - Lion Korea</title>
+    <title>${title_name} - Lion Korea</title>
 <!--    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
 </head>
 

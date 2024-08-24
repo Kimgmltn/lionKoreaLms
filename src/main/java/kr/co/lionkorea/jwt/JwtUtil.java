@@ -1,8 +1,6 @@
 package kr.co.lionkorea.jwt;
 
 import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.jackson.io.JacksonDeserializer;
-import io.jsonwebtoken.lang.Maps;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.enums.Role;
 import org.springframework.beans.factory.annotation.Value;

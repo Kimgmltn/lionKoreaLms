@@ -13,4 +13,5 @@ public class FindMenuResponse {
     private Long menuId;
     private String menuName;
     private String menuLink;
+    private String menuIkon;
 }

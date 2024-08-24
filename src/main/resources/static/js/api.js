@@ -4,7 +4,7 @@ const EXCLUDE_URL_LIST = ['/api/login']
 
 const fetchWithAuth = async (url, options = {}) => {
 
-    const token = localStorage.getItem('jwt');
+    const token = sessionStorage.getItem('jwt');
 
     if(!token && !url.includes(EXCLUDE_URL_LIST)){
         window.location.href = '/login';

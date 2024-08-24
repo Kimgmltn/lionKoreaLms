@@ -22,6 +22,8 @@ public class Menu {
     private String menuName;
     @Column(name = "menu_link")
     private String menuLink;
+    @Column(name = "menu_ikon")
+    private String menuIkon;
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @Builder.Default
@@ -35,6 +37,7 @@ public class Menu {
         return Menu.builder()
                 .menuName(request.getMenuName())
                 .menuLink(request.getMenuLink())
+                .menuIkon(request.getMenuIkon())
                 .build();
     }
 }

@@ -6,10 +6,8 @@ import kr.co.lionkorea.dto.request.MatchRolesAndMenusRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.request.SaveMenuRequest;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
-import kr.co.lionkorea.dto.response.SaveMenuResponse;
 import kr.co.lionkorea.enums.Gender;
 import kr.co.lionkorea.enums.Role;
-import kr.co.lionkorea.repository.MenuRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.service.MenuService;
@@ -21,7 +19,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -48,14 +45,15 @@ public class DataInitializationConfig {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project"));
-            menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members"));
-            menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus"));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project", "fa-diagram-project"));
+            menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users"));
+            menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus", "fa-bars"));
+            menuService.saveMenu(new SaveMenuRequest("대시보드", "/dashboard", "fa-compass"));
             log.info("Menu 데이터 삽입 끝");
 
             log.info("Role-Menu 데이터 삽입");
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L, 4L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 4L)));
             rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
             log.info("Role-Menu 데이터 삽입 끝");
 
