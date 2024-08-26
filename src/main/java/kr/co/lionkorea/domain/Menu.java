@@ -24,6 +24,18 @@ public class Menu {
     private String menuLink;
     @Column(name = "menu_ikon")
     private String menuIkon;
+    @Column(name = "depth")
+    private Integer depth;
+    @Column(name = "orderSeq")
+    private Integer orderSeq;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "parent_menu_id")
+    private Menu parentMenu;
+
+    @OneToMany(mappedBy = "parentMenu", cascade = CascadeType.ALL)
+    @Builder.Default
+    private List<Menu> childMenu = new ArrayList<>();
 
     @OneToMany(mappedBy = "menu", cascade = CascadeType.ALL)
     @Builder.Default
@@ -33,6 +45,10 @@ public class Menu {
         this.id = menuId;
     }
 
+    public Menu createById(Long menuId) {
+        return new Menu(menuId);
+    }
+
     public static Menu dtoToEntity(SaveMenuRequest request) {
         return Menu.builder()
                 .menuName(request.getMenuName())
@@ -40,4 +56,15 @@ public class Menu {
                 .menuIkon(request.getMenuIkon())
                 .build();
     }
+
+    public void addChildMenu(Menu childMenu){
+        this.childMenu.add(childMenu);
+        childMenu.setParentMenu(this);
+    }
+
+    public void setParentMenu(Menu parentMenu) {
+        this.parentMenu = parentMenu;
+    }
+
+
 }

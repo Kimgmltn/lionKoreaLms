@@ -13,4 +13,5 @@ public class SaveMenuRequest {
     private String menuName;
     private String menuLink;
     private String menuIkon;
+    private Long parentMenuId;
 }
