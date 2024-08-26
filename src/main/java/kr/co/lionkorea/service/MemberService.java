@@ -1,7 +1,6 @@
 package kr.co.lionkorea.service;
 
 import kr.co.lionkorea.dto.MemberDetails;
-import kr.co.lionkorea.dto.request.FindMembersByRoleRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
@@ -17,7 +16,7 @@ public interface MemberService {
 
     SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request);
 
-    Page<FindMembersByRoleResponse> findMembersByRole(FindMembersByRoleRequest request, Pageable pageable);
+    Page<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable);
     void saveMemberAll(List<SaveMemberRequest> requests);
 
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);

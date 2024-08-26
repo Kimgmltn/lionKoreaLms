@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const renderMembers = async () => {
-    const response = await get("/api/member");
+    const response = await get(`/api/member`);
     const membersData = await response.json()
 
     const datatablesSimple = document.getElementById('datatablesSimple');

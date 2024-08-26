@@ -21,13 +21,13 @@ public class IndexController {
         return "login";
     }
 
-    @GetMapping("/members")
-    public String members(){
+    @GetMapping("/members/{roleName}")
+    public String members(@PathVariable(value = "roleName") String roleName){
         return "members";
     }
 
-    @GetMapping("/members/{memberId}")
-    public String memberDetail(@PathVariable("memberId") Long memberId){
+    @GetMapping("/members/{roleName}/{memberId}")
+    public String memberDetail(@PathVariable("memberId") Long memberId, @PathVariable("roleName") String roleName){
         return "memberDetail";
     }
 

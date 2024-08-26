@@ -30,9 +30,9 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.updateMember(memberId, request));
     }
 
-    @GetMapping
-    public ResponseEntity<Page<FindMembersByRoleResponse>> findMembersByRole(@RequestBody FindMembersByRoleRequest request, Pageable pageable) {
-        return ResponseEntity.ok(memberService.findMembersByRole(request, pageable));
+    @GetMapping("/{roleName}")
+    public ResponseEntity<Page<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
+        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
     }
 
     @PostMapping("/newAccount")

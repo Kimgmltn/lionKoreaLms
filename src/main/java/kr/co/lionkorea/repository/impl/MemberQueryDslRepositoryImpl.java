@@ -6,6 +6,7 @@ import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.lionkorea.dto.request.FindMembersByRoleRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
+import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.repository.MemberQueryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -25,9 +26,9 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public Page<FindMembersByRoleResponse> findMembersByRolePaging(FindMembersByRoleRequest request, Pageable pageable) {
+    public Page<FindMembersByRoleResponse> findMembersByRolePaging(Role role, Pageable pageable) {
 
-        BooleanExpression condition = roles.roleName.eq(request.getRole());
+        BooleanExpression condition = roles.roleName.eq(role);
 
         List<FindMembersByRoleResponse> result = query.select(Projections.fields(FindMembersByRoleResponse.class,
                         member.id.as("memberId"),
