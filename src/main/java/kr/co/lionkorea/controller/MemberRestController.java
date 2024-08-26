@@ -1,16 +1,17 @@
 package kr.co.lionkorea.controller;
 
+import kr.co.lionkorea.dto.request.FindMembersByRoleRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMemberResponse;
+import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
 import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -30,8 +31,8 @@ public class MemberRestController {
     }
 
     @GetMapping
-    public ResponseEntity<List<FindMemberResponse>> findAllMember() {
-        return ResponseEntity.ok(memberService.findAllMember());
+    public ResponseEntity<Page<FindMembersByRoleResponse>> findMembersByRole(@RequestBody FindMembersByRoleRequest request, Pageable pageable) {
+        return ResponseEntity.ok(memberService.findMembersByRole(request, pageable));
     }
 
     @PostMapping("/newAccount")

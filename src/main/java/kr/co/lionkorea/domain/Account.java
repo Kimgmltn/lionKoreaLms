@@ -29,6 +29,9 @@ public class Account {
     @Column(name="expire_date")
     private LocalDateTime expireDate;
 
+    @Column(name = "use_yn")
+    private Boolean useYn;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
@@ -43,6 +46,7 @@ public class Account {
                 .password(request.getPassword())
                 .joinDate(LocalDateTime.now())
                 .expireDate(LocalDateTime.MAX)
+                .useYn(true)
                 .member(member)
                 .build();
         account.addRole(roles);

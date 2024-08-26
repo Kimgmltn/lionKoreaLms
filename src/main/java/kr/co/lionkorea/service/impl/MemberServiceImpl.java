@@ -5,9 +5,10 @@ import kr.co.lionkorea.domain.AccountRole;
 import kr.co.lionkorea.domain.Member;
 import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.MemberDetails;
+import kr.co.lionkorea.dto.request.FindMembersByRoleRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMemberResponse;
+import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
 import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Role;
@@ -19,6 +20,8 @@ import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,9 +66,8 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<FindMemberResponse> findAllMember() {
-        List<Member> members = memberRepository.findAll();
-        return members.stream().map(member -> new FindMemberResponse(member.getId(), member.getMemberName(), member.getGender(), member.getEmail())).collect(Collectors.toList());
+    public Page<FindMembersByRoleResponse> findMembersByRole(FindMembersByRoleRequest request, Pageable pageable) {
+        return memberRepository.findMembersByRolePaging(request, pageable);
     }
 
     @Override
@@ -88,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDetails findUserDetails(String loginId){
-        Account account = accountRepository.findByLoginId(loginId).orElseThrow(() -> new MemberException("존재하지 않는 아이디입니다."));
+        Account account = accountRepository.findByLoginIdAndUseYnIsTrue(loginId).orElseThrow(() -> new MemberException("존재하지 않거나, 사용불가 계정입니다."));
         Member member = account.getMember();
         Set<Role> roles = account.getAccountRoles().stream().map(AccountRole::getRoles).map(Roles::getRoleName).collect(Collectors.toSet());
 
