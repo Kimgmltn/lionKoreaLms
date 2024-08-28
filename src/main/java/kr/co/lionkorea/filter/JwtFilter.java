@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.jwt.JwtUtil;
+import kr.co.lionkorea.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -21,12 +22,13 @@ import java.io.IOException;
 public class JwtFilter extends OncePerRequestFilter {
 
     private final JwtUtil jwtUtil;
+    private final AuthService authService;
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
 
-        if(requestURI.equals("/api/login")){
+        if(requestURI.equals("/api/auth/login")){
             filterChain.doFilter(request, response);
             return;
         }
@@ -34,14 +36,21 @@ public class JwtFilter extends OncePerRequestFilter {
             String authorization = request.getHeader("Authorization");
             if(authorization == null || !authorization.startsWith("Bearer ")){
                 log.info("Invalid or missing token");
-                filterChain.doFilter(request, response);
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
 
                 return;
             }
             // Bearer 접두사 제거후 토큰 획득
             String token = authorization.split(" ")[1];
+
+            if (authService.isTokenBlackList(token)) {
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
+                return;
+            }
+
             try {
                 if (jwtUtil.isExpire(token)) {
+                    // TODO: 토큰 만료시 refresh토큰을 이용하여 재발급 받도록 처리
                     log.info("token expire");
                     filterChain.doFilter(request, response);
                     return;

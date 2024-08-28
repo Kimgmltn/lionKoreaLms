@@ -19,8 +19,8 @@ import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,8 +65,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Page<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable) {
-        Role role = Role.valueOf(roleName.toUpperCase());
+    public PagedModel<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable) {
+        String processedRoleName = "role_" + roleName;
+        Role role = Role.valueOf(processedRoleName.toUpperCase());
         return memberRepository.findMembersByRolePaging(role, pageable);
     }
 

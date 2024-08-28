@@ -6,8 +6,8 @@ import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
 import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 
 import java.util.List;
 
@@ -16,7 +16,7 @@ public interface MemberService {
 
     SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request);
 
-    Page<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable);
+    PagedModel<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable);
     void saveMemberAll(List<SaveMemberRequest> requests);
 
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);

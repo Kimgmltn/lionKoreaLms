@@ -1,6 +1,6 @@
 // api.js
 
-const EXCLUDE_URL_LIST = ['/api/login']
+const EXCLUDE_URL_LIST = ['/api/auth/login']
 
 const fetchWithAuth = async (url, options = {}) => {
 
@@ -17,10 +17,16 @@ const fetchWithAuth = async (url, options = {}) => {
         'Authorization': token ? `${token}` : ''
     }
 
-    return await fetch(url, {
+    const response = await fetch(url, {
         ...options,
         headers: headers,
     });
+    if (response.status === 401) {
+        window.location.href = '/login';
+        return Promise.reject(new Error('No Authorization. Redirecting to login.'));
+    }
+
+    return response;
 }
 
 const get = async (endpoint, params = {}) => {

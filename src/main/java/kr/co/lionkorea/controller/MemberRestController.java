@@ -10,12 +10,13 @@ import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/member")
+@RequestMapping("/api/members")
 public class MemberRestController {
 
     public final MemberService memberService;
@@ -31,7 +32,7 @@ public class MemberRestController {
     }
 
     @GetMapping("/{roleName}")
-    public ResponseEntity<Page<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
+    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
         return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
     }
 

@@ -4,8 +4,13 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMembers();
 });
 
-const renderMembers = async () => {
-    const response = await get(`/api/member`);
+const renderMembers = async (page = 0, size = 10) => {
+    const pathname = window.location.pathname;
+    const queryParams = new URLSearchParams({
+        page:page,
+        size:size
+    })
+    const response = await get(`/api${pathname}?${queryParams.toString()}`);
     const membersData = await response.json()
 
     const datatablesSimple = document.getElementById('datatablesSimple');
@@ -16,7 +21,7 @@ const renderMembers = async () => {
     }
 
     const tbody = datatablesSimple.querySelector('tbody');
-    membersData.forEach((member) => {
+    membersData.content.forEach((member) => {
 
         const tr = document.createElement('tr');
 

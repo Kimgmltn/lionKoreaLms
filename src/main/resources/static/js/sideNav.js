@@ -1,8 +1,10 @@
 // sideNav.js
 import { get } from './api.js';
 
-const CACHE_KEY = 'menuCache'; // 캐시 키
+const MENU_KEY = 'menu'; // 캐시 키
 const CACHE_EXPIRATION_TIME = 5 * 60 * 1000; // 5분 (밀리초 단위)
+const OPEN_MENU_KEY = 'openMenus';
+const openMenus = [];
 
 // 초기화 시 기존 캐시를 localStorage에서 불러오기
 let menuCache = {
@@ -10,19 +12,33 @@ let menuCache = {
     expiration: 0
 };
 
-const loadCache = () => {
-    const cachedData = sessionStorage.getItem(CACHE_KEY);
+const loadMenuCache = () => {
+    const cachedData = sessionStorage.getItem(MENU_KEY);
     if (cachedData) {
         menuCache = JSON.parse(cachedData);
     }
 };
 
-const saveCache = () => {
-    sessionStorage.setItem(CACHE_KEY, JSON.stringify(menuCache));
-};;
+const saveOpenMenuState = () => {
+
+    document.querySelectorAll('.nav-link[aria-expanded="true"]').forEach(link => {
+        const target = link.getAttribute('data-bs-target');
+        if(target) openMenus.push(target)
+    })
+    sessionStorage.setItem(OPEN_MENU_KEY, JSON.stringify(openMenus));
+}
+
+const loadOpenMenuState = () => {
+    const openMenus = sessionStorage.getItem(OPEN_MENU_KEY);
+    return openMenus ? JSON.parse(openMenus) : [];
+}
+
+const saveCache = (key, data) => {
+    sessionStorage.setItem(key, JSON.stringify(data));
+};
 
 document.addEventListener('DOMContentLoaded', () => {
-    loadCache();
+    loadMenuCache();
     loadSideNavMenu();
 });
 
@@ -32,7 +48,6 @@ const loadSideNavMenu = async () => {
     // 캐시가 유효한지 확인
     if (menuCache.data && currentTime < menuCache.expiration) {
         menuData = menuCache.data;
-        console.log("캐시에서 메뉴 가져옴")
     }else{
         try {
             const response = await get('/api/menu/my');
@@ -41,7 +56,7 @@ const loadSideNavMenu = async () => {
             // 캐시 갱신 및 만료 시간 설정
             menuCache.data = menuData;
             menuCache.expiration = currentTime + CACHE_EXPIRATION_TIME;
-            saveCache();
+            saveCache(MENU_KEY, menuCache);
         } catch (error) {
             console.error('Error loading side navigation menu:', error);
         }
@@ -61,22 +76,94 @@ const renderSideNavMenu = (menuData) => {
     // Clear any existing menu items
     sideNavContainer.innerHTML = '';
 
-    menuData.forEach(({ menuId, menuName, menuLink, menuIkon}) => {
+    const openMenus = loadOpenMenuState();
 
-        const anchorElement = document.createElement('a');
-        anchorElement.classList.add('nav-link');
-        anchorElement.href = menuLink; // 메뉴 링크를 설정합니다.
+    menuData.forEach(({ menuId, menuName, menuLink, menuIkon, parentMenuId, childMenu }, index) => {
+        // Menu item with childMenu
+        if (childMenu && childMenu.length > 0) {
+            const anchorElement = document.createElement('a');
+            anchorElement.classList.add('nav-link', 'collapsed');
+            anchorElement.href = '#';
+            anchorElement.setAttribute('data-bs-toggle', 'collapse');
+            anchorElement.setAttribute('data-bs-target', `#collapseLayouts-${index}`);
+            anchorElement.setAttribute('aria-expanded', openMenus.includes(`#collapseLayouts-${index}`) ? 'true' : 'false');
+            anchorElement.setAttribute('aria-controls', `collapseLayouts-${index}`);
+            anchorElement.addEventListener('click', ()=>{
+                //TODO: sessionStorage에 저장하는 로직 추가
 
-        const divElement = document.createElement('div');
-        divElement.classList.add('sb-nav-link-icon');
+            })
 
-        const iconElement = document.createElement('i');
-        iconElement.classList.add('fas', menuIkon); // 아이콘 클래스를 추가합니다.
+            const divIconElement = document.createElement('div');
+            divIconElement.classList.add('sb-nav-link-icon');
 
-        // 요소들 조립
-        divElement.appendChild(iconElement);
-        anchorElement.appendChild(divElement);
-        anchorElement.appendChild(document.createTextNode(menuName));
-        sideNavContainer.appendChild(anchorElement);
+            const iconElement = document.createElement('i');
+            iconElement.classList.add('fas', menuIkon);
+
+            const collapseArrowElement = document.createElement('div');
+            collapseArrowElement.classList.add('sb-sidenav-collapse-arrow');
+
+            const arrowIconElement = document.createElement('i');
+            arrowIconElement.classList.add('fas', 'fa-angle-down');
+
+            // Assemble elements
+            collapseArrowElement.appendChild(arrowIconElement);
+            divIconElement.appendChild(iconElement);
+            anchorElement.appendChild(divIconElement);
+            anchorElement.appendChild(document.createTextNode(menuName));
+            anchorElement.appendChild(collapseArrowElement);
+            sideNavContainer.appendChild(anchorElement);
+
+            const collapseDivElement = document.createElement('div');
+            collapseDivElement.classList.add('collapse');
+            collapseDivElement.id = `collapseLayouts-${index}`;
+            collapseDivElement.setAttribute('aria-labelledby', 'headingOne');
+            collapseDivElement.setAttribute('data-bs-parent', '#sidenavAccordion');
+
+            if (openMenus.includes(`#collapseLayouts-${index}`)) {
+                collapseDivElement.classList.add('show');
+            }
+
+            const nestedNavElement = document.createElement('nav');
+            nestedNavElement.classList.add('sb-sidenav-menu-nested', 'nav');
+
+            // Recursively render child menus
+            childMenu.forEach(child => {
+                const childAnchorElement = document.createElement('a');
+                childAnchorElement.classList.add('nav-link');
+                childAnchorElement.href = child.menuLink || '#';
+
+                const divIconElement = document.createElement('div');
+                divIconElement.classList.add('sb-nav-link-icon');
+
+                const iconElement = document.createElement('i');
+                iconElement.classList.add('fas', child.menuIkon);
+
+                divIconElement.appendChild(iconElement);
+                childAnchorElement.appendChild(divIconElement);
+                childAnchorElement.appendChild(document.createTextNode(child.menuName));
+                nestedNavElement.appendChild(childAnchorElement);
+            });
+
+            collapseDivElement.appendChild(nestedNavElement);
+            sideNavContainer.appendChild(collapseDivElement);
+
+        } else {
+            // Menu item without childMenu
+            const anchorElement = document.createElement('a');
+            anchorElement.classList.add('nav-link');
+            anchorElement.href = menuLink || '#';
+
+            const divIconElement = document.createElement('div');
+            divIconElement.classList.add('sb-nav-link-icon');
+
+            const iconElement = document.createElement('i');
+            iconElement.classList.add('fas', menuIkon);
+
+            // Assemble elements
+            divIconElement.appendChild(iconElement);
+            anchorElement.appendChild(divIconElement);
+            anchorElement.appendChild(document.createTextNode(menuName));
+            sideNavContainer.appendChild(anchorElement);
+        }
     });
 };
