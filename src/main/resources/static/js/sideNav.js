@@ -4,7 +4,6 @@ import { get } from './api.js';
 const MENU_KEY = 'menu'; // 캐시 키
 const CACHE_EXPIRATION_TIME = 5 * 60 * 1000; // 5분 (밀리초 단위)
 const OPEN_MENU_KEY = 'openMenus';
-const openMenus = [];
 
 // 초기화 시 기존 캐시를 localStorage에서 불러오기
 let menuCache = {
@@ -19,14 +18,6 @@ const loadMenuCache = () => {
     }
 };
 
-const saveOpenMenuState = () => {
-
-    document.querySelectorAll('.nav-link[aria-expanded="true"]').forEach(link => {
-        const target = link.getAttribute('data-bs-target');
-        if(target) openMenus.push(target)
-    })
-    sessionStorage.setItem(OPEN_MENU_KEY, JSON.stringify(openMenus));
-}
 
 const loadOpenMenuState = () => {
     const openMenus = sessionStorage.getItem(OPEN_MENU_KEY);
@@ -89,8 +80,13 @@ const renderSideNavMenu = (menuData) => {
             anchorElement.setAttribute('aria-expanded', openMenus.includes(`#collapseLayouts-${index}`) ? 'true' : 'false');
             anchorElement.setAttribute('aria-controls', `collapseLayouts-${index}`);
             anchorElement.addEventListener('click', ()=>{
-                //TODO: sessionStorage에 저장하는 로직 추가
-
+                const openMenus = loadOpenMenuState();
+                if(openMenus.includes(`#collapseLayouts-${index}`)){
+                    openMenus.splice(openMenus.indexOf(`#collapseLayouts-${index}`), 1);
+                }else{
+                    openMenus.push(`#collapseLayouts-${index}`);
+                }
+                saveCache(OPEN_MENU_KEY, openMenus);
             })
 
             const divIconElement = document.createElement('div');
@@ -121,6 +117,8 @@ const renderSideNavMenu = (menuData) => {
 
             if (openMenus.includes(`#collapseLayouts-${index}`)) {
                 collapseDivElement.classList.add('show');
+            }else{
+                collapseDivElement.classList.remove('show');
             }
 
             const nestedNavElement = document.createElement('nav');
