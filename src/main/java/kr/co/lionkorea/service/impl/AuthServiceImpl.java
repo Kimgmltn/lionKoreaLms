@@ -21,7 +21,6 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public Account login(LoginRequest request) {
-       log.info("데이터 들어옴");
        return accountRepository.findByLoginIdAndPassword(request.getLoginId(), request.getPassword());
     }
 

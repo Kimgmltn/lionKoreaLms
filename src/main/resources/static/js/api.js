@@ -21,7 +21,9 @@ const fetchWithAuth = async (url, options = {}) => {
         ...options,
         headers: headers,
     });
+
     if (response.status === 401) {
+        sessionStorage.clear();
         window.location.href = '/login';
         return Promise.reject(new Error('No Authorization. Redirecting to login.'));
     }

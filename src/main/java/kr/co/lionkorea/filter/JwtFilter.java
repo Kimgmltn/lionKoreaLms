@@ -51,12 +51,13 @@ public class JwtFilter extends OncePerRequestFilter {
             try {
                 if (jwtUtil.isExpire(token)) {
                     // TODO: 토큰 만료시 refresh토큰을 이용하여 재발급 받도록 처리
-                    log.info("token expire");
-                    filterChain.doFilter(request, response);
+                    log.info("Token is expire");
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is expire");
                     return;
                 }
             } catch (Exception e) {
-                response.sendRedirect("/login");
+                log.info("Exception during tokenExpire check");
+                response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Exception during tokenExpire check");
                 return;
             }
 

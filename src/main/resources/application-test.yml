@@ -13,7 +13,7 @@ spring:
     console:
       enabled: true
   jwt:
-    secret: osdjfgberogdfjlkbnoergoreigjdfklsudyfkwea
+    secret: fkdldhszhfldkfmfdnlgksxhdgkqrhksfltjqltmfmfaksemsmswnddlek
 
 logging:
   level:

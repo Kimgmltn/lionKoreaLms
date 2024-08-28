@@ -48,7 +48,7 @@ public class DataInitializationConfig {
             menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project", "fa-diagram-project", null));
             menuService.saveMenu(new SaveMenuRequest("회원 관리", null, "fa-users", null));
             menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
-            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-black-tie", 2L));
+            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
             menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus", "fa-bars", null));
             menuService.saveMenu(new SaveMenuRequest("대시보드", "/dashboard", "fa-compass", null));
 
