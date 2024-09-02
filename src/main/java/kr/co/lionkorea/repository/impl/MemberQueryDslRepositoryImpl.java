@@ -34,7 +34,7 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
     @Override
     public PagedModel<FindMembersByRoleResponse> findMembersByRolePaging(Role role, Pageable pageable) {
 
-        BooleanExpression condition = roles.roleName.eq(role);
+        BooleanExpression condition = (role != null) ? roles.roleName.eq(role) : null;
 
         List<FindMembersByRoleResponse> result = query.select(Projections.fields(FindMembersByRoleResponse.class,
                         member.id.as("memberId"),

@@ -1,6 +1,7 @@
 package kr.co.lionkorea.service;
 
 import kr.co.lionkorea.dto.MemberDetails;
+import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
@@ -22,4 +23,6 @@ public interface MemberService {
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);
 
     MemberDetails findUserDetails(String username);
+
+    PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable);
 }

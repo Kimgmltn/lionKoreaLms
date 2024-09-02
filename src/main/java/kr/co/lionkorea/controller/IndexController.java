@@ -2,6 +2,8 @@ package kr.co.lionkorea.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,16 +23,22 @@ public class IndexController {
         return "login";
     }
 
-    @GetMapping("/members/{roleName}")
-    public String members(@PathVariable(value = "roleName") String roleName){
+    @GetMapping("/members")
+    public String members(){
         return "members";
     }
 
-    @GetMapping("/members/{roleName}/{memberId}")
-    public String memberDetail(@PathVariable("memberId") Long memberId, @PathVariable("roleName") String roleName){
+    @GetMapping("/members/{memberId}")
+    public String memberDetail(@PathVariable("memberId") Long memberId, Model model){
+        model.addAttribute("subtitle", "회원정보");
         return "memberDetail";
     }
 
+    @GetMapping("/members/register")
+    public String memberSaveForm(Model model){
+        model.addAttribute("subtitle", "회원등록");
+        return "memberDetail";
+    }
     @GetMapping("/project")
     public String project(){
         return "project";

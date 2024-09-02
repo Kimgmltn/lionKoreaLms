@@ -46,17 +46,21 @@ public class DataInitializationConfig {
 
             log.info("Menu 데이터 삽입");
             menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project", "fa-diagram-project", null));
-            menuService.saveMenu(new SaveMenuRequest("회원 관리", null, "fa-users", null));
-            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
-            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
+            menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
+//            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
+//            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
             menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus", "fa-bars", null));
             menuService.saveMenu(new SaveMenuRequest("대시보드", "/dashboard", "fa-compass", null));
 
             log.info("Menu 데이터 삽입 끝");
 
             log.info("Role-Menu 데이터 삽입");
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L, 4L, 5L, 6L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L, 6L)));
+//            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L, 4L, 5L, 6L)));
+//            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L, 6L)));
+//            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
+
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L, 4L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L)));
             rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
             log.info("Role-Menu 데이터 삽입 끝");
 

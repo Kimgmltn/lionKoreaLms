@@ -6,6 +6,10 @@ const fetchWithAuth = async (url, options = {}) => {
 
     const token = sessionStorage.getItem('jwt');
 
+    if (window.isLocalMode) {
+        console.log('환경에서 실행됨')
+        return;
+    }
     if(!token && !url.includes(EXCLUDE_URL_LIST)){
         window.location.href = '/login';
         return Promise.reject(new Error('No JWT token found. Redirecting to login.'));

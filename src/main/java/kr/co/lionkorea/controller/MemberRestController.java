@@ -1,11 +1,13 @@
 package kr.co.lionkorea.controller;
 
 import kr.co.lionkorea.dto.request.FindMembersByRoleRequest;
+import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
 import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
+import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -31,10 +33,14 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.updateMember(memberId, request));
     }
 
-    @GetMapping("/{roleName}")
-    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
-        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
+    @GetMapping()
+    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembers(@ModelAttribute FindMembersRequest request, Pageable pageable){
+        return ResponseEntity.ok(memberService.findMembers(request, pageable));
     }
+//    @GetMapping("/{roleName}")
+//    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
+//        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
+//    }
 
     @PostMapping("/newAccount")
     public ResponseEntity<GrantNewAccountResponse> grantNewAccount(@RequestBody GrantNewAccountRequest request){

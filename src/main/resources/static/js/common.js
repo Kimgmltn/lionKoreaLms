@@ -1,0 +1,97 @@
+const createModal = (options, callback) => {
+    // 모달을 감싸는 div 생성
+    const modalDiv = document.createElement('div');
+    modalDiv.className = 'modal fade show';
+    modalDiv.tabIndex = -1;
+    modalDiv.role = 'dialog';
+    modalDiv.id = options.id || 'modalChoice';
+    modalDiv.style.display = 'block';
+
+    // 모달 다이얼로그 div 생성
+    const modalDialogDiv = document.createElement('div');
+    modalDialogDiv.className = 'modal-dialog modal-dialog-centered';
+    modalDialogDiv.role = 'document';
+
+    // 모달 내용 div 생성
+    const modalContentDiv = document.createElement('div');
+    modalContentDiv.className = 'modal-content rounded-3 shadow';
+
+    // 모달 바디 div 생성
+    const modalBodyDiv = document.createElement('div');
+    modalBodyDiv.className = 'modal-body p-4 text-center';
+
+    // 모달 바디의 제목 h5 생성
+    const modalTitle = document.createElement('h5');
+    modalTitle.className = 'mb-0';
+    modalTitle.textContent = options.title || 'Enable this setting?';
+
+    // 모달 바디의 설명 p 생성
+    // const modalText = document.createElement('p');
+    // modalText.className = 'mb-0';
+    // modalText.textContent = options.text || 'You can always change your mind in your account settings.';
+
+    // 모달 바디 div에 제목과 설명 추가
+    modalBodyDiv.appendChild(modalTitle);
+    // modalBodyDiv.appendChild(modalText);
+
+    // 모달 푸터 div 생성
+    const modalFooterDiv = document.createElement('div');
+    modalFooterDiv.className = 'modal-footer flex-nowrap p-0 justify-content-center';
+
+    // "Yes, enable" 버튼 생성
+    const yesButton = document.createElement('button');
+    yesButton.type = 'button';
+    yesButton.className = 'btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0';
+    yesButton.innerHTML = '<strong>' + (options.yesText || '확인') + '</strong>';
+
+    // "No thanks" 버튼 생성
+    // const noButton = document.createElement('button');
+    // noButton.type = 'button';
+    // noButton.className = 'btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0';
+    // noButton.setAttribute('data-bs-dismiss', 'modal');
+    // noButton.textContent = options.noText || 'No thanks';
+
+    // 모달 푸터 div에 버튼 추가
+    modalFooterDiv.appendChild(yesButton);
+    // modalFooterDiv.appendChild(noButton);
+
+    // 모달 내용 div에 바디와 푸터 추가
+    modalContentDiv.appendChild(modalBodyDiv);
+    modalContentDiv.appendChild(modalFooterDiv);
+
+    // 모달 다이얼로그 div에 모달 내용 추가
+    modalDialogDiv.appendChild(modalContentDiv);
+
+    // 모달을 감싸는 div에 모달 다이얼로그 추가
+    modalDiv.appendChild(modalDialogDiv);
+
+    // 최종적으로 body에 모달을 추가
+    document.body.appendChild(modalDiv);
+
+    // 모달을 표시
+    const myModal = new bootstrap.Modal(modalDiv, {
+        backdrop: 'static', // Optional: prevents closing the modal by clicking outside of it
+        keyboard: false // Optional: prevents closing the modal by pressing the escape key
+    });
+
+    // "Yes" 버튼 클릭 시 콜백 함수 호출
+    yesButton.addEventListener('click', function() {
+        if (callback && typeof callback === 'function') {
+            callback();
+        }
+        myModal.hide(); // 모달 닫기
+    });
+
+    // 모달이 닫히면 DOM에서 모달 요소 제거
+    modalDiv.addEventListener('hidden.bs.modal', function () {
+        modalDiv.remove();
+    });
+
+    myModal.show();
+
+    document.body.classList.add('modal-open');
+    document.body.style.overflowY = 'scroll';
+    document.body.style.paddingRight = '0';
+}
+
+export {createModal}

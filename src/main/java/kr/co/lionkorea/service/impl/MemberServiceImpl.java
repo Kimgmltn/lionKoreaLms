@@ -5,6 +5,7 @@ import kr.co.lionkorea.domain.AccountRole;
 import kr.co.lionkorea.domain.Member;
 import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.MemberDetails;
+import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
@@ -69,6 +70,17 @@ public class MemberServiceImpl implements MemberService {
         String processedRoleName = "role_" + roleName;
         Role role = Role.valueOf(processedRoleName.toUpperCase());
         return memberRepository.findMembersByRolePaging(role, pageable);
+    }
+
+    @Override
+    public PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable) {
+        if(request.getRole().isEmpty()){
+            return memberRepository.findMembersByRolePaging(null, pageable);
+        }else{
+            String processedRoleName = "role_" + request.getRole();
+            Role role = Role.valueOf(processedRoleName.toUpperCase());
+            return memberRepository.findMembersByRolePaging(role, pageable);
+        }
     }
 
     @Override
