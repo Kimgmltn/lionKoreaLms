@@ -1,7 +1,7 @@
 import { get } from './api.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    const radioButtons = document.querySelectorAll('input[name="role"]');
+    /*const radioButtons = document.querySelectorAll('input[name="role"]');
 
     const selectedRadio = document.querySelector('input[name="role"]:checked');
     if (selectedRadio) {
@@ -12,12 +12,12 @@ document.addEventListener('DOMContentLoaded', () => {
         radio.addEventListener('change', function() {
             renderMembers(this.value);
         });
-    });
+    });*/
+    renderMembers();
 });
 
-const renderMembers = async (role, page = 0, size = 20) => {
+const renderMembers = async (page = 0, size = 20) => {
     const queryParams = new URLSearchParams({
-        role: role === 'all' ? '' : role,
         page:page,
         size:size
     })
@@ -36,6 +36,9 @@ const renderMembers = async (role, page = 0, size = 20) => {
     membersData.content.forEach((member) => {
 
         const tr = document.createElement('tr');
+        tr.addEventListener('click',()=>{
+            window.location.href = `/members/${member.memberId}`;
+        })
 
         Object.values(member).forEach((value, index) => {
             const td = document.createElement('td');
@@ -50,10 +53,10 @@ const renderMembers = async (role, page = 0, size = 20) => {
         tbody.appendChild(tr);
     });
 
-    renderPagination(role,membersData.page);
+    renderPagination(membersData.page);
 }
 
-const renderPagination = (role, pageData) => {
+const renderPagination = (pageData) => {
     const paginationContainer = document.getElementById('paginationContainer');
 
     if (!paginationContainer) {
@@ -81,7 +84,7 @@ const renderPagination = (role, pageData) => {
     prevLink.href = '#';
     prevLink.textContent = 'Previous';
     prevLink.addEventListener('click', () => {
-        if (currentPage > 0) renderMembers(role,currentPage - 1);
+        if (currentPage > 0) renderMembers(currentPage - 1);
     });
     prevButton.appendChild(prevLink);
     paginationContainer.appendChild(prevButton);
@@ -98,7 +101,7 @@ const renderPagination = (role, pageData) => {
         pageLink.href = '#';
         pageLink.textContent = i + 1;
         pageLink.addEventListener('click', () => {
-            renderMembers(role,i);
+            renderMembers(i);
         });
         pageButton.appendChild(pageLink);
         paginationContainer.appendChild(pageButton);
@@ -115,7 +118,7 @@ const renderPagination = (role, pageData) => {
     nextLink.href = '#';
     nextLink.textContent = 'Next';
     nextLink.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) renderMembers(role,currentPage + 1);
+        if (currentPage < totalPages - 1) renderMembers(currentPage + 1);
     });
     nextButton.appendChild(nextLink);
     paginationContainer.appendChild(nextButton);

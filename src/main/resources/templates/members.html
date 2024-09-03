@@ -116,34 +116,45 @@
                 <main>
                     <div class="container-fluid px-4">
                         <h1 class="mt-4 display-2" id="content-title"><b>회원관리</b></h1>
-                        <ol class="breadcrumb mb-4">
+                        <ol class="breadcrumb mb-4 h2">
 <!--                            <li class="breadcrumb-item"><a href="/dashboard">Dashboard</a></li>-->
-                            <li class="breadcrumb-item active h2">회원관리</li>
+                            <li class="breadcrumb-item active">회원관리</li>
                         </ol>
-                        <div class="filter-options mb-3">
-                            <div class="form-check form-check-inline h4">
-                                <input class="form-check-input" type="radio" name="role" id="filterAll" value="all" checked>
-                                <label class="form-check-label" for="filterAll">전체</label>
+                        <div class="d-flex justify-content-between align-items-center mb-3 js">
+<!--                            <div class="filter-options mb-3">-->
+<!--                                <div class="form-check form-check-inline h4">-->
+<!--                                    <input class="form-check-input" type="radio" name="role" id="filterAll" value="all" checked>-->
+<!--                                    <label class="form-check-label" for="filterAll">전체</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-check form-check-inline h4">-->
+<!--                                    <input class="form-check-input" type="radio" name="role" id="filterAdmin" value="admin">-->
+<!--                                    <label class="form-check-label" for="filterAdmin">관리자</label>-->
+<!--                                </div>-->
+<!--                                <div class="form-check form-check-inline h4">-->
+<!--                                    <input class="form-check-input" type="radio" name="role" id="filterTranslator" value="translator">-->
+<!--                                    <label class="form-check-label" for="filterTranslator">번역가</label>-->
+<!--                                </div>-->
+<!--                            </div>-->
+                            <div class="search-bar">
+                                <div class="input-group">
+                                    <input type="text" class="form-control h4" placeholder="이름" id="searchName">
+                                    <label for="searchName" class="form-check-label"></label>
+                                    <button class="btn btn-primary h4" type="button">검색</button>
+                                </div>
                             </div>
-                            <div class="form-check form-check-inline h4">
-                                <input class="form-check-input" type="radio" name="role" id="filterAdmin" value="admin">
-                                <label class="form-check-label" for="filterAdmin">관리자</label>
-                            </div>
-                            <div class="form-check form-check-inline h4">
-                                <input class="form-check-input" type="radio" name="role" id="filterTranslator" value="translator">
-                                <label class="form-check-label" for="filterTranslator">번역가</label>
-                            </div>
+                            <a href="memberRegister.html" th:href="@{/members/register}"><button class="btn btn-primary h4" type="button">신규생성</button></a>
                         </div>
-                        <div class="table-responsive h5">
+
+                        <div class="table-responsive">
                             <table class="table table-striped table-hover" id="datatablesSimple">
-                                <thead>
+                                <thead class="h4">
                                     <tr>
                                         <th scope="col">이름</th>
                                         <th scope="col">성별</th>
                                         <th scope="col">email</th>
                                     </tr>
                                 </thead>
-                                <tbody class="table-group-divider">
+                                <tbody class="table-group-divider h5">
                                     <tr th:remove="all">
                                         <td>Tiger Nixon</td>
                                         <td>System Architect</td>

@@ -115,9 +115,9 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2">회원등록</h1>
-                        <ol class="breadcrumb mb-4 h2">
-                            <li class="breadcrumb-item"><a th:href="@{/members}" href="#">회원관리</a></li>
+                        <h1 class="mt-4">회원등록</h1>
+                        <ol class="breadcrumb mb-4">
+                            <li class="breadcrumb-item"><a th:href="@{/members}" href="./members.html">회원관리</a></li>
                             <li class="breadcrumb-item active">회원등록</li>
                         </ol>
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
@@ -191,6 +191,6 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/memberDetail.js" th:src="@{/js/memberDetail.js}" type="module"></script>
+        <script src="../static/js/memberRegister.js" th:src="@{/js/memberRegister.js}" type="module"></script>
     </body>
 </html>

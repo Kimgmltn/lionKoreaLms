@@ -29,15 +29,13 @@ public class IndexController {
     }
 
     @GetMapping("/members/{memberId}")
-    public String memberDetail(@PathVariable("memberId") Long memberId, Model model){
-        model.addAttribute("subtitle", "회원정보");
+    public String memberDetail(@PathVariable("memberId") Long memberId){
         return "memberDetail";
     }
 
     @GetMapping("/members/register")
-    public String memberSaveForm(Model model){
-        model.addAttribute("subtitle", "회원등록");
-        return "memberDetail";
+    public String memberSaveForm(){
+        return "memberRegister";
     }
     @GetMapping("/project")
     public String project(){
