@@ -74,13 +74,20 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable) {
-        if(request.getRole().isEmpty()){
-            return memberRepository.findMembersByRolePaging(null, pageable);
-        }else{
+        Role role = null;
+
+        if(!request.getRole().isEmpty()){
             String processedRoleName = "role_" + request.getRole();
-            Role role = Role.valueOf(processedRoleName.toUpperCase());
-            return memberRepository.findMembersByRolePaging(role, pageable);
+            role = Role.valueOf(processedRoleName.toUpperCase());
         }
+
+        return memberRepository.findMembersByRolePaging(role, pageable);
+    }
+
+    @Override
+    public Object findMemberById(Long memberId) {
+
+        return null;
     }
 
     @Override

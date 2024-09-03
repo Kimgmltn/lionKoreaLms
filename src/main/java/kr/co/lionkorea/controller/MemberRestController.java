@@ -37,6 +37,11 @@ public class MemberRestController {
     public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembers(@ModelAttribute FindMembersRequest request, Pageable pageable){
         return ResponseEntity.ok(memberService.findMembers(request, pageable));
     }
+
+    @GetMapping("/{memberId}")
+    public ResponseEntity<?> findMemberById(@PathVariable(value = "memberId") Long memberId){
+        return ResponseEntity.ok(memberService.findMemberById(memberId));
+    }
 //    @GetMapping("/{roleName}")
 //    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
 //        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));

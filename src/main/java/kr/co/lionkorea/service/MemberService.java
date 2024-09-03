@@ -25,4 +25,6 @@ public interface MemberService {
     MemberDetails findUserDetails(String username);
 
     PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable);
+
+    Object findMemberById(Long memberId);
 }

@@ -115,10 +115,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2">회원등록</h1>
-                        <ol class="breadcrumb mb-4 h2">
+                        <h1 class="mt-4 display-2"><b>회원조회</b></h1>
+                        <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/members}" href="#">회원관리</a></li>
-                            <li class="breadcrumb-item active">회원등록</li>
+                            <li class="breadcrumb-item active">회원조회</li>
                         </ol>
                         <div class="card shadow-lg border-0 rounded-lg mt-5">
                             <div class="card-body">
@@ -126,42 +126,42 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputName" name="memberName" type="text"/>
+                                                <input class="form-control" id="inputName" name="memberName" type="text" disabled/>
                                                 <label for="inputName">이름</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6 align-content-center">
                                             <div class="form-floating">
                                                 <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" required checked/>
+                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" required checked disabled/>
                                                     <label class="form-check-label" for="gender_male">남성</label>
                                                 </div>
                                                 <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" required/>
+                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" required disabled/>
                                                     <label class="form-check-label" for="gender_female">여성</label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" name="email"/>
+                                        <input class="form-control" id="inputEmail" type="email" name="email" disabled/>
                                         <label for="inputEmail">Email</label>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputCellPhone" name="phoneNumber" type="text"/>
+                                                <input class="form-control" id="inputCellPhone" name="phoneNumber" type="text" disabled/>
                                                 <label for="inputCellPhone">전화번호</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
+                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden" disabled></textarea>
                                         <label for="inputMemo">Memo</label>
                                     </div>
-                                    <div class="mt-4 mb-0">
-                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회원 등록</button></div>
-                                    </div>
+<!--                                    <div class="mt-4 mb-0">-->
+<!--                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회원 등록</button></div>-->
+<!--                                    </div>-->
                                 </form>
                             </div>
                         </div>
