@@ -27,18 +27,24 @@ const renderMember = async ()=> {
     memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
     const response = await get(`/api/members/${memberId}`);
 
-    if (response.status === 404) {
+    if(response.ok)
+    {
+        const memberDetailData = await response.json();
+
+        setInputValue(memberDetailData);
+        setInfo(memberDetailData);
+    }
+    else if(response.status === 404)
+    {
         const errorData = await response.json();
         createModal({
             title: errorData.message
         }, function(){
             window.location.href = '/members';
         });
-    }else{
-        const memberDetailData = await response.json();
+    }
+    else{
 
-        setInputValue(memberDetailData);
-        setInfo(memberDetailData);
     }
 }
 
@@ -129,12 +135,21 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     try {
         const response = await patch(`/api/members/save/${memberId}`, memberData);
 
-        await createModal({
-            title: response.result
-        }, function(){
-            window.location.reload();
-        });
-
+        if(response.ok){
+            const resultData = await response.json();
+            createModal({
+                title: resultData.result
+            }, function(){
+                window.location.reload();
+            });
+        }else{
+            const errorData = await response.json();
+            createModal({
+                title: errorData.message
+            }, function(){
+                window.location.href = '/members';
+            });
+        }
     } catch (error) {
         console.error('Error:', error);
 
