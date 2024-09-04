@@ -25,9 +25,11 @@ import org.springframework.data.web.PagedModel;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -76,7 +78,7 @@ public class MemberServiceImpl implements MemberService {
     public PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable) {
         Role role = null;
 
-        if(!request.getRole().isEmpty()){
+        if(StringUtils.hasText(request.getRole())){
             String processedRoleName = "role_" + request.getRole();
             role = Role.valueOf(processedRoleName.toUpperCase());
         }
