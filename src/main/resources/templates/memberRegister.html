@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{header :: main_header(title_name = ${subtitle})}">
+    <head th:replace="~{header :: main_header('회원등록')}">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -120,9 +120,9 @@
                             <li class="breadcrumb-item"><a th:href="@{/members}" href="./members.html">회원관리</a></li>
                             <li class="breadcrumb-item active">회원등록</li>
                         </ol>
-                        <div class="card shadow-lg border-0 rounded-lg mt-5">
-                            <div class="card-body">
-                                <form id="saveForm">
+                        <div class="card border-0 mt-5">
+                            <div class="card-body shadow-lg rounded-4">
+                                <form id="registerForm">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
@@ -133,11 +133,11 @@
                                         <div class="col-md-6 align-content-center">
                                             <div class="form-floating">
                                                 <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" value="male" required checked/>
+                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" value="MALE" required checked/>
                                                     <label class="form-check-label" for="gender_male">남성</label>
                                                 </div>
                                                 <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" value="female" required/>
+                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" value="FEMALE" required/>
                                                     <label class="form-check-label" for="gender_female">여성</label>
                                                 </div>
                                             </div>
@@ -192,5 +192,6 @@
             </script>
         </th:block>
         <script src="../static/js/memberRegister.js" th:src="@{/js/memberRegister.js}" type="module"></script>
+        <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>

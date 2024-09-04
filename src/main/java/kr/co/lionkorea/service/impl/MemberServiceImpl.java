@@ -8,7 +8,8 @@ import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMembersByRoleResponse;
+import kr.co.lionkorea.dto.response.FindMemberDetailResponse;
+import kr.co.lionkorea.dto.response.FindMembersResponse;
 import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Role;
@@ -29,7 +30,6 @@ import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,21 +61,21 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException("등록되지 않은 회원입니다."));
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException("존재하지 않은 회원입니다."));
         findMember.changeInfo(request);
         memberRepository.save(findMember);
         return new SaveMemberResponse(findMember.getId(), "수정되었습니다.");
     }
 
     @Override
-    public PagedModel<FindMembersByRoleResponse> findMembersByRole(String roleName, Pageable pageable) {
+    public PagedModel<FindMembersResponse> findMembersByRole(String roleName, Pageable pageable) {
         String processedRoleName = "role_" + roleName;
         Role role = Role.valueOf(processedRoleName.toUpperCase());
         return memberRepository.findMembersByRolePaging(role, pageable);
     }
 
     @Override
-    public PagedModel<FindMembersByRoleResponse> findMembers(FindMembersRequest request, Pageable pageable) {
+    public PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable) {
         Role role = null;
 
         if(StringUtils.hasText(request.getRole())){
@@ -87,9 +87,9 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public Object findMemberById(Long memberId) {
-
-        return null;
+    public FindMemberDetailResponse findMemberById(Long memberId) {
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException("존재하지 않은 회원입니다."));
+        return FindMemberDetailResponse.entityToDto(findMember);
     }
 
     @Override

@@ -1,7 +1,7 @@
 import {post} from "./api.js";
-import {createModal} from './common.js';
+import {createModal, inputOnlyNumber} from './common.js'
 
-document.getElementById('saveForm').addEventListener('submit', async function(event) {
+document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
 
     const formData = new FormData(this);
@@ -15,11 +15,12 @@ document.getElementById('saveForm').addEventListener('submit', async function(ev
 
     try {
         const response = await post('/api/members/save', memberData);
+        const data = await response.json();
 
         await createModal({
-            title: response.result
+            title: data.result
         }, function(){
-            window.location.href=`/members/${response.memberId}`
+            window.location.href=`/members/${data.memberId}`
         });
 
     } catch (error) {
@@ -43,23 +44,5 @@ document.getElementById('inputMemo').addEventListener('input', function (){
  */
 document.getElementById('inputCellPhone').addEventListener('input', function (e) {
     // 숫자만 남기고 모든 문자를 제거
-    let numbers = e.target.value.replace(/\D/g, '');
-
-    // 최대 11자리까지만 남기기
-    if (numbers.length > 11) {
-        numbers = numbers.slice(0, 11);
-    }
-
-    // 입력한 숫자에 맞춰 포맷팅
-    let formattedNumber = '';
-    if (numbers.length <= 3) {
-        formattedNumber = numbers;
-    } else if (numbers.length <= 7) {
-        formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3);
-    } else {
-        formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3, 7) + '-' + numbers.slice(7);
-    }
-
-    // 입력란에 포맷팅된 값을 넣어줌
-    e.target.value = formattedNumber;
+    inputOnlyNumber(e)
 })

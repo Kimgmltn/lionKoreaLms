@@ -10,7 +10,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FindMembersByRoleResponse {
+public class FindMembersResponse {
     private Long memberId;
     private String memberName;
     private Gender gender;

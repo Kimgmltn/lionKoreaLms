@@ -94,4 +94,26 @@ const createModal = (options, callback) => {
     document.body.style.paddingRight = '0';
 }
 
-export {createModal}
+const inputOnlyNumber = (e) => {
+    let numbers = e.target.value.replace(/\D/g, '');
+
+    // 최대 11자리까지만 남기기
+    if (numbers.length > 11) {
+        numbers = numbers.slice(0, 11);
+    }
+
+    // 입력한 숫자에 맞춰 포맷팅
+    let formattedNumber = '';
+    if (numbers.length <= 3) {
+        formattedNumber = numbers;
+    } else if (numbers.length <= 7) {
+        formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3);
+    } else {
+        formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3, 7) + '-' + numbers.slice(7);
+    }
+
+    // 입력란에 포맷팅된 값을 넣어줌
+    e.target.value = formattedNumber;
+}
+
+export {createModal, inputOnlyNumber}
