@@ -66,11 +66,11 @@ public class DataInitializationConfig {
 
             log.info("Member 데이터 삽입");
             String loginId = "admin";
-            SaveMemberResponse superAdminMember = memberService.saveMember(new SaveMemberRequest("최상위 관리자", Gender.MAIL, "", "", ""));
+            SaveMemberResponse superAdminMember = memberService.saveMember(new SaveMemberRequest("최상위 관리자", Gender.MALE, "", "", ""));
             memberService.grantNewAccount(new GrantNewAccountRequest(loginId, superAdminMember.getMemberId(), Role.ROLE_SUPER_ADMIN));
             for (int i = 0; i < 50; i++) {
                 String name = "회원" + i;
-                SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MAIL, "", "", ""));
+                SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MALE, "", "", ""));
                 if(i < 25){
                     memberService.grantNewAccount(new GrantNewAccountRequest(loginId + i, saveMemberResponse.getMemberId(), Role.ROLE_ADMIN));
                 }
