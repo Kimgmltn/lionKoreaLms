@@ -1,6 +1,8 @@
 package kr.co.lionkorea.exception;
 
-public class AccountException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class AccountException extends LionException{
     public AccountException() {
         super();
     }
@@ -11,5 +13,13 @@ public class AccountException extends RuntimeException{
 
     public AccountException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public AccountException(Throwable cause) {
+        super(cause);
+    }
+
+    public AccountException(HttpStatus status, String message) {
+        super(status, message);
     }
 }

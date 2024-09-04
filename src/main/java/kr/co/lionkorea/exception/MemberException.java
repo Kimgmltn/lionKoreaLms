@@ -1,6 +1,9 @@
 package kr.co.lionkorea.exception;
 
-public class MemberException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class MemberException extends LionException{
+
     public MemberException() {
         super();
     }
@@ -11,5 +14,13 @@ public class MemberException extends RuntimeException{
 
     public MemberException(String message, Throwable cause) {
         super(message, cause);
+    }
+
+    public MemberException(Throwable cause) {
+        super(cause);
+    }
+
+    public MemberException(HttpStatus status, String message) {
+        super(status, message);
     }
 }

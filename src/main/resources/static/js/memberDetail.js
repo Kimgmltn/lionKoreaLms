@@ -1,5 +1,5 @@
-import {get, post} from './api.js'
-import {inputOnlyNumber} from './common.js'
+import {get, patch, post} from './api.js'
+import {createModal, inputOnlyNumber} from './common.js'
 
 const renderInfo = {
     name: '',
@@ -18,7 +18,6 @@ const saveButtonSet = document.getElementById('saveButtonSet');
 const changeButtonSet = document.getElementById('updateButtonSet');
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    console.log(inputNameTag);
     renderMember();
     addEventForChangeButton();
 })
@@ -27,14 +26,23 @@ const renderMember = async ()=> {
     const pathname = window.location.pathname;
     memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
     const response = await get(`/api/members/${memberId}`);
-    const memberDetailData = await response.json();
 
-    setInputValue(memberDetailData);
-    setInfo(memberDetailData);
+    if (response.status === 404) {
+        const errorData = await response.json();
+        createModal({
+            title: errorData.message
+        }, function(){
+            window.location.href = '/members';
+        });
+    }else{
+        const memberDetailData = await response.json();
+
+        setInputValue(memberDetailData);
+        setInfo(memberDetailData);
+    }
 }
 
 const setInputValue = (data) => {
-    console.log(data)
     inputNameTag.value = data.memberName || '';
     inputEmailTag.value = data.email || '';
     inputCellPhoneTag.value = data.phoneNumber || '';
@@ -45,6 +53,7 @@ const setInputValue = (data) => {
         }
     });
 }
+
 const setInfo = (data) => {
     renderInfo.name = data.memberName || '';
     renderInfo.email = data.email || '';
@@ -118,7 +127,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     };
 
     try {
-        const response = await post(`/api/members/save/${memberId}`, memberData);
+        const response = await patch(`/api/members/save/${memberId}`, memberData);
 
         await createModal({
             title: response.result

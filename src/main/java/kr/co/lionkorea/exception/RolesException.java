@@ -1,6 +1,8 @@
 package kr.co.lionkorea.exception;
 
-public class RolesException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+
+public class RolesException extends LionException{
 
     public RolesException() {
         super();
@@ -16,5 +18,9 @@ public class RolesException extends RuntimeException{
 
     public RolesException(Throwable cause) {
         super(cause);
+    }
+
+    public RolesException(HttpStatus status, String message) {
+        super(status, message);
     }
 }

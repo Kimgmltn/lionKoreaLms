@@ -23,6 +23,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -61,34 +62,20 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException("존재하지 않은 회원입니다."));
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         findMember.changeInfo(request);
         memberRepository.save(findMember);
         return new SaveMemberResponse(findMember.getId(), "수정되었습니다.");
     }
 
     @Override
-    public PagedModel<FindMembersResponse> findMembersByRole(String roleName, Pageable pageable) {
-        String processedRoleName = "role_" + roleName;
-        Role role = Role.valueOf(processedRoleName.toUpperCase());
-        return memberRepository.findMembersByRolePaging(role, pageable);
-    }
-
-    @Override
     public PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable) {
-        Role role = null;
-
-        if(StringUtils.hasText(request.getRole())){
-            String processedRoleName = "role_" + request.getRole();
-            role = Role.valueOf(processedRoleName.toUpperCase());
-        }
-
-        return memberRepository.findMembersByRolePaging(role, pageable);
+        return memberRepository.findMembersPaging(request, pageable);
     }
 
     @Override
     public FindMemberDetailResponse findMemberById(Long memberId) {
-        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException("존재하지 않은 회원입니다."));
+        Member findMember = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         return FindMemberDetailResponse.entityToDto(findMember);
     }
 
@@ -103,7 +90,7 @@ public class MemberServiceImpl implements MemberService {
 
         String randomPassword = getRandomPassword();
         request.setPassword(encoder.encode(randomPassword));
-        Member member = memberRepository.findById(request.getMemberId()).orElseThrow(() -> new MemberException("등록되지 않은 회원입니다."));
+        Member member = memberRepository.findById(request.getMemberId()).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         Roles roles = rolesRepository.findByRoleName(request.getRole());
 
         Account savedAccount = accountRepository.save(Account.dtoToEntity(request, member, roles));
@@ -112,7 +99,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public MemberDetails findUserDetails(String loginId){
-        Account account = accountRepository.findByLoginIdAndUseYnIsTrue(loginId).orElseThrow(() -> new MemberException("존재하지 않거나, 사용불가 계정입니다."));
+        Account account = accountRepository.findByLoginIdAndUseYnIsTrue(loginId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         Member member = account.getMember();
         Set<Role> roles = account.getAccountRoles().stream().map(AccountRole::getRoles).map(Roles::getRoleName).collect(Collectors.toSet());
 

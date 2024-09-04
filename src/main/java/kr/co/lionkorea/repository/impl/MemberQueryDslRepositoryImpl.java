@@ -4,8 +4,8 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
+import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.response.FindMembersResponse;
-import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.repository.MemberQueryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -25,9 +25,7 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public PagedModel<FindMembersResponse> findMembersByRolePaging(Role role, Pageable pageable) {
-
-        BooleanExpression condition = (role != null) ? roles.roleName.eq(role) : null;
+    public PagedModel<FindMembersResponse> findMembersPaging(FindMembersRequest request, Pageable pageable) {
 
         List<FindMembersResponse> result = query.select(Projections.fields(FindMembersResponse.class,
                         member.id.as("memberId"),
@@ -35,10 +33,6 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
                         member.memberName.as("memberName"),
                         member.email.as("email")))
                 .from(member)
-                .innerJoin(account).on(member.id.eq(account.member.id).and(account.useYn.isTrue()))
-                .innerJoin(accountRole).on(account.id.eq(accountRole.account.id))
-                .innerJoin(roles).on(accountRole.roles.id.eq(roles.id))
-                .where(condition)
                 .orderBy(member.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -46,10 +40,6 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
 
         long total = query.select(Expressions.constant(1))
                 .from(member)
-                .innerJoin(account).on(member.id.eq(account.member.id).and(account.useYn.isTrue()))
-                .innerJoin(accountRole).on(account.id.eq(accountRole.account.id))
-                .innerJoin(roles).on(accountRole.roles.id.eq(roles.id))
-                .where(condition)
                 .fetch().size();
 
 

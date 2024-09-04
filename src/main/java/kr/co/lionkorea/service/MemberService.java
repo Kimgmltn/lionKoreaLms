@@ -18,7 +18,6 @@ public interface MemberService {
 
     SaveMemberResponse updateMember(Long memberId, SaveMemberRequest request);
 
-    PagedModel<FindMembersResponse> findMembersByRole(String roleName, Pageable pageable);
     void saveMemberAll(List<SaveMemberRequest> requests);
 
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);
