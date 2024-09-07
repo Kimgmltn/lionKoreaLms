@@ -169,9 +169,10 @@
                                 </form>
                             </div>
 
-                            <div class="card border-0 mt-5">
-                                <div>
-                                    <h3>발급된 ID</h3>
+                            <div class="card border-0 my-5">
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <h3 class="mb-3">발급된 ID</h3>
+                                    <button id="assignBtn" class="btn btn-primary btn-block mb-3">ID 신규발급</button>
                                 </div>
 
                                 <div class="card-body shadow-lg rounded-4">
@@ -179,9 +180,13 @@
                                         <table class="table table-striped table-hover" id="datatablesSimple">
                                             <thead class="h4">
                                             <tr>
-                                                <th scope="col" style="width: 10%">index</th>
-                                                <th scope="col" style="width: 50%">ID</th>
-                                                <th scope="col" style="width: 40%">권한</th>
+                                                <th scope="col" style="width: 5%">index</th>
+                                                <th scope="col" style="width: 10%">ID</th>
+                                                <th scope="col" style="width: 6%">권한</th>
+                                                <th scope="col" style="width: 5%">최초 비밀번호<br/> 변경 여부</th>
+                                                <th scope="col" style="width: 5%">사용여부</th>
+                                                <th scope="col" style="width: 7%">가입일</th>
+                                                <th scope="col" style="width: 7%">만료일</th>
                                             </tr>
                                             </thead>
                                             <tbody class="table-group-divider h5" th:remove="body">
@@ -189,11 +194,19 @@
                                                     <td>1</td>
                                                     <td>email@gmail.com</td>
                                                     <td>번역가</td>
+                                                    <td>N</td>
+                                                    <td>Y</td>
+                                                    <td>2024-09-11</td>
+                                                    <td>2999-12-31</td>
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
                                                     <td>email2@gmail.com</td>
                                                     <td>관리자</td>
+                                                    <td>N</td>
+                                                    <td>Y</td>
+                                                    <td>2024-09-11</td>
+                                                    <td>2999-12-31</td>
                                                 </tr>
                                             </tbody>
                                         </table>

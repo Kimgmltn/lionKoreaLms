@@ -1,5 +1,5 @@
 import {get, patch, post} from './api.js'
-import {createModal, inputOnlyNumber} from './common.js'
+import {createConfirmModal, inputOnlyNumber} from './common.js'
 
 const renderInfo = {
     name: '',
@@ -37,7 +37,7 @@ const renderMember = async ()=> {
     else if(response.status === 404)
     {
         const errorData = await response.json();
-        createModal({
+        createConfirmModal({
             title: errorData.message
         }, function(){
             window.location.href = '/members';
@@ -137,14 +137,14 @@ document.getElementById('updateForm').addEventListener('submit', async function(
 
         if(response.ok){
             const resultData = await response.json();
-            createModal({
+            createConfirmModal({
                 title: resultData.result
             }, function(){
                 window.location.reload();
             });
         }else{
             const errorData = await response.json();
-            createModal({
+            createConfirmModal({
                 title: errorData.message
             }, function(){
                 window.location.href = '/members';

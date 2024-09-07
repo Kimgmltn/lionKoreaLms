@@ -28,6 +28,8 @@ public class Account {
     private LocalDateTime joinDate;
     @Column(name="expire_date")
     private LocalDateTime expireDate;
+    @Column(name = "random_password_change_yn")
+    private Boolean randomPasswordChangeYn;
 
     @Column(name = "use_yn")
     private Boolean useYn;
@@ -46,6 +48,7 @@ public class Account {
                 .password(request.getPassword())
                 .joinDate(LocalDateTime.now())
                 .expireDate(LocalDateTime.MAX)
+                .randomPasswordChangeYn(false)
                 .useYn(true)
                 .member(member)
                 .build();

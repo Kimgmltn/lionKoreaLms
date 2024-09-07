@@ -1,4 +1,4 @@
-const createModal = (options, callback) => {
+const createConfirmModal = (options, callback) => {
     // 모달을 감싸는 div 생성
     const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade show';
@@ -116,4 +116,4 @@ const inputOnlyNumber = (e) => {
     e.target.value = formattedNumber;
 }
 
-export {createModal, inputOnlyNumber}
+export {createConfirmModal, inputOnlyNumber}

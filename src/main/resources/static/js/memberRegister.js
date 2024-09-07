@@ -1,5 +1,5 @@
 import {post} from "./api.js";
-import {createModal, inputOnlyNumber} from './common.js'
+import {createConfirmModal, inputOnlyNumber} from './common.js'
 
 document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
@@ -17,7 +17,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
         const response = await post('/api/members/save', memberData);
         const data = await response.json();
 
-        await createModal({
+        await createConfirmModal({
             title: data.result
         }, function(){
             window.location.href=`/members/${data.memberId}`
