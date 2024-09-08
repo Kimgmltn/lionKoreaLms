@@ -8,7 +8,6 @@ const renderInfo = {
     cellphone: '',
     memo: ''
 }
-let memberId = '';
 const inputNameTag = document.getElementById('inputName');
 const inputEmailTag = document.getElementById('inputEmail');
 const inputCellPhoneTag = document.getElementById('inputCellPhone');
@@ -24,7 +23,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 const renderMember = async ()=> {
     const pathname = window.location.pathname;
-    memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
+    const memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
     const response = await get(`/api/members/${memberId}`);
 
     if(response.ok)
@@ -133,6 +132,8 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     };
 
     try {
+        const pathname = window.location.pathname;
+        const memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
         const response = await patch(`/api/members/save/${memberId}`, memberData);
 
         if(response.ok){
@@ -157,3 +158,14 @@ document.getElementById('updateForm').addEventListener('submit', async function(
         alert('등록 실패: ' + error.message);
     }
 });
+
+document.getElementById('assignBtn').addEventListener('click', (event)=>{
+    event.preventDefault();
+
+    const myModal = new bootstrap.Modal(document.getElementById('assignIdModal'),{
+        backdrop: 'static',
+        keyboard: true
+    })
+
+    myModal.show();
+})

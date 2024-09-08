@@ -50,5 +50,4 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.grantNewAccount(request));
 
     }
-
 }
