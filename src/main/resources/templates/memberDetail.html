@@ -144,7 +144,7 @@
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email"     name="email" disabled/>
+                                        <input class="form-control" id="inputEmail" type="email" name="email" disabled/>
                                         <label for="inputEmail">Email</label>
                                     </div>
                                     <div class="row mb-3">
@@ -223,7 +223,7 @@
                                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                         </div>
                                         <div class="modal-body">
-                                            <form id="inputForm">
+                                            <form id="assignIdForm">
                                                 <table class="table">
                                                     <tbody>
                                                     <tr>
@@ -247,87 +247,29 @@
                                                             </div>
                                                         </td>
                                                     </tr>
+<!--                                                    <tr>-->
+<!--                                                        <td>만료일</td>-->
+<!--                                                        <td>-->
+<!--                                                            <input type="date" class="form-control" name="expireDate" id="inputExpireDate">-->
+<!--                                                        </td>-->
+<!--                                                    </tr>-->
                                                     <tr>
-                                                        <td>만료일</td>
+                                                        <td>사용여부</td>
                                                         <td>
-                                                            <input type="text" class="form-control" id="inputLoginId" name="loginId">
+                                                            <input type="checkbox" id="inputUseYn" name="useYn" checked>
                                                         </td>
                                                     </tr>
                                                     </tbody>
                                                 </table>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                    <button type="submit" class="btn btn-primary" id="submitFormButton">발급</button>
+                                                </div>
                                             </form>
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                            <button type="button" class="btn btn-primary" id="submitFormButton">Submit</button>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-
-
-<!--                            <div class="modal fade show" tabindex="-1" id="assignIdModal" role="dialog">-->
-<!--                                <div class="modal-dialog" role="document">-->
-<!--                                    <div class="modal-content rounded-3 shadow">-->
-<!--                                        <div class="modal-body p-4 text-center">-->
-<!--                                            <div class="card-body shadow-lg rounded-4">-->
-<!--                                                <form>-->
-<!--                                                    <div class="row mb-3">-->
-<!--                                                        <div class="col-md-6">-->
-<!--                                                            <div class="form-floating mb-3 mb-md-0">-->
-<!--                                                                <input class="form-control" name="memberName" type="text" disabled/>-->
-<!--                                                                <label for="inputName">이름</label>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                        <div class="col-md-6 align-content-center">-->
-<!--                                                            <div class="form-floating">-->
-<!--                                                                <div class="form-check-inline col-lg-2">-->
-<!--                                                                    <input class="form-check-input" name="gender" type="radio" value="MALE" required checked disabled/>-->
-<!--                                                                    <label class="form-check-label" for="gender_male">남성</label>-->
-<!--                                                                </div>-->
-<!--                                                                <div class="form-check-inline col-lg-2">-->
-<!--                                                                    <input class="form-check-input" name="gender" type="radio" value="FEMALE" required disabled/>-->
-<!--                                                                    <label class="form-check-label" for="gender_female">여성</label>-->
-<!--                                                                </div>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="form-floating mb-3">-->
-<!--                                                        <input class="form-control" type="email" name="email" disabled/>-->
-<!--                                                        <label for="inputEmail">Email</label>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="row mb-3">-->
-<!--                                                        <div class="col">-->
-<!--                                                            <div class="form-floating mb-3 mb-md-0">-->
-<!--                                                                <input class="form-control" name="phoneNumber" type="text" disabled/>-->
-<!--                                                                <label for="inputCellPhone">전화번호</label>-->
-<!--                                                            </div>-->
-<!--                                                        </div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="form-floating mb-3">-->
-<!--                                                        <textarea class="form-control" name="memo" rows="1" style="resize:none; overflow: hidden" disabled></textarea>-->
-<!--                                                        <label for="inputMemo">Memo</label>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="mt-4 mb-0">-->
-<!--                                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="changeBtn">수정</button></div>-->
-<!--                                                    </div>-->
-<!--                                                    <div class="row mt-4 mb-0" hidden>-->
-<!--                                                        <div class="d-grid col-md-6"><button class="btn btn-primary btn-block" type="submit" id="saveBtn">저장</button></div>-->
-<!--                                                        <div class="d-grid col-md-6"><button class="btn btn-secondary btn-block" type="submit" id="cancelBtn">취소</button></div>-->
-<!--                                                    </div>-->
-<!--                                                </form>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
-<!--                                        <div class="modal-footer flex-nowrap p-0">-->
-<!--                                            <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end" id="confirmBtn"><strong>저장</strong></button>-->
-<!--                                            <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0" data-bs-dismiss="modal">취소</button>-->
-<!--                                        </div>-->
-<!--                                    </div>-->
-<!--                                </div>-->
-<!--                            </div>-->
-
-
-
 
                         </div>
                     </div>

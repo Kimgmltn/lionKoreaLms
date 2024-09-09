@@ -8,6 +8,7 @@ const renderInfo = {
     cellphone: '',
     memo: ''
 }
+// 회원 상세정보 창
 const inputNameTag = document.getElementById('inputName');
 const inputEmailTag = document.getElementById('inputEmail');
 const inputCellPhoneTag = document.getElementById('inputCellPhone');
@@ -16,14 +17,42 @@ const genderTags = document.querySelectorAll('input[name="gender"]');
 const saveButtonSet = document.getElementById('saveButtonSet');
 const changeButtonSet = document.getElementById('updateButtonSet');
 
+// ID 발급 모달 창
+const assignIdTag = document.getElementById('assignIdModal')
+const assignIdModal = new bootstrap.Modal(assignIdTag,{
+    backdrop: 'static',
+    keyboard: true
+})
+const inputLoginIdTag = document.getElementById('inputLoginId')
+const roleTags = document.querySelectorAll('input[name="role"]')
+const inputUseYnTag = document.getElementById('inputUseYn')
+
 document.addEventListener('DOMContentLoaded', ()=>{
+    if(window.location.host.includes('localhost')){
+        return;
+    }
     renderMember();
-    addEventForChangeButton();
+    renderAssigedId();
 })
 
-const renderMember = async ()=> {
+// ID 발급 모달 닫힐 시 초기화
+assignIdTag.addEventListener('hide.bs.modal', () => {
+    document.getElementById('assignIdForm').reset();
+    inputLoginIdTag.disable = false;
+    roleTags.forEach(role => {
+        role.disable = false;
+    })
+    inputUseYnTag.disable = false;
+})
+
+// memberId 획득
+const getMemberId = () => {
     const pathname = window.location.pathname;
-    const memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
+    return pathname.substring(pathname.lastIndexOf('/') + 1);
+}
+// 상세정보 랜더링
+const renderMember = async ()=> {
+    const memberId = getMemberId();
     const response = await get(`/api/members/${memberId}`);
 
     if(response.ok)
@@ -47,7 +76,33 @@ const renderMember = async ()=> {
     }
 }
 
-const setInputValue = (data) => {
+const renderAssigedId = async ()=> {
+    const memberId = getMemberId();
+    const response = await get(`/api/members/${memberId}`);
+
+    if(response.ok)
+    {
+        const memberDetailData = await response.json();
+
+        setInputValue(memberDetailData);
+        setInfo(memberDetailData);
+    }
+    else if(response.status === 404)
+    {
+        const errorData = await response.json();
+        createConfirmModal({
+            title: errorData.message
+        }, function(){
+            window.location.href = '/members';
+        });
+    }
+    else{
+
+    }
+}
+
+const setInputValue = (data) =>
+{
     inputNameTag.value = data.memberName || '';
     inputEmailTag.value = data.email || '';
     inputCellPhoneTag.value = data.phoneNumber || '';
@@ -59,7 +114,9 @@ const setInputValue = (data) => {
     });
 }
 
-const setInfo = (data) => {
+// 수정하다가 취소 할 수 있으므로, 전역변수로 이전 값 저장
+const setInfo = (data) =>
+{
     renderInfo.name = data.memberName || '';
     renderInfo.email = data.email || '';
     renderInfo.gender = data.gender || '';
@@ -72,12 +129,10 @@ document.getElementById('inputCellPhone').addEventListener('input', function (e)
     inputOnlyNumber(e)
 })
 
-const addEventForChangeButton = () => {
-    document.getElementById('changeBtn').addEventListener('click',(e)=>{
-        e.preventDefault();
-        showSaveButtonSet();
-    })
-}
+document.getElementById('changeBtn').addEventListener('click',(e)=>{
+    e.preventDefault();
+    showSaveButtonSet();
+})
 
 const showSaveButtonSet = ()=>{
     changeButtonSet.hidden = true;
@@ -103,11 +158,13 @@ document.getElementById('cancelBtn').addEventListener('click', (e)=>{
     cancelSave();
 })
 
+// textarea 자동크기 조정
 document.getElementById('inputMemo').addEventListener('input', function (){
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 })
 
+// 회원정보 수정하다 취소시, 기존정보 덮어씌우기
 const cancelSave = () => {
     setInputValue(renderInfo);
     inputNameTag.disabled = true;
@@ -123,27 +180,30 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     event.preventDefault(); // 폼의 기본 제출 동작 방지
 
     const formData = new FormData(this);
-    const memberData = {
-        memberName: formData.get('memberName').trim(),
+    const memberData =
+    {
+        memberName: formData.get('memberName') ? formData.get('memberName').trim() : '',
         gender: formData.get('gender'),
-        email: formData.get('email').trim(),
+        email: formData.get('email') ? formData.get('email').trim() : '',
         phoneNumber: formData.get('phoneNumber'),
         memo: formData.get('memo')
     };
 
     try {
-        const pathname = window.location.pathname;
-        const memberId = pathname.substring(pathname.lastIndexOf('/') + 1);
+        const memberId = getMemberId();
         const response = await patch(`/api/members/save/${memberId}`, memberData);
 
-        if(response.ok){
+        if(response.ok)
+        {
             const resultData = await response.json();
             createConfirmModal({
                 title: resultData.result
             }, function(){
-                window.location.reload();
+                renderMember()
             });
-        }else{
+        }
+        else
+        {
             const errorData = await response.json();
             createConfirmModal({
                 title: errorData.message
@@ -159,13 +219,39 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     }
 });
 
+// ID 발급 모달창 보여주기
 document.getElementById('assignBtn').addEventListener('click', (event)=>{
     event.preventDefault();
+    assignIdModal.show();
+})
 
-    const myModal = new bootstrap.Modal(document.getElementById('assignIdModal'),{
-        backdrop: 'static',
-        keyboard: true
-    })
+// ID 신규 발급
+document.getElementById('assignIdForm').addEventListener('submit', async (event) => {
+    event.preventDefault();
 
-    myModal.show();
+    const memberId = getMemberId();
+
+    const formData = new FormData(event.target);
+    const request = {
+        loginId: formData.get('loginId').trim(),
+        role: formData.get('role'),
+        memberId: memberId,
+        useYn: !!formData.get('useYn')
+    };
+
+    const response = await post('/api/members/newAccount', request)
+    if (response.ok) {
+        const resultData = await response.json();
+        createConfirmModal({
+            title: resultData.result
+        }, assignIdModal.hide(), 
+            //TODO: ID리스트 재랜더링
+            null
+            );
+    }else{
+        const errorData = await response.json();
+        createConfirmModal({
+            title: errorData.message
+        }, null);
+    }
 })

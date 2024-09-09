@@ -1,4 +1,4 @@
-const createConfirmModal = (options, callback) => {
+const createConfirmModal = (options, ...callbacks) => {
     // 모달을 감싸는 div 생성
     const modalDiv = document.createElement('div');
     modalDiv.className = 'modal fade show';
@@ -76,9 +76,11 @@ const createConfirmModal = (options, callback) => {
 
     // "Yes" 버튼 클릭 시 콜백 함수 호출
     yesButton.addEventListener('click', function() {
-        if (callback && typeof callback === 'function') {
-            callback();
-        }
+        callbacks.forEach(callback => {
+            if (callbacks && typeof callbacks === 'function') {
+                callbacks();
+            }
+        })
         myModal.hide(); // 모달 닫기
     });
 

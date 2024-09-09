@@ -3,9 +3,10 @@ package kr.co.lionkorea.repository;
 import kr.co.lionkorea.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
+import java.util.List;
 import java.util.Optional;
 
-public interface AccountRepository extends JpaRepository<Account, Long> {
+public interface AccountRepository extends JpaRepository<Account, Long>, AccountQueryDslRepository {
     boolean existsByLoginId(String loginId);
 
     Optional<Account> findByLoginIdAndUseYnIsTrue(String loginId);

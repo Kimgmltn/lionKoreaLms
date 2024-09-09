@@ -8,10 +8,7 @@ import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMemberDetailResponse;
-import kr.co.lionkorea.dto.response.FindMembersResponse;
-import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
-import kr.co.lionkorea.dto.response.SaveMemberResponse;
+import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.exception.AccountException;
 import kr.co.lionkorea.exception.MemberException;
@@ -27,7 +24,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.List;
@@ -48,7 +44,7 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public void saveMemberAll(List<SaveMemberRequest> requests) {
-        List<Member> collect = requests.stream().map(request -> Member.dtoToEntity(request)).collect(Collectors.toList());
+        List<Member> collect = requests.stream().map(Member::dtoToEntity).collect(Collectors.toList());
         memberRepository.saveAll(collect);
     }
 
@@ -91,7 +87,8 @@ public class MemberServiceImpl implements MemberService {
         String randomPassword = getRandomPassword();
         request.setPassword(encoder.encode(randomPassword));
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
-        Roles roles = rolesRepository.findByRoleName(request.getRole());
+        Role role = Role.valueOf(("role_" + request.getRole()).toUpperCase());
+        Roles roles = rolesRepository.findByRoleName(role);
 
         Account savedAccount = accountRepository.save(Account.dtoToEntity(request, member, roles));
         return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword);
@@ -150,5 +147,12 @@ public class MemberServiceImpl implements MemberService {
         String randomPassword = new String(passwordArray);
         log.info("creat new randomPassword : {}", randomPassword);
         return randomPassword;
+    }
+
+    @Override
+    public List<?> findMemberAccount(Long memberId) {
+        List<FindMemberByAccountResponse> accounts = accountRepository.findByMemberIdWithAccount(memberId);
+
+        return null;
     }
 }

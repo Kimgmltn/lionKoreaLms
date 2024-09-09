@@ -50,4 +50,10 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.grantNewAccount(request));
 
     }
+
+    @GetMapping("/{memberId}/accounts")
+    public ResponseEntity<?> findMemberAccount(@PathVariable(value = "memberId") Long memberId){
+        return ResponseEntity.ok(memberService.findMemberAccount(memberId));
+    }
+
 }

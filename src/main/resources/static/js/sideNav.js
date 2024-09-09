@@ -29,6 +29,9 @@ const saveCache = (key, data) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
+    if(window.location.host.includes('localhost')){
+        return;
+    }
     loadMenuCache();
     loadSideNavMenu();
 });
