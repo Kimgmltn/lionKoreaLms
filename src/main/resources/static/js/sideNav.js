@@ -29,7 +29,7 @@ const saveCache = (key, data) => {
 };
 
 document.addEventListener('DOMContentLoaded', () => {
-    if(window.location.host.includes('localhost')){
+    if(window.location.host.includes('localhost:63342')){
         return;
     }
     loadMenuCache();

@@ -26,9 +26,10 @@ const assignIdModal = new bootstrap.Modal(assignIdTag,{
 const inputLoginIdTag = document.getElementById('inputLoginId')
 const roleTags = document.querySelectorAll('input[name="role"]')
 const inputUseYnTag = document.getElementById('inputUseYn')
+const inputPasswordChangeYnTag = document.getElementById('inputPasswordChangeYn')
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    if(window.location.host.includes('localhost')){
+    if(window.location.host.includes('localhost:63342')){
         return;
     }
     renderMember();
@@ -82,10 +83,34 @@ const renderAssigedId = async ()=> {
 
     if(response.ok)
     {
-        const memberDetailData = await response.json();
+        document.getElementById('noAssignLoginId').hidden = true;
+        const assignData = await response.json();
 
-        setInputValue(memberDetailData);
-        setInfo(memberDetailData);
+        const tbody = document.querySelector('#assignLoginIdTable tbody');
+        tbody.innerHTML = '';
+
+        assignData.forEach((data)=>{
+            const tr = document.createElement('tr');
+            tr.addEventListener('click',()=>{
+
+            })
+
+            Object.values(data).forEach((value, index) => {
+                const td = document.createElement('td');
+                td.textContent = value;
+
+                if(index === 0){
+                    td.hidden = true;
+                }
+                tr.appendChild(td);
+            })
+
+            tbody.appendChild(tr);
+        })
+
+
+
+        document.getElementById('assignLoginIdTable').hidden = false;
     }
     else if(response.status === 404)
     {
@@ -99,6 +124,17 @@ const renderAssigedId = async ()=> {
     else{
 
     }
+}
+
+const setAssignData = (data) =>
+{
+    //TODO: 데이터 정보 입히기
+    inputLoginIdTag.value = data.memberName || '';
+    roleTags.forEach(radio => {
+        if (radio.value === data.role) {
+            radio.checked = true;
+        }
+    });
 }
 
 const setInputValue = (data) =>
