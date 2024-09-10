@@ -150,9 +150,7 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public List<?> findMemberAccount(Long memberId) {
-        List<FindMemberByAccountResponse> accounts = accountRepository.findByMemberIdWithAccount(memberId);
-
-        return null;
+    public List<FindMemberByAccountResponse> findMemberAccount(Long memberId) {
+        return accountRepository.findByMemberIdWithAccount(memberId);
     }
 }

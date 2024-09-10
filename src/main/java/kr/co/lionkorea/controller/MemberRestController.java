@@ -3,16 +3,15 @@ package kr.co.lionkorea.controller;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMemberDetailResponse;
-import kr.co.lionkorea.dto.response.FindMembersResponse;
-import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
-import kr.co.lionkorea.dto.response.SaveMemberResponse;
+import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -52,7 +51,7 @@ public class MemberRestController {
     }
 
     @GetMapping("/{memberId}/accounts")
-    public ResponseEntity<?> findMemberAccount(@PathVariable(value = "memberId") Long memberId){
+    public ResponseEntity<List<FindMemberByAccountResponse>> findMemberAccount(@PathVariable(value = "memberId") Long memberId){
         return ResponseEntity.ok(memberService.findMemberAccount(memberId));
     }
 

@@ -4,10 +4,7 @@ import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
-import kr.co.lionkorea.dto.response.FindMemberDetailResponse;
-import kr.co.lionkorea.dto.response.FindMembersResponse;
-import kr.co.lionkorea.dto.response.GrantNewAccountResponse;
-import kr.co.lionkorea.dto.response.SaveMemberResponse;
+import kr.co.lionkorea.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 
@@ -28,5 +25,5 @@ public interface MemberService {
 
     FindMemberDetailResponse findMemberById(Long memberId);
 
-    Object findMemberAccount(Long memberId);
+    List<FindMemberByAccountResponse> findMemberAccount(Long memberId);
 }
