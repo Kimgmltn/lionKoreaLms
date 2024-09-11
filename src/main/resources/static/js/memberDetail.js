@@ -33,7 +33,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         return;
     }
     renderMember();
-    renderAssigedId();
+    renderAssignedId();
 })
 
 // ID 발급 모달 닫힐 시 초기화
@@ -77,7 +77,7 @@ const renderMember = async ()=> {
     }
 }
 
-const renderAssigedId = async ()=> {
+const renderAssignedId = async ()=> {
     const memberId = getMemberId();
     const response = await get(`/api/members/${memberId}`);
 
