@@ -26,7 +26,6 @@ const assignIdModal = new bootstrap.Modal(assignIdTag,{
 const inputLoginIdTag = document.getElementById('inputLoginId')
 const roleTags = document.querySelectorAll('input[name="role"]')
 const inputUseYnTag = document.getElementById('inputUseYn')
-const inputPasswordChangeYnTag = document.getElementById('inputPasswordChangeYn')
 
 document.addEventListener('DOMContentLoaded', ()=>{
     if(window.location.host.includes('localhost:63342')){
@@ -86,31 +85,38 @@ const renderAssignedId = async ()=> {
         document.getElementById('noAssignLoginId').hidden = true;
         const assignData = await response.json();
 
+        // tbody 초기화
         const tbody = document.querySelector('#assignLoginIdTable tbody');
         tbody.innerHTML = '';
 
-        assignData.forEach((data)=>{
+        if(assignData && assignData.length > 0){
+            assignData.forEach((data)=>{
+                const tr = document.createElement('tr');
+                tr.addEventListener('click',()=>{
+
+                })
+
+                Object.values(data).forEach((value, index) => {
+                    const td = document.createElement('td');
+                    td.textContent = value;
+
+                    if(index === 0){
+                        td.hidden = true;
+                    }
+                    tr.appendChild(td);
+                })
+                tbody.appendChild(tr);
+            })
+        }else{
             const tr = document.createElement('tr');
-            tr.addEventListener('click',()=>{
+            const td = document.createElement('td');
 
-            })
-
-            Object.values(data).forEach((value, index) => {
-                const td = document.createElement('td');
-                td.textContent = value;
-
-                if(index === 0){
-                    td.hidden = true;
-                }
-                tr.appendChild(td);
-            })
-
+            td.classList.add('text-center')
+            td.setAttribute('colspan', '100');
+            td.textContent = '발급된 LoginId가 없습니다.'
+            tr.appendChild(td);
             tbody.appendChild(tr);
-        })
-
-
-
-        document.getElementById('assignLoginIdTable').hidden = false;
+        }
     }
     else if(response.status === 404)
     {
