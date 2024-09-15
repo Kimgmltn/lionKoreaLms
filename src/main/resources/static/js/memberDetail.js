@@ -93,6 +93,7 @@ const renderAssignedId = async ()=> {
             assignData.forEach((data)=>{
                 const tr = document.createElement('tr');
                 tr.addEventListener('click',()=>{
+                    //TODO: 상세 모달 보여주기
 
                 })
 
@@ -141,6 +142,7 @@ const setAssignData = (data) =>
             radio.checked = true;
         }
     });
+    inputUseYnTag.value = data.useYn || false
 }
 
 const setInputValue = (data) =>
@@ -287,8 +289,7 @@ document.getElementById('assignIdForm').addEventListener('submit', async (event)
         createConfirmModal({
             title: resultData.result
         }, assignIdModal.hide(), 
-            //TODO: ID리스트 재랜더링
-            null
+            renderAssignedId()
             );
     }else{
         const errorData = await response.json();
