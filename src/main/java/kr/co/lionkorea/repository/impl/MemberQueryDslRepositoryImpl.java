@@ -1,7 +1,6 @@
 package kr.co.lionkorea.repository.impl;
 
 import com.querydsl.core.types.Projections;
-import com.querydsl.core.types.dsl.BooleanExpression;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
@@ -14,10 +13,7 @@ import org.springframework.data.web.PagedModel;
 
 import java.util.List;
 
-import static kr.co.lionkorea.domain.QAccount.account;
-import static kr.co.lionkorea.domain.QAccountRole.accountRole;
 import static kr.co.lionkorea.domain.QMember.member;
-import static kr.co.lionkorea.domain.QRoles.roles;
 
 @RequiredArgsConstructor
 public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {

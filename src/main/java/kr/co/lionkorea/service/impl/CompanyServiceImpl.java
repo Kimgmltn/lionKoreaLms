@@ -1,16 +1,18 @@
 package kr.co.lionkorea.service.impl;
 
 import kr.co.lionkorea.domain.Company;
+import kr.co.lionkorea.dto.request.FindCompaniesRequest;
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
+import kr.co.lionkorea.dto.response.FindCompaniesResponse;
 import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import kr.co.lionkorea.exception.CompanyException;
 import kr.co.lionkorea.repository.CompanyRepository;
 import kr.co.lionkorea.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PagedModel;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -33,5 +35,10 @@ public class CompanyServiceImpl implements CompanyService {
         findCompany.changeInfo(request);
         companyRepository.save(findCompany);
         return new SaveCompanyResponse(findCompany.getId(), "수정되었습니다.");
+    }
+
+    @Override
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable) {
+        return companyRepository.findCompanies(request, pageable);
     }
 }

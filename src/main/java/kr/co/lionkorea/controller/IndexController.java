@@ -47,5 +47,10 @@ public class IndexController {
         return "dashboard";
     }
 
+    @GetMapping("/company")
+    public String company(){
+        return "company";
+    }
+
 
 }
