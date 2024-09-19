@@ -26,7 +26,7 @@ const renderCompanies = async (page = 0, size = 20) => {
 
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
-            window.location.href = `/members/${company.memberId}`;
+            window.location.href = `/company/${company.companyId}`;
         })
 
         Object.values(company).forEach((value, index) => {
