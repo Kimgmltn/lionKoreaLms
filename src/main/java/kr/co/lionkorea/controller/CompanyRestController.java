@@ -3,6 +3,7 @@ package kr.co.lionkorea.controller;
 import kr.co.lionkorea.dto.request.FindCompaniesRequest;
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
 import kr.co.lionkorea.dto.response.FindCompaniesResponse;
+import kr.co.lionkorea.dto.response.FindCompanyDetailResponse;
 import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import kr.co.lionkorea.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +31,11 @@ public class CompanyRestController {
     @GetMapping()
     public ResponseEntity<PagedModel<FindCompaniesResponse>> findCompanies(@ModelAttribute FindCompaniesRequest request, Pageable pageable){
         return ResponseEntity.ok(companyService.findCompanies(request, pageable));
+    }
+
+    @GetMapping("/{companyId}")
+    public ResponseEntity<FindCompanyDetailResponse> findCompanyById(@PathVariable Long companyId){
+        return ResponseEntity.ok(companyService.findCompanyById(companyId));
     }
 
 }
