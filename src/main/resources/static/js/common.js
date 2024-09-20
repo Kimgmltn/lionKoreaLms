@@ -110,6 +110,8 @@ const inputOnlyNumber = (e) => {
         formattedNumber = numbers;
     } else if (numbers.length <= 7) {
         formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3);
+    } else if (numbers.length <= 10) {
+        formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3, 6) + '-' + numbers.slice(6);
     } else {
         formattedNumber = numbers.slice(0, 3) + '-' + numbers.slice(3, 7) + '-' + numbers.slice(7);
     }
