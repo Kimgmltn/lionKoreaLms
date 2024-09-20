@@ -52,5 +52,15 @@ public class IndexController {
         return "company";
     }
 
+    @GetMapping("/company/register")
+    public String companySaveForm(){
+        return "companyRegister";
+    }
+
+    @GetMapping("/company/{companyId}")
+    public String companyDetail(@PathVariable Long companyId) {
+        return "companyDetail";
+    }
+
 
 }

@@ -115,7 +115,7 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2"><b>회원등록</b></h1>
+                        <h1 class="mt-4 display-2"><b>회사등록</b></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/company}" href="./company.html">회사관리</a></li>
                             <li class="breadcrumb-item active">회사등록</li>
@@ -126,41 +126,69 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputName" name="memberName" type="text"/>
-                                                <label for="inputName">이름</label>
+                                                <input class="form-control" id="inputCompanyName" name="companyName" type="text" required/>
+                                                <label for="inputCompanyName">회사명</label>
                                             </div>
                                         </div>
-                                        <div class="col-md-6 align-content-center">
-                                            <div class="form-floating">
-                                                <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" value="MALE" required checked/>
-                                                    <label class="form-check-label" for="gender_male">남성</label>
-                                                </div>
-                                                <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" value="FEMALE" required/>
-                                                    <label class="form-check-label" for="gender_female">여성</label>
-                                                </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputCompanyEnglishName" name="englishName" type="text"/>
+                                                <label for="inputCompanyEnglishName">영문명</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputRegistrationNumber" type="text" name="companyRegistrationNumber"/>
+                                                <label for="inputRegistrationNumber">사업자 등록번호</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputProduct" type="text" name="products"/>
+                                                <label for="inputProduct">제품</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputManager" type="text" name="manager" required/>
+                                                <label for="inputManager">담당자</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputManagerEmail" type="email" name="email" required/>
+                                                <label for="inputManagerEmail">담당자 email</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputManagerPhoneNumber" type="text" name="phoneNumber" required/>
+                                                <label for="inputManagerPhoneNumber">담당자 전화번호</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input class="form-control" id="inputHomepageUrl" type="text" name="homepageUrl"/>
+                                                <label for="inputHomepageUrl">회사 홈페이지 URL</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" name="email"/>
-                                        <label for="inputEmail">Email</label>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputCellPhone" name="phoneNumber" type="text"/>
-                                                <label for="inputCellPhone">전화번호</label>
-                                            </div>
-                                        </div>
+                                        <input class="form-control" id="inputRoadNameAddr" name="roadNameAddress" type="text">
+                                        <label for="inputRoadNameAddr">회사 주소</label>
                                     </div>
                                     <div class="form-floating mb-3">
                                         <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
                                         <label for="inputMemo">Memo</label>
                                     </div>
                                     <div class="mt-4 mb-0">
-                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회원 등록</button></div>
+                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회사 등록</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -191,7 +219,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/memberRegister.js" th:src="@{/js/memberRegister.js}" type="module"></script>
+        <script src="../static/js/companyRegister.js" th:src="@{/js/companyRegister.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>
