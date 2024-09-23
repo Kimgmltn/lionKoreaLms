@@ -47,8 +47,13 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
     }
 
-    public String createJwt(CustomUserDetails customUserDetails){
+    public String getCategory(String token){
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
+    }
+
+    public String createJwt(String category, CustomUserDetails customUserDetails){
         return Jwts.builder()
+                .claim("category", category)
                 .claim("memberName", customUserDetails.getUsername())
                 .claim("roles", customUserDetails.getRoles())
                 .claim("memberId", customUserDetails.getMemberId())

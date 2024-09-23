@@ -3,11 +3,13 @@ package kr.co.lionkorea.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.jwt.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -62,10 +64,30 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 //            roles.add(Role.valueOf(authority.getAuthority()));
 //        }
 
-        String token = jwtUtil.createJwt(customUserDetails);
-        log.info("access token : {}", token);
-        response.addHeader("Authorization", "Bearer " + token);
+        String access = jwtUtil.createJwt("access",customUserDetails);
+        String refresh = jwtUtil.createJwt("refresh", customUserDetails);
+        log.info("access token : {}", access);
+        log.info("refresh token : {}", refresh);
+
+//        response.addHeader("Authorization", "Bearer " + token);
 //        super.successfulAuthentication(request, response, chain, authResult);
+        response.setHeader("access", access);
+        response.addCookie(createCookie("refresh", refresh));
+        response.setStatus(HttpStatus.OK.value());
+
+    }
+
+    private Cookie createCookie(String key, String value){
+        Cookie cookie = new Cookie(key, value);
+        // Cookie 생명주기
+        cookie.setMaxAge(24*60*60);
+        // Cookie https 통신 진행시
+//        cookie.setSecure(true);
+        // Cookie 적용할 범위
+//        cookie.setPath("/");
+        // 프론트에서 js로 접근 못하도록 설정
+        cookie.setHttpOnly(true);
+        return cookie;
     }
 
     @Override
