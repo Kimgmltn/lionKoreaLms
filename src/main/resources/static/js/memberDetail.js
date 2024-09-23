@@ -234,6 +234,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
     };
 
     try {
+        setInfo(memberData);
         const memberId = getMemberId();
         const response = await patch(`/api/members/save/${memberId}`, memberData);
 

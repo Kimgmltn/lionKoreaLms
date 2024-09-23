@@ -1,5 +1,5 @@
-import { get } from './api.js'
-import {createConfirmModal, inputOnlyNumber} from "./common";
+import {get, patch} from './api.js'
+import {createConfirmModal, inputOnlyNumber} from "./common.js";
 
 const renderInfo = {
     companyName: '',
@@ -26,6 +26,9 @@ const inputHomepageUrl = document.getElementById('inputHomepageUrl');
 const inputRoadNameAddr = document.getElementById('inputRoadNameAddr');
 const inputMemo = document.getElementById('inputMemo');
 
+const saveButtonSet = document.getElementById('saveButtonSet');
+const changeButtonSet = document.getElementById('updateButtonSet');
+
 document.addEventListener('DOMContentLoaded', ()=>{
     if(window.location.host.includes('localhost:63342')){
         return;
@@ -50,7 +53,7 @@ const renderCompany = async () => {
         createConfirmModal({
             title: errorData.message
         }, function(){
-            window.location.href = '/members';
+            window.location.href = '/company';
         });
     }
     else{
@@ -101,3 +104,93 @@ document.getElementById('inputMemo').addEventListener('input', function (){
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
 })
+
+document.getElementById('changeBtn').addEventListener('click',(e)=>{
+    e.preventDefault();
+    showSaveButtonSet();
+})
+
+const showSaveButtonSet = ()=>{
+    changeButtonSet.hidden = true;
+    saveButtonSet.hidden = false;
+
+    changeDisableInputTag(false);
+}
+
+const showUpdateButtonSet = () => {
+    changeButtonSet.hidden = false;
+    saveButtonSet.hidden = true;
+}
+
+document.getElementById('cancelBtn').addEventListener('click', (e)=>{
+    e.preventDefault();
+    showUpdateButtonSet();
+    cancelSave();
+})
+
+const cancelSave = () => {
+    setInputValue(renderInfo);
+    changeDisableInputTag(true)
+}
+
+const changeDisableInputTag = (tureOrFalse) => {
+    inputCompanyName.disabled = tureOrFalse;
+    inputCompanyEnglishName.disabled = tureOrFalse;
+    inputRegistrationNumber.disabled = tureOrFalse;
+    inputProduct.disabled = tureOrFalse;
+    inputManager.disabled = tureOrFalse;
+    inputManagerEmail.disabled = tureOrFalse;
+    inputManagerPhoneNumber.disabled = tureOrFalse;
+    inputHomepageUrl.disabled = tureOrFalse;
+    inputRoadNameAddr.disabled = tureOrFalse;
+    inputMemo.disabled = tureOrFalse;
+}
+
+document.getElementById('updateForm').addEventListener('submit', async function(event) {
+    event.preventDefault(); // 폼의 기본 제출 동작 방지
+
+    const formData = new FormData(this);
+    const companyData = {
+        companyName: formData.get('companyName'),
+        englishName: formData.get('englishName') || null,
+        companyRegistrationNumber: formData.get('companyRegistrationNumber') || null,
+        roadNameAddress: formData.get('roadNameAddress') || null,
+        products: formData.get('products') || null,
+        homepageUrl: formData.get('homepageUrl') || null,
+        manager: formData.get('manager'),
+        email: formData.get('email'),
+        phoneNumber: formData.get('phoneNumber'),
+        memo: formData.get('memo') || null
+    };
+
+    try {
+        const companyId = getCompanyId();
+        const response = await patch(`/api/company/save/${companyId}`, companyData);
+
+        if(response.ok)
+        {
+            setInfo(companyData);
+            const resultData = await response.json();
+            createConfirmModal({
+                title: resultData.result
+            }, showUpdateButtonSet(), changeDisableInputTag(true),
+                function(){
+                renderCompany();
+            });
+        }
+        else
+        {
+            const errorData = await response.json();
+            createConfirmModal({
+                title: errorData.message
+            }, function(){
+                window.location.href = '/company';
+            });
+        }
+    } catch (error) {
+        console.error('Error:', error);
+
+        // 실패 처리 (예: 메시지 표시)
+        alert('등록 실패: ' + error.message);
+    }
+});
