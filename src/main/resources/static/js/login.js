@@ -14,11 +14,14 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         const response = await post('/api/auth/login', loginData);
 
         // 서버에서 Authorization 헤더에 담겨 온 JWT 토큰을 sessionStorage에 저장
-        const token = response.headers.get('Authorization');
-        if (token) {
-            sessionStorage.setItem('jwt', token);
+        // const token = response.headers.get('Authorization');
+
+        // 2024.09.25 access & refresh 도입 후 변경
+        const access = response.headers.get('access');
+        if (access) {
+            sessionStorage.setItem('access', access);
         } else {
-            throw new Error('Authorization token not found in response.');
+            throw new Error('access token not found in response.');
         }
 
         // 로그인 성공 시 리다이렉트

@@ -4,13 +4,13 @@ const EXCLUDE_URL_LIST = ['/api/auth/login']
 
 const fetchWithAuth = async (url, options = {}) => {
 
-    const token = sessionStorage.getItem('jwt');
+    const accessToken = sessionStorage.getItem('access');
 
     if (window.isLocalMode) {
         console.log('환경에서 실행됨')
         return;
     }
-    if(!token && !url.includes(EXCLUDE_URL_LIST)){
+    if(!accessToken && !url.includes(EXCLUDE_URL_LIST)){
         window.location.href = '/login';
         return Promise.reject(new Error('No JWT token found. Redirecting to login.'));
     }
@@ -18,7 +18,7 @@ const fetchWithAuth = async (url, options = {}) => {
     const headers = {
         ...options.headers,
         'Content-Type': 'application/json',
-        'Authorization': token ? `${token}` : ''
+        'access': accessToken ? `${accessToken}` : ''
     }
 
     const response = await fetch(url, {
