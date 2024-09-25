@@ -18,7 +18,8 @@ import java.util.stream.Collectors;
 public class JwtUtil {
 
     private final SecretKey secretKey;
-    private final Long JWT_EXPIRATION_MS = 60*10*1000L; // 1000ms * 60(1분) * 10 = 10분
+    private final Long JWT_EXPIRATION_MS_ACCESS = 60*5*1000L; // 1000ms * 60(1분) * 5 = 5분
+    private final Long JWT_EXPIRATION_MS_REFRESH = 60*60*8*1000L; // 1000ms * 60(1분) * 60 * 8 = 8시간
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret){
 //        secretKey = Keys.hmacShaKeyFor(secret.getBytes(StandardCharsets.UTF_8));
@@ -52,15 +53,28 @@ public class JwtUtil {
     }
 
     public String createJwt(String category, CustomUserDetails customUserDetails){
-        return Jwts.builder()
-                .claim("category", category)
-                .claim("memberName", customUserDetails.getUsername())
-                .claim("roles", customUserDetails.getRoles())
-                .claim("memberId", customUserDetails.getMemberId())
-                .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS))
-                .signWith(secretKey)
-                .compact();
+        if ("access".equals(category)) {
+            return Jwts.builder()
+                    .claim("category", category)
+                    .claim("memberName", customUserDetails.getUsername())
+                    .claim("roles", customUserDetails.getRoles())
+                    .claim("memberId", customUserDetails.getMemberId())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS_ACCESS))
+                    .signWith(secretKey)
+                    .compact();
+        }else{
+            return Jwts.builder()
+                    .claim("category", category)
+                    .claim("memberName", customUserDetails.getUsername())
+                    .claim("roles", customUserDetails.getRoles())
+                    .claim("memberId", customUserDetails.getMemberId())
+                    .issuedAt(new Date(System.currentTimeMillis()))
+                    .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS_REFRESH)) // refresh token은 8시간
+                    .signWith(secretKey)
+                    .compact();
+        }
+
 
     }
 }
