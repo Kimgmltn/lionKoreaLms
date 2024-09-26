@@ -5,9 +5,11 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.domain.Account;
+import kr.co.lionkorea.domain.RefreshEntity;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.request.LoginRequest;
 import kr.co.lionkorea.jwt.JwtUtil;
+import kr.co.lionkorea.repository.RefreshRepository;
 import kr.co.lionkorea.service.AuthService;
 import kr.co.lionkorea.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +27,7 @@ public class AuthRestController {
 
     private final AuthService authService;
     private final JwtUtil jwtUtil;
+    private final RefreshRepository refreshRepository;
 
 //    @PostMapping("/login")
 //    public ResponseEntity<Account> login(@RequestBody LoginRequest request){
@@ -61,12 +64,25 @@ public class AuthRestController {
             return new ResponseEntity<>("access token expire", HttpStatus.BAD_REQUEST);
         }
 
+        // 토큰이 refresh인지 확인
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
+            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+        }
+
+        // DB에 저장되어 있는지 확인
+        Boolean isExist = refreshRepository.existsByRefresh(refresh);
+        if (!isExist) {
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
         String newAccess = jwtUtil.createJwt("access", customUserDetails);
         String newRefresh = jwtUtil.createJwt("refresh", customUserDetails);
+
+        // refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
+        refreshRepository.deleteByRefresh(refresh);
+
+        RefreshEntity refreshEntity = new RefreshEntity(customUserDetails.getUsername(), refresh);
+        refreshRepository.save(refreshEntity);
 
         response.setHeader("access", newAccess);
         response.addCookie(CommonUtils.createCookie("refresh", newRefresh));
