@@ -8,6 +8,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.jwt.JwtUtil;
+import kr.co.lionkorea.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -72,22 +73,9 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
 //        response.addHeader("Authorization", "Bearer " + token);
 //        super.successfulAuthentication(request, response, chain, authResult);
         response.setHeader("access", access);
-        response.addCookie(createCookie("refresh", refresh));
+        response.addCookie(CommonUtils.createCookie("refresh", refresh));
         response.setStatus(HttpStatus.OK.value());
 
-    }
-
-    private Cookie createCookie(String key, String value){
-        Cookie cookie = new Cookie(key, value);
-        // Cookie 생명주기
-        cookie.setMaxAge(24*60*60);
-        // Cookie https 통신 진행시
-//        cookie.setSecure(true);
-        // Cookie 적용할 범위
-//        cookie.setPath("/");
-        // 프론트에서 js로 접근 못하도록 설정
-        cookie.setHttpOnly(true);
-        return cookie;
     }
 
     @Override

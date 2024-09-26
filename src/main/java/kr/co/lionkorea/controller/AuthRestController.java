@@ -9,6 +9,7 @@ import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.request.LoginRequest;
 import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
+import kr.co.lionkorea.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -65,7 +66,10 @@ public class AuthRestController {
         }
 
         String newAccess = jwtUtil.createJwt("access", customUserDetails);
+        String newRefresh = jwtUtil.createJwt("refresh", customUserDetails);
+
         response.setHeader("access", newAccess);
+        response.addCookie(CommonUtils.createCookie("refresh", newRefresh));
         return ResponseEntity.ok().build();
     }
 }
