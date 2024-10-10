@@ -3,13 +3,11 @@ package kr.co.lionkorea.filter;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.lionkorea.domain.RefreshEntity;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.jwt.JwtUtil;
-import kr.co.lionkorea.repository.RefreshRepository;
+import kr.co.lionkorea.service.RedisService;
 import kr.co.lionkorea.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -22,7 +20,6 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import java.io.IOException;
-import java.util.Date;
 import java.util.Map;
 
 @Slf4j
@@ -31,15 +28,13 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final ObjectMapper objectMapper;
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisService redisService;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, RedisTemplate<String, Object> redisTemplate) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RedisService redisService) {
         this.objectMapper = new ObjectMapper();
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
-        this.refreshRepository = refreshRepository;
-        this.redisTemplate = redisTemplate;
+        this.redisService = redisService;
     }
 
     @Override
@@ -78,8 +73,7 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
         log.info("access token : {}", access);
         log.info("refresh token : {}", refresh);
 
-        RefreshEntity refreshEntity = new RefreshEntity(customUserDetails.getUsername(), refresh);
-        refreshRepository.save(refreshEntity);
+        redisService.saveRefreshToken(customUserDetails.getUsername(), refresh);
 
 //        response.addHeader("Authorization", "Bearer " + token);
 //        super.successfulAuthentication(request, response, chain, authResult);

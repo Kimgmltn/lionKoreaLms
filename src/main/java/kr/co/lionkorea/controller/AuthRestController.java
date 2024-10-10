@@ -4,20 +4,20 @@ import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import kr.co.lionkorea.domain.Account;
-import kr.co.lionkorea.domain.RefreshEntity;
 import kr.co.lionkorea.dto.CustomUserDetails;
-import kr.co.lionkorea.dto.request.LoginRequest;
 import kr.co.lionkorea.jwt.JwtUtil;
-import kr.co.lionkorea.repository.RefreshRepository;
 import kr.co.lionkorea.service.AuthService;
+import kr.co.lionkorea.service.RedisService;
 import kr.co.lionkorea.utils.CommonUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
@@ -27,12 +27,7 @@ public class AuthRestController {
 
     private final AuthService authService;
     private final JwtUtil jwtUtil;
-    private final RefreshRepository refreshRepository;
-
-//    @PostMapping("/login")
-//    public ResponseEntity<Account> login(@RequestBody LoginRequest request){
-//        return ResponseEntity.ok(authService.login(request));
-//    }
+    private final RedisService redisService;
 
     @PostMapping("/logout")
     public ResponseEntity<String> logout(@RequestHeader(value = "Authorization") String token){
@@ -64,14 +59,14 @@ public class AuthRestController {
             return new ResponseEntity<>("access token expire", HttpStatus.BAD_REQUEST);
         }
 
-        // 토큰이 refresh인지 확인
+        // 토큰이 refresh 인지 확인
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
         // DB에 저장되어 있는지 확인
-        Boolean isExist = refreshRepository.existsByRefresh(refresh);
-        if (!isExist) {
+        String username = customUserDetails.getUsername();
+        if (redisService.hasKey(username)) {
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
@@ -79,10 +74,9 @@ public class AuthRestController {
         String newRefresh = jwtUtil.createJwt("refresh", customUserDetails);
 
         // refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-        refreshRepository.deleteByRefresh(refresh);
+        redisService.deleteKey(username);
 
-        RefreshEntity refreshEntity = new RefreshEntity(customUserDetails.getUsername(), refresh);
-        refreshRepository.save(refreshEntity);
+        redisService.saveRefreshToken(username, newRefresh);
 
         response.setHeader("access", newAccess);
         response.addCookie(CommonUtils.createCookie("refresh", newRefresh));

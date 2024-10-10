@@ -27,9 +27,14 @@ const fetchWithAuth = async (url, options = {}) => {
     });
 
     if (response.status === 401) {
+        const reissue = await fetch("/api/auth/reissue",{
+            method: 'POST'
+        })
+        //TODO: refresh 요청을 했는데도 401 응답일 경우, login 페이지로 이동 
+        // if()
         sessionStorage.clear();
         window.location.href = '/login';
-        return Promise.reject(new Error('No Authorization. Redirecting to login.'));
+        // return Promise.reject(new Error('No Authorization. Redirecting to login.'));
     }
 
     return response;
