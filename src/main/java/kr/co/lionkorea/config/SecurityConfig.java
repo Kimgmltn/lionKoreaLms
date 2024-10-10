@@ -9,6 +9,7 @@ import kr.co.lionkorea.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
@@ -31,6 +32,7 @@ public class SecurityConfig {
     private final JwtUtil jwtUtil;
     private final AuthService authService;
     private final RefreshRepository refreshRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
@@ -44,7 +46,7 @@ public class SecurityConfig {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository);
+        LoginFilter loginFilter = new LoginFilter(authenticationManager(authenticationConfiguration), jwtUtil, refreshRepository, redisTemplate);
         loginFilter.setFilterProcessesUrl("/api/auth/login");
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth

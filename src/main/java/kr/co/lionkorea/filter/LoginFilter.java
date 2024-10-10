@@ -12,6 +12,7 @@ import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.repository.RefreshRepository;
 import kr.co.lionkorea.utils.CommonUtils;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -31,12 +32,14 @@ public class LoginFilter extends UsernamePasswordAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final JwtUtil jwtUtil;
     private final RefreshRepository refreshRepository;
+    private final RedisTemplate<String, Object> redisTemplate;
 
-    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository) {
+    public LoginFilter(AuthenticationManager authenticationManager, JwtUtil jwtUtil, RefreshRepository refreshRepository, RedisTemplate<String, Object> redisTemplate) {
         this.objectMapper = new ObjectMapper();
         this.authenticationManager = authenticationManager;
         this.jwtUtil = jwtUtil;
         this.refreshRepository = refreshRepository;
+        this.redisTemplate = redisTemplate;
     }
 
     @Override

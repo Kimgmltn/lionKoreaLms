@@ -12,8 +12,18 @@ spring:
   h2:
     console:
       enabled: true
+
   jwt:
     secret: fkdldhszhfldkfmfdnlgksxhdgkqrhksfltjqltmfmfaksemsmswnddlek
+
+  data:
+      redis:
+        host: redis-19104.c340.ap-northeast-2-1.ec2.redns.redis-cloud.com
+        port: 19104
+        username: default
+        password: wAgkh0VGUECkrwLvj7UByVHi2d8A3iVC
+        ssl:
+          enabled: true
 
 logging:
   level:
