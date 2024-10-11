@@ -21,20 +21,49 @@ const fetchWithAuth = async (url, options = {}) => {
         'access': accessToken ? `${accessToken}` : ''
     }
 
-    const response = await fetch(url, {
+    let response = await fetch(url, {
         ...options,
         headers: headers,
     });
 
     if (response.status === 401) {
-        const reissue = await fetch("/api/auth/reissue",{
-            method: 'POST'
+
+        console.log('Access token expired, attempting reissue');
+
+        const reissueResponse = await fetch("/api/auth/reissue",{
+            method: 'POST',
+            headers: headers
         })
-        //TODO: refresh 요청을 했는데도 401 응답일 경우, login 페이지로 이동 
-        // if()
-        sessionStorage.clear();
-        window.location.href = '/login';
-        // return Promise.reject(new Error('No Authorization. Redirecting to login.'));
+
+        // refresh token이 만료 or 발급 에러시 로그인 창으로 이동
+        if(!reissueResponse.ok){
+            console.error('Failed to reissue access token or refresh Token is expired, redirecting to login');
+            sessionStorage.clear();
+            window.location.href = '/login';
+            return Promise.reject(new Error('Failed to reissue access token or refresh Token is expired, redirecting to login'));
+        }
+
+        const newAccessToken = reissueResponse.headers.get('access');
+        if (newAccessToken) {
+            sessionStorage.setItem('access', newAccessToken);
+        } else {
+            console.error('No access token found in reissue response');
+            sessionStorage.clear();
+            window.location.href = '/login';
+            return Promise.reject(new Error('Failed to retrieve new access token.'));
+        }
+
+        // 원래 요청을 새 Access Token으로 다시 시도
+        const retryHeaders = {
+            ...options.headers,
+            'Content-Type': 'application/json',
+            'access': newAccessToken
+        };
+
+        response = await fetch(url, {
+            ...options,
+            headers: retryHeaders,
+        });
     }
 
     return response;

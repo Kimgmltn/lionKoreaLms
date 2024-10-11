@@ -14,6 +14,7 @@ import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.annotation.web.configurers.HeadersConfigurer;
 import org.springframework.security.config.annotation.web.configurers.SessionManagementConfigurer;
@@ -48,9 +49,10 @@ public class SecurityConfig {
         loginFilter.setFilterProcessesUrl("/api/auth/login");
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/reissue").permitAll()
+                        .requestMatchers("/api/auth/login").permitAll()
                         .requestMatchers("/api/members/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/api/**").authenticated()
+                        .requestMatchers("/api/auth/reissue").permitAll()
 //                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**", "/").permitAll()
                         .anyRequest().permitAll())
                 // 로그인 관련 설정
@@ -76,7 +78,7 @@ public class SecurityConfig {
                         .maximumSessions(1) // 동시 접속 가능 숫자
                         .maxSessionsPreventsLogin(false)) // false시 이전 로그인건이 로그아웃
                 // json 처리를 위한 필터 추가
-                .addFilterBefore(new JwtFilter(jwtUtil, authService), LoginFilter.class)
+                .addFilterBefore(new JwtFilter(jwtUtil, authService), UsernamePasswordAuthenticationFilter.class)
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .rememberMe(Customizer.withDefaults())
                 .exceptionHandling(exceptionHandling -> exceptionHandling

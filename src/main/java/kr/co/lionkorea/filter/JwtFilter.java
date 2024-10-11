@@ -91,6 +91,7 @@ public class JwtFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
+
         if(requestURI.startsWith("/api/")){
             String accessToken = request.getHeader("access");
             if(accessToken == null){

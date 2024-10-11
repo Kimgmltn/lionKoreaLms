@@ -1,5 +1,8 @@
 package kr.co.lionkorea.jwt;
 
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.enums.Role;
@@ -45,7 +48,13 @@ public class JwtUtil {
     }
 
     public Boolean isExpire(String token){
-        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        try{
+            return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
+        }catch(ExpiredJwtException e){
+            return true;
+        } catch (Exception e){
+            return false;
+        }
     }
 
     public String getCategory(String token){

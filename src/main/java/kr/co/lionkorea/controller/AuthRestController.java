@@ -46,10 +46,12 @@ public class AuthRestController {
         for (Cookie cookie : cookies) {
             if ("refresh".equals(cookie.getName())) {
                 refresh = cookie.getValue();
+                log.info("confirm refresh Token before reissue: {}", refresh);
             }
         }
 
         if (refresh == null) {
+            log.info("refresh Token is null");
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
 
@@ -61,12 +63,14 @@ public class AuthRestController {
 
         // 토큰이 refresh 인지 확인
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
+            log.info("no refresh token");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
         // DB에 저장되어 있는지 확인
         String username = customUserDetails.getUsername();
         if (redisService.hasKey(username)) {
+            log.info("No data in db");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
