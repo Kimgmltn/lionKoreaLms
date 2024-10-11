@@ -87,7 +87,8 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
 
-        if(requestURI.equals("/api/auth/login")){
+        if(requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/reissue")){
+            log.info("request in JwtFilter : {}", requestURI);
             filterChain.doFilter(request, response);
             return;
         }
@@ -101,9 +102,10 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
             // 만료 확인
-            try {
-                jwtUtil.isExpire(accessToken);
-            } catch (ExpiredJwtException e) {
+            if (jwtUtil.isExpire(accessToken)) {
+
+                log.info("access token expire");
+
                 PrintWriter writer = response.getWriter();
                 writer.print("access token expire");
 
@@ -113,6 +115,9 @@ public class JwtFilter extends OncePerRequestFilter {
 
             String category = jwtUtil.getCategory(accessToken);
             if (!category.equals("access")) {
+
+                log.info("invalid access token");
+
                 PrintWriter writer = response.getWriter();
                 writer.print("invalid access token");
 

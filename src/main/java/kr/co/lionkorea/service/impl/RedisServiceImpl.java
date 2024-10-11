@@ -14,23 +14,28 @@ public class RedisServiceImpl implements RedisService {
     private final RedisTemplate<String, String> redisTemplate;
 
     @Override
-    public void saveRefreshToken(String key, String refreshToken) {
-        redisTemplate.opsForValue().set(key, refreshToken);
-        redisTemplate.expire(key, 8L, TimeUnit.HOURS); // 8시간 지나면 삭제
+    public void saveRefreshToken(Long key, String refreshToken) {
+        String stringKey = stringKey(key);
+        redisTemplate.opsForValue().set(stringKey, refreshToken);
+        redisTemplate.expire(stringKey, 8L, TimeUnit.HOURS); // 8시간 지나면 삭제
     }
 
     @Override
-    public String getValue(String key) {
-        return redisTemplate.opsForValue().get(key);
+    public String getValue(Long key) {
+        return redisTemplate.opsForValue().get(stringKey(key));
     }
 
     @Override
-    public Boolean hasKey(String key) {
-        return redisTemplate.hasKey(key);
+    public Boolean hasKey(Long key) {
+        return redisTemplate.hasKey(stringKey(key));
     }
 
     @Override
-    public void deleteKey(String key) {
-        redisTemplate.delete(key);
+    public void deleteKey(Long key) {
+        redisTemplate.delete(stringKey(key));
+    }
+
+    private String stringKey(Long key){
+        return String.valueOf(key);
     }
 }

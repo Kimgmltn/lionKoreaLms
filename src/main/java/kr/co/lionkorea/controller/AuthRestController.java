@@ -5,6 +5,7 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
+import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
 import kr.co.lionkorea.service.RedisService;
@@ -40,7 +41,7 @@ public class AuthRestController {
     }
 
     @PostMapping("/reissue")
-    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response, @AuthenticationPrincipal CustomUserDetails customUserDetails){
+    public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
@@ -55,32 +56,40 @@ public class AuthRestController {
             return new ResponseEntity<>("refresh token null", HttpStatus.BAD_REQUEST);
         }
 
-        try {
-            jwtUtil.isExpire(refresh);
-        } catch (ExpiredJwtException e) {
-            return new ResponseEntity<>("access token expire", HttpStatus.BAD_REQUEST);
+        if(jwtUtil.isExpire(refresh)){
+            log.info("refresh Token is expired");
+            return new ResponseEntity<>("access token expire", HttpStatus.UNAUTHORIZED);
         }
 
         // 토큰이 refresh 인지 확인
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
-            log.info("no refresh token");
+            log.info("cookie is not refresh token");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
 
         // DB에 저장되어 있는지 확인
-        String username = customUserDetails.getUsername();
-        if (redisService.hasKey(username)) {
+        Long memberId = jwtUtil.getMemberId(refresh);
+        if (redisService.hasKey(memberId)) {
             log.info("No data in db");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
         }
+
+        MemberDetails memberDetails = MemberDetails.builder()
+                .memberName(jwtUtil.getMemberName(refresh))
+                .roles(jwtUtil.getRoles(refresh))
+                .memberId(jwtUtil.getMemberId(refresh))
+                .loginId(jwtUtil.getLoginId(refresh))
+                .build();
+
+        CustomUserDetails customUserDetails = new CustomUserDetails(memberDetails);
 
         String newAccess = jwtUtil.createJwt("access", customUserDetails);
         String newRefresh = jwtUtil.createJwt("refresh", customUserDetails);
 
         // refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-        redisService.deleteKey(username);
+        redisService.deleteKey(memberId);
 
-        redisService.saveRefreshToken(username, newRefresh);
+        redisService.saveRefreshToken(memberId, newRefresh);
 
         response.setHeader("access", newAccess);
         response.addCookie(CommonUtils.createCookie("refresh", newRefresh));

@@ -2,12 +2,12 @@ package kr.co.lionkorea.service;
 
 public interface RedisService {
 
-    void saveRefreshToken(String key, String refreshToken);
+    void saveRefreshToken(Long key, String refreshToken);
 
-    String getValue(String key);
+    String getValue(Long key);
 
-    Boolean hasKey(String key);
+    Boolean hasKey(Long key);
 
-    void deleteKey(String key);
+    void deleteKey(Long key);
 
 }

@@ -33,6 +33,14 @@ public class SecurityConfig {
     private final AuthService authService;
     private final RedisService redisService;
 
+    // static file에 대한 접근은 security를 확인하지 않음
+    @Bean
+    public WebSecurityCustomizer webSecurityCustomizer() {
+        return (web) -> web.ignoring()
+                // 필터 체인에서 제외할 URL 설정
+                .requestMatchers("/js/**", "/css/**");
+    }
+
     @Bean
     public BCryptPasswordEncoder bCryptPasswordEncoder(){
         return new BCryptPasswordEncoder();
@@ -78,7 +86,7 @@ public class SecurityConfig {
                         .maximumSessions(1) // 동시 접속 가능 숫자
                         .maxSessionsPreventsLogin(false)) // false시 이전 로그인건이 로그아웃
                 // json 처리를 위한 필터 추가
-                .addFilterBefore(new JwtFilter(jwtUtil, authService), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtFilter(jwtUtil, authService), LoginFilter.class)
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
                 .rememberMe(Customizer.withDefaults())
                 .exceptionHandling(exceptionHandling -> exceptionHandling

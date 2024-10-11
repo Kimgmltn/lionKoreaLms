@@ -21,7 +21,8 @@ import java.util.stream.Collectors;
 public class JwtUtil {
 
     private final SecretKey secretKey;
-    private final Long JWT_EXPIRATION_MS_ACCESS = 60*5*1000L; // 1000ms * 60(1분) * 5 = 5분
+//    private final Long JWT_EXPIRATION_MS_ACCESS = 60*5*1000L; // 1000ms * 60(1분) * 5 = 5분
+    private final Long JWT_EXPIRATION_MS_ACCESS = 60*1000L; // 1000ms * 60(1분) * 5 = 5분
     private final Long JWT_EXPIRATION_MS_REFRESH = 60*60*8*1000L; // 1000ms * 60(1분) * 60 * 8 = 8시간
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret){
@@ -44,7 +45,6 @@ public class JwtUtil {
     public Set<Role> getRoles(String token){
         List<String> roles = Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("roles", List.class);
         return roles.stream().map(Role::valueOf).collect(Collectors.toSet());
-
     }
 
     public Boolean isExpire(String token){
@@ -52,8 +52,6 @@ public class JwtUtil {
             return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().getExpiration().before(new Date());
         }catch(ExpiredJwtException e){
             return true;
-        } catch (Exception e){
-            return false;
         }
     }
 
