@@ -11,8 +11,10 @@ import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -87,8 +89,14 @@ public class JwtFilter extends OncePerRequestFilter {
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         String requestURI = request.getRequestURI();
 
-        if(requestURI.equals("/api/auth/login") || requestURI.equals("/api/auth/reissue")){
-            log.info("request in JwtFilter : {}", requestURI);
+        if(requestURI.equals("/api/auth/login")){
+            log.info("/api/auth/login request");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        if(requestURI.equals("/api/auth/reissue")){
+            log.info("/api/auth/reissue request");
             filterChain.doFilter(request, response);
             return;
         }
@@ -96,7 +104,6 @@ public class JwtFilter extends OncePerRequestFilter {
         if(requestURI.startsWith("/api/")){
             String accessToken = request.getHeader("access");
             if(accessToken == null){
-//                filterChain.doFilter(request, response);
                 response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Token is blacklisted");
                 return;
             }

@@ -31,8 +31,7 @@ const fetchWithAuth = async (url, options = {}) => {
         console.log('Access token expired, attempting reissue');
 
         const reissueResponse = await fetch("/api/auth/reissue",{
-            method: 'POST',
-            headers: headers
+            method: 'POST'
         })
 
         // refresh token이 만료 or 발급 에러시 로그인 창으로 이동

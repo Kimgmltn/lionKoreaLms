@@ -22,7 +22,7 @@ public class JwtUtil {
 
     private final SecretKey secretKey;
 //    private final Long JWT_EXPIRATION_MS_ACCESS = 60*5*1000L; // 1000ms * 60(1분) * 5 = 5분
-    private final Long JWT_EXPIRATION_MS_ACCESS = 60*1000L; // 1000ms * 60(1분) * 5 = 5분
+    private final Long JWT_EXPIRATION_MS_ACCESS = 60*1000L; // 1000ms * 60(1분) = 1분
     private final Long JWT_EXPIRATION_MS_REFRESH = 60*60*8*1000L; // 1000ms * 60(1분) * 60 * 8 = 8시간
 
     public JwtUtil(@Value("${spring.jwt.secret}") String secret){

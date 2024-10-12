@@ -64,14 +64,19 @@ public class AuthRestController {
         // 토큰이 refresh 인지 확인
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
             log.info("cookie is not refresh token");
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("invalid refresh token", HttpStatus.UNAUTHORIZED);
         }
 
         // DB에 저장되어 있는지 확인
         Long memberId = jwtUtil.getMemberId(refresh);
-        if (redisService.hasKey(memberId)) {
+        if (!redisService.hasKey(memberId)) {
             log.info("No data in db");
-            return new ResponseEntity<>("invalid refresh token", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("invalid refresh token", HttpStatus.UNAUTHORIZED);
+        }
+
+        if(!refresh.equals(redisService.getValue(memberId))){
+            log.info("Not match refresh token");
+            return new ResponseEntity<>("invalid refresh token", HttpStatus.UNAUTHORIZED);
         }
 
         MemberDetails memberDetails = MemberDetails.builder()

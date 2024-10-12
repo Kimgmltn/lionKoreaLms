@@ -7,6 +7,7 @@ import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
 import kr.co.lionkorea.service.RedisService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -23,9 +24,12 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import java.util.Arrays;
+
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
+@Slf4j
 public class SecurityConfig {
 
     private final AuthenticationConfiguration authenticationConfiguration;
@@ -57,10 +61,9 @@ public class SecurityConfig {
         loginFilter.setFilterProcessesUrl("/api/auth/login");
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/login").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/reissue").permitAll()
                         .requestMatchers("/api/members/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/api/**").authenticated()
-                        .requestMatchers("/api/auth/reissue").permitAll()
 //                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**", "/").permitAll()
                         .anyRequest().permitAll())
                 // 로그인 관련 설정
@@ -91,6 +94,8 @@ public class SecurityConfig {
                 .rememberMe(Customizer.withDefaults())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(((request, response, authException) -> {
+                            log.error("FilterChain 중 인증 관련 에러 발생 message : {}", authException.getMessage());
+                            log.error("FilterChain 중 인증 관련 에러 발생 trace : {}", Arrays.toString(authException.getStackTrace()));
                             // 인증 실패시 401 error 반환
                             response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
                         }))

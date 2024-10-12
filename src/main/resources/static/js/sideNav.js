@@ -2,7 +2,8 @@
 import { get } from './api.js';
 
 const MENU_KEY = 'menu'; // 캐시 키
-const CACHE_EXPIRATION_TIME = 5 * 60 * 1000; // 5분 (밀리초 단위)
+// const CACHE_EXPIRATION_TIME = 5 * 60 * 1000; // 5분 (밀리초 단위)
+const CACHE_EXPIRATION_TIME = 60 * 1000; // 1분 (밀리초 단위)
 const OPEN_MENU_KEY = 'openMenus';
 
 // 초기화 시 기존 캐시를 localStorage에서 불러오기
