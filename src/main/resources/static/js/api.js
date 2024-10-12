@@ -1,6 +1,17 @@
 // api.js
 
 const EXCLUDE_URL_LIST = ['/api/auth/login']
+let isRefreshing = false; // Refresh 진행 여부 플래그
+let refreshSubscribers = []; // 대기 중인 요청을 저장하는 배열
+
+const onAccessTokenRefreshed = (newAccessToken) => {
+    refreshSubscribers.forEach(callback => callback(newAccessToken));
+    refreshSubscribers = [];
+}
+
+const addRefreshSubscriber = (callback) => {
+    refreshSubscribers.push(callback);
+}
 
 const fetchWithAuth = async (url, options = {}) => {
 
@@ -14,58 +25,67 @@ const fetchWithAuth = async (url, options = {}) => {
         window.location.href = '/login';
         return Promise.reject(new Error('No JWT token found. Redirecting to login.'));
     }
-    // 기본 헤더에 Authorization 추가
+    // 기본 헤더에 access 추가
     const headers = {
         ...options.headers,
         'Content-Type': 'application/json',
         'access': accessToken ? `${accessToken}` : ''
     }
 
-    let response = await fetch(url, {
-        ...options,
-        headers: headers,
-    });
-
-    if (response.status === 401) {
-
-        console.log('Access token expired, attempting reissue');
-
-        const reissueResponse = await fetch("/api/auth/reissue",{
-            method: 'POST'
-        })
-
-        // refresh token이 만료 or 발급 에러시 로그인 창으로 이동
-        if(!reissueResponse.ok){
-            console.error('Failed to reissue access token or refresh Token is expired, redirecting to login');
-            sessionStorage.clear();
-            window.location.href = '/login';
-            return Promise.reject(new Error('Failed to reissue access token or refresh Token is expired, redirecting to login'));
+    return new Promise(async (resolve, reject) => {
+        if(isRefreshing){
+            // 이미 refresh 진행 중이라면 요청을 list에 추가하고 대기
+            addRefreshSubscriber((newToken) => {
+                options.headers['access'] = newToken;
+                resolve(fetch(url, {...options}));
+            });
+            return;
         }
 
-        const newAccessToken = reissueResponse.headers.get('access');
-        if (newAccessToken) {
-            sessionStorage.setItem('access', newAccessToken);
-        } else {
-            console.error('No access token found in reissue response');
-            sessionStorage.clear();
-            window.location.href = '/login';
-            return Promise.reject(new Error('Failed to retrieve new access token.'));
+        try{
+            let response = await fetch(url, {...options, headers});
+
+            if (response.status === 401) {
+                console.log('Access token expired, attempting reissue');
+                isRefreshing = true;
+
+                const reissueResponse = await fetch("/api/auth/reissue", {
+                    method: 'POST'
+                });
+
+                if(!reissueResponse.ok){
+                    console.error('Failed to reissue access token, redirecting to login');
+                    sessionStorage.clear();
+                    window.location.href = '/login';
+                    return reject(new Error('Failed to reissue access token.'));
+                }
+
+                const newAccessToken = reissueResponse.headers.get('access');
+                if (newAccessToken) {
+                    sessionStorage.setItem('access', newAccessToken);
+                    onAccessTokenRefreshed(newAccessToken); // 대기 중인 요청 처리
+                } else {
+                    throw new Error('No access token found in reissue response');
+                }
+
+                // 첫 번째 요청을 새 토큰으로 재시도
+                const retryHeaders = {
+                    ...options.headers,
+                    'Content-Type': 'application/json',
+                    'access': `${newAccessToken}`
+                }
+                // const retryResponse = await fetch(url, {...options, retryHeader});
+                const retryResponse = await fetch(url, {...options, headers : retryHeaders});
+                resolve(retryResponse);
+            } else {
+                resolve(response)
+            }
+        } catch(error){
+            reject(error); // 오류 발생 시 거부
+        } finally {
+            isRefreshing = false;
         }
-
-        // 원래 요청을 새 Access Token으로 다시 시도
-        const retryHeaders = {
-            ...options.headers,
-            'Content-Type': 'application/json',
-            'access': newAccessToken
-        };
-
-        response = await fetch(url, {
-            ...options,
-            headers: retryHeaders,
-        });
-    }
-
-    return response;
+    })
 }
 
 const get = async (endpoint, params = {}) => {
