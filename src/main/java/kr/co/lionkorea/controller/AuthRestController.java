@@ -48,6 +48,7 @@ public class AuthRestController {
             if ("refresh".equals(cookie.getName())) {
                 refresh = cookie.getValue();
                 log.info("confirm refresh Token before reissue: {}", refresh);
+                break;
             }
         }
 

@@ -113,9 +113,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 log.info("access token expire");
 
-                PrintWriter writer = response.getWriter();
-                writer.print("access token expire");
-
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
                 return;
             }

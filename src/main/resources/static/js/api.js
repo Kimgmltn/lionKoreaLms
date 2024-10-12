@@ -35,9 +35,13 @@ const fetchWithAuth = async (url, options = {}) => {
     return new Promise(async (resolve, reject) => {
         if(isRefreshing){
             // 이미 refresh 진행 중이라면 요청을 list에 추가하고 대기
-            addRefreshSubscriber((newToken) => {
-                options.headers['access'] = newToken;
-                resolve(fetch(url, {...options}));
+            await addRefreshSubscriber((newToken) => {
+                const retryHeader = {
+                    ...options.headers,
+                    'Content-Type': 'application/json',
+                    'access': `${newToken}`
+                }
+                resolve(fetch(url, {...options, headers: retryHeader}));
             });
             return;
         }
