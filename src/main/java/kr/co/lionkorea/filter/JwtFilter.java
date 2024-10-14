@@ -3,6 +3,7 @@ package kr.co.lionkorea.filter;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.dto.CustomUserDetails;
@@ -130,21 +131,24 @@ public class JwtFilter extends OncePerRequestFilter {
             }
 
 //            // 토큰에서 username과 role 획득하여 securityContext에 저장
-            MemberDetails memberDetails = MemberDetails.builder()
-                    .loginId(jwtUtil.getLoginId(accessToken))
-                    .memberId(jwtUtil.getMemberId(accessToken))
-                    .memberName(jwtUtil.getMemberName(accessToken))
-                    .roles(jwtUtil.getRoles(accessToken))
-                    .password(null)
-                    .build();
-            CustomUserDetails customUserDetails = new CustomUserDetails(memberDetails);
-//            // 시큐리티 인증 토큰 생성
-            Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
-//            // 세션에 사용자 등록
-            SecurityContextHolder.getContext().setAuthentication(authToken);
+            createAuthentication(accessToken);
         }
 
-
         filterChain.doFilter(request, response);
+    }
+
+    private void createAuthentication(String token) {
+        MemberDetails memberDetails = MemberDetails.builder()
+                .loginId(jwtUtil.getLoginId(token))
+                .memberId(jwtUtil.getMemberId(token))
+                .memberName(jwtUtil.getMemberName(token))
+                .roles(jwtUtil.getRoles(token))
+                .password(null)
+                .build();
+        CustomUserDetails customUserDetails = new CustomUserDetails(memberDetails);
+//            // 시큐리티 인증 토큰 생성
+        Authentication authToken = new UsernamePasswordAuthenticationToken(customUserDetails, null, customUserDetails.getAuthorities());
+//            // 세션에 사용자 등록
+        SecurityContextHolder.getContext().setAuthentication(authToken);
     }
 }
