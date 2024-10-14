@@ -85,6 +85,9 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String randomPassword = getRandomPassword();
+
+        log.info("{}의 password : {}", request.getLoginId(), randomPassword);
+
         request.setPassword(encoder.encode(randomPassword));
         Member member = memberRepository.findById(request.getMemberId()).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         Role role = Role.valueOf(("role_" + request.getRole()).toUpperCase());
@@ -144,9 +147,7 @@ public class MemberServiceImpl implements MemberService {
             passwordArray[i] = passwordArray[randomIndex];
             passwordArray[randomIndex] = temp;
         }
-        String randomPassword = new String(passwordArray);
-        log.info("creat new randomPassword : {}", randomPassword);
-        return randomPassword;
+        return new String(passwordArray);
     }
 
     @Override
