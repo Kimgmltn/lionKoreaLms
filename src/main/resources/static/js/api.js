@@ -57,6 +57,18 @@ const fetchWithAuth = async (url, options = {}) => {
                     method: 'POST'
                 });
 
+                if(reissueResponse.status === 429){
+                    await addRefreshSubscriber((newToken) => {
+                        const retryHeader = {
+                            ...options.headers,
+                            'Content-Type': 'application/json',
+                            'access': `${newToken}`
+                        }
+                        resolve(fetch(url, {...options, headers: retryHeader}));
+                    });
+                    return;
+                }
+
                 if(!reissueResponse.ok){
                     console.error('Failed to reissue access token, redirecting to login');
                     sessionStorage.clear();

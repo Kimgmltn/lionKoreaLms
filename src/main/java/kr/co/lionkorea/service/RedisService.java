@@ -11,6 +11,4 @@ public interface RedisService {
     void deleteKey(Long key);
 
     Boolean isFirstRequest(Long key);
-
-    void asyncCheckFirstRequest(Long key);
 }

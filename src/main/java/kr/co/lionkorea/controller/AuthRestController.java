@@ -42,6 +42,7 @@ public class AuthRestController {
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
+        
         String refresh = null;
         Cookie[] cookies = request.getCookies();
         for (Cookie cookie : cookies) {
@@ -50,6 +51,13 @@ public class AuthRestController {
                 log.info("confirm refresh Token before reissue: {}", refresh);
                 break;
             }
+        }
+
+        Long memberId = jwtUtil.getMemberId(refresh);
+        // 중복요청인지 확인
+        if (!redisService.isFirstRequest(memberId)) {
+            log.info("already done request");
+            return new ResponseEntity<>("already done request", HttpStatus.TOO_MANY_REQUESTS);
         }
 
         if (refresh == null) {
@@ -69,14 +77,6 @@ public class AuthRestController {
         }
 
         // DB에 저장되어 있는지 확인
-        Long memberId = jwtUtil.getMemberId(refresh);
-
-        // 중복된 요청인지 확인
-        if (!redisService.isFirstRequest(memberId)) {
-            log.info("already done request");
-            return new ResponseEntity<>("already done request", HttpStatus.UNAUTHORIZED);
-        }
-
         if (!redisService.hasKey(memberId)) {
             log.info("No data in db");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.UNAUTHORIZED);

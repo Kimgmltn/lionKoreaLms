@@ -25,7 +25,6 @@ public class RedisServiceImpl implements RedisService {
         String stringKey = longToStringKey(key);
         redisTemplate.opsForValue().set(stringKey, refreshToken);
         redisTemplate.expire(stringKey, 8L, TimeUnit.HOURS); // 8시간 지나면 삭제
-        asyncCheckFirstRequest(key);
     }
 
     @Override
@@ -47,14 +46,6 @@ public class RedisServiceImpl implements RedisService {
     public Boolean isFirstRequest(Long key) {
         ValueOperations<String, String> ops = redisTemplate.opsForValue();
         return Boolean.TRUE.equals(ops.setIfAbsent("lock:" + longToStringKey(key), String.valueOf(true), 10, TimeUnit.SECONDS));
-    }
-
-    @Override
-    @Async
-    public void asyncCheckFirstRequest(Long key) {
-        if (isFirstRequest(key)) {
-            log.info("This is First reqeust for key: {}", key);
-        }
     }
 
     private String longToStringKey(Long key){
