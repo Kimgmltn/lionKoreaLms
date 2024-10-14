@@ -77,8 +77,8 @@ const createConfirmModal = (options, ...callbacks) => {
     // "Yes" 버튼 클릭 시 콜백 함수 호출
     yesButton.addEventListener('click', function() {
         callbacks.forEach(callback => {
-            if (callbacks && typeof callbacks === 'function') {
-                callbacks();
+            if (callback && typeof callback == 'function') {
+                callback();
             }
         })
         myModal.hide(); // 모달 닫기
