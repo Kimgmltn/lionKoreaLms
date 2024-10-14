@@ -70,6 +70,13 @@ public class AuthRestController {
 
         // DB에 저장되어 있는지 확인
         Long memberId = jwtUtil.getMemberId(refresh);
+
+        // 중복된 요청인지 확인
+        if (!redisService.isFirstRequest(memberId)) {
+            log.info("already done request");
+            return new ResponseEntity<>("already done request", HttpStatus.UNAUTHORIZED);
+        }
+
         if (!redisService.hasKey(memberId)) {
             log.info("No data in db");
             return new ResponseEntity<>("invalid refresh token", HttpStatus.UNAUTHORIZED);
