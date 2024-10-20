@@ -31,6 +31,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-security'
     // Redis 설정
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
+    // Redis 설정 끝
     // JWT 의존성 추가
     implementation 'io.jsonwebtoken:jjwt-jackson:0.12.3'
     implementation 'io.jsonwebtoken:jjwt-impl:0.12.3'
