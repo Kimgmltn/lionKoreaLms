@@ -3,12 +3,25 @@ spring:
     name: lionkorea
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: none
     properties:
       hibernate:
         format_sql: true
         use_sql_comments: true
       show-sql: false
-  h2:
-    console:
-      enabled: true
+  datasource:
+    url: jdbc:postgresql://localhost:5432/hs
+    username: postgres
+    password:
+
+  jwt:
+    secret: fkdldhszhfldkfmfdnlgksxhdgkqrhksfltjqltmfmfaksemsmswnddlek
+
+  data:
+    redis:
+      host: redis-19104.c340.ap-northeast-2-1.ec2.redns.redis-cloud.com
+      port: 19104
+      username: default
+      password: wAgkh0VGUECkrwLvj7UByVHi2d8A3iVC
+      ssl:
+        enabled: true
