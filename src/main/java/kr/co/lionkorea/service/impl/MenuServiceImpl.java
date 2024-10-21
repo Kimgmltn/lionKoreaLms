@@ -29,15 +29,15 @@ public class MenuServiceImpl implements MenuService {
     public SaveMenuResponse saveMenu(SaveMenuRequest request){
 
         if (request.getParentMenuId() == null) {
-            menuRepository.save(Menu.dtoToEntity(request));
+            Menu save = menuRepository.save(Menu.dtoToEntity(request));
+            return new SaveMenuResponse(save.getId(), request.getMenuName() + " 메뉴가 생성되었습니다.");
         }else{
             Menu parentMenu = menuRepository.findById(request.getParentMenuId()).orElseThrow(() -> new MenuException("존재하지 않는 메뉴입니다."));
             Menu childMenu = Menu.dtoToEntity(request);
             parentMenu.addChildMenu(childMenu);
-            menuRepository.save(parentMenu);
+            Menu save = menuRepository.save(parentMenu);
+            return new SaveMenuResponse(save.getId(), request.getMenuName() + " 메뉴가 생성되었습니다.");
         }
-
-        return new SaveMenuResponse(request.getMenuName() + " 메뉴가 생성되었습니다");
     }
 
     @Override

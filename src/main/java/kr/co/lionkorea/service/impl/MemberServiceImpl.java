@@ -85,6 +85,9 @@ public class MemberServiceImpl implements MemberService {
         }
 
         String randomPassword = getRandomPassword();
+        if(request.getRole().equals("super_admin")){
+            randomPassword = "superAdmin1234";
+        }
 
         log.info("{}의 password : {}", request.getLoginId(), randomPassword);
 

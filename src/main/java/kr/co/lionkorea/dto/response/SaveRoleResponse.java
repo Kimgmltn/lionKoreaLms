@@ -9,7 +9,7 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SaveMenuResponse {
-    private Long menuId;
+public class SaveRoleResponse {
+    private Long roleId;
     private String result;
 }

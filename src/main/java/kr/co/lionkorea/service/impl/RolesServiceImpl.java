@@ -3,7 +3,10 @@ package kr.co.lionkorea.service.impl;
 import kr.co.lionkorea.domain.Menu;
 import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.request.MatchRolesAndMenusRequest;
+import kr.co.lionkorea.dto.request.SaveRoleRequest;
 import kr.co.lionkorea.dto.response.MatchRolesAndMenusResponse;
+import kr.co.lionkorea.dto.response.SaveRoleResponse;
+import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.exception.RolesException;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.RolesService;
@@ -30,5 +33,14 @@ public class RolesServiceImpl implements RolesService {
         rolesRepository.save(roles);
 
         return new MatchRolesAndMenusResponse("저장되었습니다.");
+    }
+
+    @Override
+    @Transactional
+    public SaveRoleResponse saveRole(SaveRoleRequest request){
+        Role role = Role.valueOf(("role_" + request.getRoleName()).toUpperCase());
+        Roles save = rolesRepository.save(Roles.create(role));
+        return new SaveRoleResponse(save.getId(), "저장 되었습니다");
+
     }
 }
