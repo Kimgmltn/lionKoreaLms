@@ -43,11 +43,12 @@ public class Account extends BaseEntity{
     private List<AccountRole> accountRoles = new ArrayList<>();
 
     public static Account dtoToEntity(GrantNewAccountRequest request, Member member, Roles roles) {
+        LocalDateTime now = LocalDateTime.now();
         Account account = Account.builder()
                 .loginId(request.getLoginId())
                 .password(request.getPassword())
-                .joinDate(LocalDateTime.now())
-                .expireDate(LocalDateTime.MAX)
+                .joinDate(now)
+                .expireDate(now.plusYears(30L))
                 .randomPasswordChangeYn(false)
                 .useYn(true)
                 .member(member)

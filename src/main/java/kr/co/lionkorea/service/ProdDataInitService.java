@@ -25,6 +25,7 @@ public class ProdDataInitService {
     private final RolesService rolesService;
     private final MemberService memberService;
 
+    @Transactional
     public void dataInit(){
         log.info("Roles 데이터 삽입");
         SaveRoleResponse superAdmin = rolesService.saveRole(new SaveRoleRequest("super_admin"));
