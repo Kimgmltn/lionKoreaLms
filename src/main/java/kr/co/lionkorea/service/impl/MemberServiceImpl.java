@@ -79,7 +79,7 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request) {
 
-        boolean isExistsLoginId = accountRepository.existsByLoginId(request.getLoginId());
+        boolean isExistsLoginId = isExistsLoginId(request.getLoginId());
         if (isExistsLoginId) {
             throw new AccountException("중복되는 아이디입니다.");
         }
@@ -98,6 +98,11 @@ public class MemberServiceImpl implements MemberService {
 
         Account savedAccount = accountRepository.save(Account.dtoToEntity(request, member, roles));
         return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword);
+    }
+
+    @Override
+    public boolean isExistsLoginId(String loginId) {
+        return accountRepository.existsByLoginId(loginId);
     }
 
     @Override

@@ -19,6 +19,8 @@ public interface MemberService {
 
     GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);
 
+    boolean isExistsLoginId(String loginId);
+
     MemberDetails findUserDetails(String username);
 
     PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable);
