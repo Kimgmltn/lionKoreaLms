@@ -100,8 +100,6 @@ public class AuthRestController {
         String newRefresh = jwtUtil.createJwt("refresh", customUserDetails);
 
         // refresh 토큰 저장 DB에 기존의 Refresh 토큰 삭제 후 새 Refresh 토큰 저장
-        redisService.deleteKey(memberId);
-
         redisService.saveRefreshToken(memberId, newRefresh);
 
         response.setHeader("access", newAccess);

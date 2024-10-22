@@ -21,6 +21,7 @@ public class RedisServiceImpl implements RedisService {
 
     @Override
     @Transactional
+    @Async
     public void saveRefreshToken(Long key, String refreshToken) {
         String stringKey = longToStringKey(key);
         redisTemplate.opsForValue().set(stringKey, refreshToken);
