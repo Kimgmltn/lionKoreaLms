@@ -29,6 +29,14 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    @Transactional
+    @Async
+    public void save(String key, String value, Long time) {
+        redisTemplate.opsForValue().set(key, value);
+        redisTemplate.expire(key, time, TimeUnit.MINUTES);
+    }
+
+    @Override
     public String getValue(Long key) {
         return redisTemplate.opsForValue().get(longToStringKey(key));
     }

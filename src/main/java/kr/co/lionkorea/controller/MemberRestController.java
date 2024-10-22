@@ -55,4 +55,9 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.findMemberAccount(memberId));
     }
 
+    @PatchMapping("/{memberId}/updatePassword")
+    public ResponseEntity<?> updatePassword(@PathVariable(value = "memberId") Long memberId){
+        return ResponseEntity.ok().build();
+    }
+
 }

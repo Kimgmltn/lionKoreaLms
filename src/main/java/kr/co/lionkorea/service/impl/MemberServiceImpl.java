@@ -16,8 +16,11 @@ import kr.co.lionkorea.repository.AccountRepository;
 import kr.co.lionkorea.repository.MemberRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.MemberService;
+import kr.co.lionkorea.service.RedisService;
+import kr.co.lionkorea.utils.Base62;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -26,8 +29,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.security.SecureRandom;
+import java.util.Base64;
 import java.util.List;
 import java.util.Set;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -40,6 +45,9 @@ public class MemberServiceImpl implements MemberService {
     private final AccountRepository accountRepository;
     private final RolesRepository rolesRepository;
     private final BCryptPasswordEncoder encoder;
+    private final RedisService redisService;
+    @Value("${supabase.url}")
+    private final String supabaseUrl;
 
     @Override
     @Transactional
@@ -91,12 +99,21 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("{}의 password : {}", request.getLoginId(), randomPassword);
 
+        Long memberId = request.getMemberId();
         request.setPassword(encoder.encode(randomPassword));
-        Member member = memberRepository.findById(request.getMemberId()).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
+        Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         Role role = Role.valueOf(("role_" + request.getRole()).toUpperCase());
         Roles roles = rolesRepository.findByRoleName(role);
 
         Account savedAccount = accountRepository.save(Account.dtoToEntity(request, member, roles));
+
+        // shortUrl 생성 후 Redis에 저장
+        String originUrl = "/api/members/" + memberId + "/updatePassword";
+        String shortUrl = createShortUrl();
+        redisService.save(shortUrl, originUrl, 30L);
+
+        // TODO: 링크 보내기 to email
+
         return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword);
     }
 
@@ -161,5 +178,17 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public List<FindMemberByAccountResponse> findMemberAccount(Long memberId) {
         return accountRepository.findByMemberIdWithAccount(memberId);
+    }
+
+    private String createShortUrl(){
+        UUID uuid = UUID.randomUUID();
+        long leastSignificantBits = uuid.getLeastSignificantBits();
+        String encode = Base62.encode(Math.abs(leastSignificantBits));
+        if (encode.length() > 7) {
+            return supabaseUrl + "/" + encode.substring(0, 7);
+        } else {
+            // 7글자보다 짧은 경우 앞에 'Z'을 추가하여 7글자로 맞춤
+            return supabaseUrl + "/" + String.format("%7s", encode).replace(' ', 'Z');
+        }
     }
 }
