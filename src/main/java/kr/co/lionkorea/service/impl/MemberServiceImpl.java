@@ -15,6 +15,7 @@ import kr.co.lionkorea.exception.MemberException;
 import kr.co.lionkorea.repository.AccountRepository;
 import kr.co.lionkorea.repository.MemberRepository;
 import kr.co.lionkorea.repository.RolesRepository;
+import kr.co.lionkorea.service.EmailService;
 import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.service.RedisService;
 import kr.co.lionkorea.utils.Base62;
@@ -27,6 +28,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -46,8 +48,9 @@ public class MemberServiceImpl implements MemberService {
     private final RolesRepository rolesRepository;
     private final BCryptPasswordEncoder encoder;
     private final RedisService redisService;
+    private final EmailService emailService;
     @Value("${supabase.url}")
-    private final String supabaseUrl;
+    private String supabaseUrl;
 
     @Override
     @Transactional
@@ -107,13 +110,20 @@ public class MemberServiceImpl implements MemberService {
 
         Account savedAccount = accountRepository.save(Account.dtoToEntity(request, member, roles));
 
-        // shortUrl 생성 후 Redis에 저장
-        String originUrl = "/api/members/" + memberId + "/updatePassword";
-        String shortUrl = createShortUrl();
-        redisService.save(shortUrl, originUrl, 30L);
+        // 최상위 관리자 계정이 아니면 비밀번호 변경 링크 보내기
+        if(!request.getRole().equals("super_admin")){
+            if (StringUtils.hasText(request.getTo())) {
+                // shortUrl 생성 후 Redis에 저장
+                String originUrl = "/api/members/" + memberId + "/updatePassword";
+                String shortUrl = createShortUrl();
+                redisService.save(shortUrl, originUrl, 30L);
 
-        // TODO: 링크 보내기 to email
-
+                log.info("누구에게 보낼까요? : {}", request.getTo());
+                String subject = "비밀변호 변경 링크입니다.";
+                emailService.sendEmail(request.getTo(), subject, shortUrl);
+            }
+        }
+        
         return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword);
     }
 

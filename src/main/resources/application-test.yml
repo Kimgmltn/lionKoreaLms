@@ -18,6 +18,16 @@ spring:
     username: sa
     password:
     driver-class-name: org.h2.Driver
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
   jwt:
     secret: fkdldhszhfldkfmfdnlgksxhdgkqrhksfltjqltmfmfaksemsmswnddlek
@@ -38,3 +48,6 @@ logging:
         type:
           descriptor:
             sql: debug
+
+supabase:
+  url: https://jljftvddfkqbvhraqgcr.supabase.co

@@ -281,7 +281,8 @@ document.getElementById('assignIdForm').addEventListener('submit', async (event)
         loginId: formData.get('loginId').trim(),
         role: formData.get('role'),
         memberId: memberId,
-        useYn: !!formData.get('useYn')
+        useYn: !!formData.get('useYn'),
+        to: inputEmailTag.value
     };
 
     const response = await post('/api/members/newAccount', request)

@@ -17,6 +17,7 @@ public class GrantNewAccountRequest {
     private Long memberId;
     private String expireDate;
     private boolean useYn;
+    private String to;
 
     public GrantNewAccountRequest(String loginId, Long memberId) {
         this.loginId = loginId;
