@@ -53,7 +53,7 @@ const getMemberId = () => {
 // 상세정보 랜더링
 const renderMember = async ()=> {
     const memberId = getMemberId();
-    const response = await get(`/api/members/${memberId}`);
+    const response = await get(`/api/members/${memberId}/detail`);
 
     if(response.ok)
     {
@@ -78,7 +78,7 @@ const renderMember = async ()=> {
 
 const renderAssignedId = async ()=> {
     const memberId = getMemberId();
-    const response = await get(`/api/members/${memberId}`);
+    const response = await get(`/api/members/${memberId}/detail`);
 
     if(response.ok)
     {

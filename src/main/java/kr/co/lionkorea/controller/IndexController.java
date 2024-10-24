@@ -62,5 +62,10 @@ public class IndexController {
         return "companyDetail";
     }
 
+    @GetMapping("/password/{shortUrl}")
+    public String changePassword(@PathVariable String shortUrl) {
+        return "password";
+    }
+
 
 }

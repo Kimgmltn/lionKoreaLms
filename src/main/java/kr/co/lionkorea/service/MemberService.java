@@ -28,4 +28,6 @@ public interface MemberService {
     FindMemberDetailResponse findMemberById(Long memberId);
 
     List<FindMemberByAccountResponse> findMemberAccount(Long memberId);
+
+    DecodeShortUrlResponse decodeShortUrl(String shortUrl);
 }

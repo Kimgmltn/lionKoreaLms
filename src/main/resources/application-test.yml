@@ -1,3 +1,6 @@
+server:
+  host: http://localhost:8080
+
 spring:
   application:
     name: lionkorea
@@ -48,6 +51,3 @@ logging:
         type:
           descriptor:
             sql: debug
-
-supabase:
-  url: https://jljftvddfkqbvhraqgcr.supabase.co

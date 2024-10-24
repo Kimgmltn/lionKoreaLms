@@ -35,7 +35,7 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.findMembers(request, pageable));
     }
 
-    @GetMapping("/{memberId}")
+    @GetMapping("/{memberId}/detail")
     public ResponseEntity<FindMemberDetailResponse> findMemberById(@PathVariable(value = "memberId") Long memberId){
         return ResponseEntity.ok(memberService.findMemberById(memberId));
     }
@@ -58,6 +58,11 @@ public class MemberRestController {
     @PatchMapping("/{memberId}/updatePassword")
     public ResponseEntity<?> updatePassword(@PathVariable(value = "memberId") Long memberId){
         return ResponseEntity.ok().build();
+    }
+
+    @GetMapping("/{shortUrl}/valid")
+    public ResponseEntity<DecodeShortUrlResponse> decodeShortUrl(@PathVariable String shortUrl){
+        return ResponseEntity.ok(memberService.decodeShortUrl(shortUrl));
     }
 
 }

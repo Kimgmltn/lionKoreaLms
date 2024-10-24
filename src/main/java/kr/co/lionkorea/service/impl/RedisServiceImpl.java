@@ -42,8 +42,18 @@ public class RedisServiceImpl implements RedisService {
     }
 
     @Override
+    public String getValue(String key) {
+        return redisTemplate.opsForValue().get(key);
+    }
+
+    @Override
     public Boolean hasKey(Long key) {
         return redisTemplate.hasKey(longToStringKey(key));
+    }
+
+    @Override
+    public Boolean hasKey(String key) {
+        return redisTemplate.hasKey(key);
     }
 
     @Override

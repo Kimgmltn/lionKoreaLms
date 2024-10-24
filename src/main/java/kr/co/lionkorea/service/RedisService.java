@@ -11,7 +11,10 @@ public interface RedisService {
 
     String getValue(Long key);
 
+    String getValue(String key);
+
     Boolean hasKey(Long key);
+    Boolean hasKey(String key);
 
     void deleteKey(Long key);
 

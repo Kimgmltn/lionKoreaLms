@@ -49,8 +49,9 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder encoder;
     private final RedisService redisService;
     private final EmailService emailService;
-    @Value("${supabase.url}")
-    private String supabaseUrl;
+
+    @Value("${server.host}")
+    private String host;
 
     @Override
     @Transactional
@@ -114,12 +115,13 @@ public class MemberServiceImpl implements MemberService {
         if(!request.getRole().equals("super_admin")){
             if (StringUtils.hasText(request.getTo())) {
                 // shortUrl 생성 후 Redis에 저장
-                String originUrl = "/api/members/" + memberId + "/updatePassword";
-                String shortUrl = createShortUrl();
-                redisService.save(shortUrl, originUrl, 30L);
+                String value = String.valueOf(memberId);
+                String key = createShortUrl();
+                redisService.save(key, value, 30L);
 
-                log.info("누구에게 보낼까요? : {}", request.getTo());
                 String subject = "비밀변호 변경 링크입니다.";
+                String shortUrl = host + "/password/" + key;
+
                 emailService.sendEmail(request.getTo(), subject, shortUrl);
             }
         }
@@ -146,6 +148,20 @@ public class MemberServiceImpl implements MemberService {
                 .password(account.getPassword())
                 .build();
 
+    }
+
+    @Override
+    public List<FindMemberByAccountResponse> findMemberAccount(Long memberId) {
+        return accountRepository.findByMemberIdWithAccount(memberId);
+    }
+
+    @Override
+    public DecodeShortUrlResponse decodeShortUrl(String shortUrl) {
+        if(!redisService.hasKey(shortUrl)){
+            throw new MemberException("존재하지 않거나, 만료된 url입니다.\n 관리자에게 문의해 주세요.");
+        }
+        String value = redisService.getValue(shortUrl);
+        return new DecodeShortUrlResponse(Long.parseLong(value));
     }
 
     private String getRandomPassword(){
@@ -185,20 +201,15 @@ public class MemberServiceImpl implements MemberService {
         return new String(passwordArray);
     }
 
-    @Override
-    public List<FindMemberByAccountResponse> findMemberAccount(Long memberId) {
-        return accountRepository.findByMemberIdWithAccount(memberId);
-    }
-
     private String createShortUrl(){
         UUID uuid = UUID.randomUUID();
         long leastSignificantBits = uuid.getLeastSignificantBits();
         String encode = Base62.encode(Math.abs(leastSignificantBits));
         if (encode.length() > 7) {
-            return supabaseUrl + "/" + encode.substring(0, 7);
+            return encode.substring(0, 7);
         } else {
             // 7글자보다 짧은 경우 앞에 'Z'을 추가하여 7글자로 맞춤
-            return supabaseUrl + "/" + String.format("%7s", encode).replace(' ', 'Z');
+            return String.format("%7s", encode).replace(' ', 'Z');
         }
     }
 }
