@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
 
-<head th:fragment="login_header">
+<head th:fragment="login_header(title_name)">
     <th:block th:replace="~{common :: common_header}"></th:block>
-    <title>Login - Lion Korea</title>
+    <title th:text="${title_name} + ' - Lion Korea'">Login - Lion Korea</title>
 </head>
 
 <head th:fragment="main_header(title_name)">
