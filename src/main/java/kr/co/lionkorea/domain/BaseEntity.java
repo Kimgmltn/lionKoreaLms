@@ -24,16 +24,16 @@ import java.time.LocalDateTime;
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 public class BaseEntity {
     @CreatedDate
-    @Column(name = "created_date", updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdDate;
     @LastModifiedDate
-    @Column(name="updated_date")
+    @Column(name="updated_at")
     private LocalDateTime updatedDate;
 
     @CreatedBy
     @Column(name="created_by", updatable = false)
-    private String createdBy;
+    private Long createdBy;
     @LastModifiedBy
     @Column(name="updated_by")
-    private String updatedBy;
+    private Long updatedBy;
 }
