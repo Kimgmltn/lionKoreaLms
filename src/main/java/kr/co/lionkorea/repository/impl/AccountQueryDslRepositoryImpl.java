@@ -20,7 +20,7 @@ public class AccountQueryDslRepositoryImpl implements AccountQueryDslRepository 
     @Override
     public List<FindMemberByAccountResponse> findByMemberIdWithAccount(Long memberId) {
         return query
-                .select(Projections.fields(FindMemberByAccountResponse.class,
+                .selectDistinct(Projections.fields(FindMemberByAccountResponse.class,
                         account.id.as("accountId")
                         , roles.roleName.as("role")
                         , account.useYn

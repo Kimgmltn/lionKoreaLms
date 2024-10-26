@@ -78,7 +78,7 @@ const renderMember = async ()=> {
 
 const renderAssignedId = async ()=> {
     const memberId = getMemberId();
-    const response = await get(`/api/members/${memberId}/detail`);
+    const response = await get(`/api/members/${memberId}/accounts`);
 
     if(response.ok)
     {
