@@ -1,5 +1,7 @@
 package kr.co.lionkorea.dto.response;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import kr.co.lionkorea.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -15,11 +17,15 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class FindMemberByAccountResponse {
     private Long accountId;
-    private Role role;
+    private String loginId;
+    @JsonIgnore
+    private Role role; // Enum값
+    private String roleEng; // admin, translator
+    private String roleKor; // 관리자, 번역가
     private Boolean useYn;
     private Boolean passwordChangeYn;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime joinDate;
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd")
     private LocalDateTime expireDate;
 }

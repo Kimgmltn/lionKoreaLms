@@ -90,22 +90,44 @@ const renderAssignedId = async ()=> {
         tbody.innerHTML = '';
 
         if(assignData && assignData.length > 0){
-            assignData.forEach((data)=>{
+            assignData.forEach((data, index)=>{
                 const tr = document.createElement('tr');
                 tr.addEventListener('click',()=>{
                     //TODO: 상세 모달 보여주기
 
                 })
 
-                Object.values(data).forEach((value, index) => {
-                    const td = document.createElement('td');
-                    td.textContent = value;
+                const indexTd = document.createElement('td');
+                indexTd.textContent = assignData.length - index;
+                const accountIdTd = document.createElement('td');
+                accountIdTd.textContent = data.accountId;
+                accountIdTd.hidden = true;
+                const loginIdTd = document.createElement('td');
+                loginIdTd.textContent = data.loginId;
+                const roleKorTd = document.createElement('td');
+                roleKorTd.textContent = data.roleKor;
+                const roleEngTd = document.createElement('td');
+                roleEngTd.textContent = data.roleEng;
+                roleEngTd.hidden = true;
+                const useYnTd = document.createElement('td');
+                useYnTd.textContent = data.useYn ? 'Y' : 'N';
+                const passwordChangeYnTd = document.createElement('td');
+                passwordChangeYnTd.textContent = data.passwordChangeYn ? 'Y' : 'N';
+                const joinDateTd = document.createElement('td');
+                joinDateTd.textContent = data.joinDate;
+                const expireDateTd = document.createElement('td');
+                expireDateTd.textContent = data.expireDate;
 
-                    if(index === 0){
-                        td.hidden = true;
-                    }
-                    tr.appendChild(td);
-                })
+                tr.appendChild(indexTd)
+                tr.appendChild(accountIdTd)
+                tr.appendChild(loginIdTd)
+                tr.appendChild(roleKorTd)
+                tr.appendChild(roleEngTd)
+                tr.appendChild(useYnTd)
+                tr.appendChild(passwordChangeYnTd)
+                tr.appendChild(joinDateTd)
+                tr.appendChild(expireDateTd)
+
                 tbody.appendChild(tr);
             })
         }else{

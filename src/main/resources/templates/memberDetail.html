@@ -184,12 +184,13 @@
                                                 <th scope="col" style="width: 10%">ID</th>
                                                 <th scope="col" style="width: 6%">권한</th>
                                                 <th scope="col" style="width: 5%">사용여부</th>
+                                                <th scope="col" style="width: 5%">최초 비밀번호 변경여부</th>
                                                 <th scope="col" style="width: 7%">가입일</th>
-<!--                                                <th scope="col" style="width: 7%">만료일</th>-->
+                                                <th scope="col" style="width: 7%">만료일</th>
                                             </tr>
                                             </thead>
                                             <tbody class="table-group-divider h5" th:remove="all-but-first">
-                                                <tr>
+                                                <tr id="noAssignLoginId">
                                                     <td colspan="100%" class="text-center">발급된 LoginId가 없습니다.</td>
                                                 </tr>
                                                 <tr>
@@ -197,16 +198,18 @@
                                                     <td>email</td>
                                                     <td>번역가</td>
                                                     <td>Y</td>
+                                                    <td>Y</td>
                                                     <td>2024-09-11</td>
-<!--                                                    <td>2999-12-31</td>-->
+                                                    <td>2999-12-31</td>
                                                 </tr>
                                                 <tr>
                                                     <td>2</td>
                                                     <td>email2</td>
                                                     <td>관리자</td>
                                                     <td>Y</td>
+                                                    <td>Y</td>
                                                     <td>2024-09-11</td>
-<!--                                                    <td>2999-12-31</td>-->
+                                                    <td>2999-12-31</td>
                                                 </tr>
                                             </tbody>
                                         </table>

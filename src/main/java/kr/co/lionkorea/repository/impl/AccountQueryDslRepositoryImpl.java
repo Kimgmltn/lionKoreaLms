@@ -22,6 +22,7 @@ public class AccountQueryDslRepositoryImpl implements AccountQueryDslRepository 
         return query
                 .selectDistinct(Projections.fields(FindMemberByAccountResponse.class,
                         account.id.as("accountId")
+                        , account.loginId
                         , roles.roleName.as("role")
                         , account.useYn
                         , account.expireDate
@@ -30,9 +31,10 @@ public class AccountQueryDslRepositoryImpl implements AccountQueryDslRepository 
                         , account.randomPasswordChangeYn.as("passwordChangeYn")
                 ))
                 .from(account)
-                .innerJoin(account.accountRoles, accountRole).fetchJoin()
-                .innerJoin(accountRole.roles, roles).fetchJoin()
+                .innerJoin(account.accountRoles, accountRole)
+                .innerJoin(accountRole.roles, roles)
                 .where(account.member.id.eq(memberId))
+                .orderBy(account.id.desc())
                 .fetch();
     }
 

@@ -152,7 +152,12 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public List<FindMemberByAccountResponse> findMemberAccount(Long memberId) {
-        return accountRepository.findByMemberIdWithAccount(memberId);
+        List<FindMemberByAccountResponse> list = accountRepository.findByMemberIdWithAccount(memberId);
+        list.forEach(dto -> {
+            dto.setRoleKor(dto.getRole().getKoreanName());
+            dto.setRoleEng(dto.getRole().getEnglishName());
+        });
+        return list;
     }
 
     @Override
