@@ -12,4 +12,5 @@ import lombok.Setter;
 public class GrantNewAccountResponse {
     private String loginId;
     private String password;
+    private String result;
 }

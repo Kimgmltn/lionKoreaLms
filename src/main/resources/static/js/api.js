@@ -1,6 +1,6 @@
 // api.js
 
-const EXCLUDE_URL_LIST = ['/api/auth/login']
+const EXCLUDE_URL_LIST = ['/api/auth/login', '/api/members/*/valid']
 let isRefreshing = false; // Refresh 진행 여부 플래그
 let refreshSubscribers = []; // 대기 중인 요청을 저장하는 배열
 
@@ -13,6 +13,14 @@ const addRefreshSubscriber = (callback) => {
     refreshSubscribers.push(callback);
 }
 
+const wildcardToRegex = (pattern) => {
+    return new RegExp('^' + pattern.replace(/\*/g, '[a-zA-Z0-9]+') + '$');
+}
+
+const isExcludedUrl = (url) => {
+    return EXCLUDE_URL_LIST.some(pattern => wildcardToRegex(pattern).test(url));
+}
+
 const fetchWithAuth = async (url, options = {}) => {
 
     const accessToken = sessionStorage.getItem('access');
@@ -21,7 +29,7 @@ const fetchWithAuth = async (url, options = {}) => {
         console.log('환경에서 실행됨')
         return;
     }
-    if(!accessToken && !url.includes(EXCLUDE_URL_LIST)){
+    if(!accessToken && !isExcludedUrl(url)){
         window.location.href = '/login';
         return Promise.reject(new Error('No JWT token found. Redirecting to login.'));
     }

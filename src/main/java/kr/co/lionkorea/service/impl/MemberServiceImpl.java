@@ -1,9 +1,6 @@
 package kr.co.lionkorea.service.impl;
 
-import kr.co.lionkorea.domain.Account;
-import kr.co.lionkorea.domain.AccountRole;
-import kr.co.lionkorea.domain.Member;
-import kr.co.lionkorea.domain.Roles;
+import kr.co.lionkorea.domain.*;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
@@ -16,6 +13,7 @@ import kr.co.lionkorea.exception.MemberException;
 import kr.co.lionkorea.repository.AccountRepository;
 import kr.co.lionkorea.repository.MemberRepository;
 import kr.co.lionkorea.repository.RolesRepository;
+import kr.co.lionkorea.repository.ShortUrlAccountMapRepository;
 import kr.co.lionkorea.service.EmailService;
 import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.service.RedisService;
@@ -32,7 +30,9 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -49,6 +49,7 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder encoder;
     private final RedisService redisService;
     private final EmailService emailService;
+    private final ShortUrlAccountMapRepository shortUrlAccountMapRepository;
 
     @Value("${server.host}")
     private String host;
@@ -114,9 +115,8 @@ public class MemberServiceImpl implements MemberService {
         if(!request.getRole().equals("super_admin")){
             if (StringUtils.hasText(request.getTo())) {
                 // shortUrl 생성 후 Redis에 저장
-                String value = String.valueOf(memberId);
                 String key = createShortUrl();
-                redisService.save(key, value, 30L);
+                shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, memberId));
 
                 String subject = "비밀변호 변경 링크입니다.";
                 String shortUrl = host + "/password/" + key;
@@ -125,7 +125,7 @@ public class MemberServiceImpl implements MemberService {
             }
         }
         
-        return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword);
+        return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword, "발급되었습니다.");
     }
 
     @Override
@@ -170,11 +170,13 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     public DecodeShortUrlResponse decodeShortUrl(String shortUrl) {
-        if(!redisService.hasKey(shortUrl)){
+        LocalDateTime localDateTime = LocalDateTime.now().minusMinutes(30L);
+        Optional<ShortUrlAccountMap> entity = shortUrlAccountMapRepository.findByShortUrlAndCreatedDateAfter(shortUrl, localDateTime);
+        if(entity.isEmpty()){
             throw new MemberException("존재하지 않거나, 만료된 url입니다.\n 관리자에게 문의해 주세요.");
         }
-        String value = redisService.getValue(shortUrl);
-        return new DecodeShortUrlResponse(Long.parseLong(value));
+        Long accountId = entity.get().getAccountId();
+        return new DecodeShortUrlResponse(accountId);
     }
 
     private String getRandomPassword(){

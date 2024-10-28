@@ -125,15 +125,6 @@ const renderAssignedId = async ()=> {
 
                 tbody.appendChild(tr);
             })
-        }else{
-            const tr = document.createElement('tr');
-            const td = document.createElement('td');
-
-            td.classList.add('text-center')
-            td.setAttribute('colspan', '100');
-            td.textContent = '발급된 LoginId가 없습니다.'
-            tr.appendChild(td);
-            tbody.appendChild(tr);
         }
     }
     else if(response.status === 404)

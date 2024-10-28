@@ -23,6 +23,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.util.matcher.RequestMatcher;
 
 import java.util.Arrays;
 
@@ -61,7 +62,7 @@ public class SecurityConfig {
         loginFilter.setFilterProcessesUrl("/api/auth/login");
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth
-                        .requestMatchers("/api/auth/login", "/api/auth/reissue", "/api/members/password/*").permitAll()
+                        .requestMatchers("/api/auth/login", "/api/auth/reissue", "/api/members/*/valid").permitAll()
                         .requestMatchers("/api/members/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/api/**").authenticated()
 //                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**", "/").permitAll()

@@ -1,7 +1,6 @@
 import {get} from './api.js'
 import {createConfirmModal} from "./common.js";
 
-//
 let memberId;
 document.addEventListener('DOMContentLoaded', () => {
     checkValidUrl()
@@ -31,3 +30,4 @@ const getKey = () => {
     const pathname = window.location.pathname;
     return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
+

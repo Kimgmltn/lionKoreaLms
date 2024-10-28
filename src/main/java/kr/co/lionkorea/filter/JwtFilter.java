@@ -102,6 +102,12 @@ public class JwtFilter extends OncePerRequestFilter {
             return;
         }
 
+        if(requestURI.startsWith("/api/members/") && requestURI.endsWith("/valid")){
+            log.info("/api/members/*/valid request");
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         if(requestURI.startsWith("/api/")){
             String accessToken = request.getHeader("access");
             if(accessToken == null){
