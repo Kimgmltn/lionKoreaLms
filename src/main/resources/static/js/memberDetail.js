@@ -17,32 +17,11 @@ const genderTags = document.querySelectorAll('input[name="gender"]');
 const saveButtonSet = document.getElementById('saveButtonSet');
 const changeButtonSet = document.getElementById('updateButtonSet');
 
-// ID 발급 모달 창
-const assignIdTag = document.getElementById('assignIdModal')
-const assignIdModal = new bootstrap.Modal(assignIdTag,{
-    backdrop: 'static',
-    keyboard: true
-})
-const inputLoginIdTag = document.getElementById('inputLoginId')
-const roleTags = document.querySelectorAll('input[name="role"]')
-const inputUseYnTag = document.getElementById('inputUseYn')
-
 document.addEventListener('DOMContentLoaded', ()=>{
     if(window.location.host.includes('localhost:63342')){
         return;
     }
     renderMember();
-    renderAssignedId();
-})
-
-// ID 발급 모달 닫힐 시 초기화
-assignIdTag.addEventListener('hide.bs.modal', () => {
-    document.getElementById('assignIdForm').reset();
-    inputLoginIdTag.disable = false;
-    roleTags.forEach(role => {
-        role.disable = false;
-    })
-    inputUseYnTag.disable = false;
 })
 
 // memberId 획득
@@ -74,97 +53,6 @@ const renderMember = async ()=> {
     else{
 
     }
-}
-
-const renderAssignedId = async ()=> {
-    const memberId = getMemberId();
-    const response = await get(`/api/members/${memberId}/accounts`);
-
-    if(response.ok)
-    {
-        document.getElementById('noAssignLoginId').hidden = true;
-        const assignData = await response.json();
-
-        // tbody 초기화
-        const tbody = document.querySelector('#assignLoginIdTable tbody');
-        tbody.innerHTML = '';
-
-        if(assignData && assignData.length > 0){
-            assignData.forEach((data, index)=>{
-                const tr = document.createElement('tr');
-                tr.addEventListener('click',()=>{
-                    //TODO: 상세 모달 보여주기
-
-                })
-
-                const indexTd = document.createElement('td');
-                indexTd.textContent = assignData.length - index;
-                const accountIdTd = document.createElement('td');
-                accountIdTd.textContent = data.accountId;
-                accountIdTd.hidden = true;
-                const loginIdTd = document.createElement('td');
-                loginIdTd.textContent = data.loginId;
-                const roleKorTd = document.createElement('td');
-                roleKorTd.textContent = data.roleKor;
-                const roleEngTd = document.createElement('td');
-                roleEngTd.textContent = data.roleEng;
-                roleEngTd.hidden = true;
-                const useYnTd = document.createElement('td');
-                useYnTd.textContent = data.useYn ? 'Y' : 'N';
-                const passwordChangeYnTd = document.createElement('td');
-                passwordChangeYnTd.textContent = data.passwordChangeYn ? 'Y' : 'N';
-                const joinDateTd = document.createElement('td');
-                joinDateTd.textContent = data.joinDate;
-                const expireDateTd = document.createElement('td');
-                expireDateTd.textContent = data.expireDate;
-
-                tr.appendChild(indexTd)
-                tr.appendChild(accountIdTd)
-                tr.appendChild(loginIdTd)
-                tr.appendChild(roleKorTd)
-                tr.appendChild(roleEngTd)
-                tr.appendChild(useYnTd)
-                tr.appendChild(passwordChangeYnTd)
-                tr.appendChild(joinDateTd)
-                tr.appendChild(expireDateTd)
-
-                tbody.appendChild(tr);
-            })
-        }else{
-            const tr = document.createElement('tr');
-            const td = document.createElement('td');
-
-            td.classList.add('text-center')
-            td.setAttribute('colspan', '100');
-            td.textContent = '발급된 LoginId가 없습니다.'
-            tr.appendChild(td);
-            tbody.appendChild(tr);
-        }
-    }
-    else if(response.status === 404)
-    {
-        const errorData = await response.json();
-        createConfirmModal({
-            title: errorData.message
-        }, function(){
-            window.location.href = '/members';
-        });
-    }
-    else{
-
-    }
-}
-
-const setAssignData = (data) =>
-{
-    //TODO: 데이터 정보 입히기
-    inputLoginIdTag.value = data.memberName || '';
-    roleTags.forEach(radio => {
-        if (radio.value === data.role) {
-            radio.checked = true;
-        }
-    });
-    inputUseYnTag.value = data.useYn || false
 }
 
 const setInputValue = (data) =>
@@ -285,40 +173,3 @@ document.getElementById('updateForm').addEventListener('submit', async function(
         alert('등록 실패: ' + error.message);
     }
 });
-
-// ID 발급 모달창 보여주기
-document.getElementById('assignBtn').addEventListener('click', (event)=>{
-    event.preventDefault();
-    assignIdModal.show();
-})
-
-// ID 신규 발급
-document.getElementById('assignIdForm').addEventListener('submit', async (event) => {
-    event.preventDefault();
-
-    const memberId = getMemberId();
-
-    const formData = new FormData(event.target);
-    const request = {
-        loginId: formData.get('loginId').trim(),
-        role: formData.get('role'),
-        memberId: memberId,
-        useYn: !!formData.get('useYn'),
-        to: inputEmailTag.value
-    };
-
-    const response = await post('/api/members/newAccount', request)
-    if (response.ok) {
-        const resultData = await response.json();
-        createConfirmModal({
-            title: resultData.result
-        }, assignIdModal.hide(), 
-            renderAssignedId()
-            );
-    }else{
-        const errorData = await response.json();
-        createConfirmModal({
-            title: errorData.message
-        }, null);
-    }
-})

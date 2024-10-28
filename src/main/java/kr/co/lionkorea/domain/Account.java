@@ -2,6 +2,7 @@ package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
 import lombok.*;
 import lombok.experimental.SuperBuilder;
 
@@ -63,5 +64,9 @@ public class Account extends BaseEntity{
 
     public void removeRole(Roles roles) {
         getAccountRoles().removeIf(accountRole -> accountRole.getRoles().equals(roles));
+    }
+
+    public void changeUseYn(SaveAccountDetailRequest request) {
+        this.useYn = request.isUseYn();
     }
 }

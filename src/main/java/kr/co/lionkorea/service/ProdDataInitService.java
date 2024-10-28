@@ -47,7 +47,7 @@ public class ProdDataInitService {
             log.info("Member 데이터 삽입");
             String loginId = "superAdmin";
             SaveMemberResponse superAdminMember = memberService.saveMember(new SaveMemberRequest("최상위 관리자", Gender.MALE, "", "", ""));
-            memberService.grantNewAccount(new GrantNewAccountRequest(loginId, superAdminMember.getMemberId(), "super_admin"));
+            memberService.grantNewAccount(superAdminMember.getMemberId(), new GrantNewAccountRequest(loginId, "super_admin"));
             log.info("Member 데이터 삽입 끝");
         }
 

@@ -14,26 +14,22 @@ public class GrantNewAccountRequest {
     private String loginId;
     private String password;
     private String role;
-    private Long memberId;
     private String expireDate;
     private boolean useYn;
     private String to;
 
-    public GrantNewAccountRequest(String loginId, Long memberId) {
+    public GrantNewAccountRequest(String loginId) {
         this.loginId = loginId;
-        this.memberId = memberId;
     }
 
-    public GrantNewAccountRequest(String loginId, Long memberId, String role) {
+    public GrantNewAccountRequest(String loginId, String role) {
         this.loginId = loginId;
-        this.memberId = memberId;
         this.role = role;
         this.useYn = true;
     }
 
-    public GrantNewAccountRequest(String loginId, Long memberId, String role, boolean useYn) {
+    public GrantNewAccountRequest(String loginId, String role, boolean useYn) {
         this.loginId = loginId;
-        this.memberId = memberId;
         this.role = role;
         this.useYn = useYn;
     }

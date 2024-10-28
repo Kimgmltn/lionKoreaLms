@@ -67,15 +67,15 @@ public class DataInitializationConfig {
             log.info("Member 데이터 삽입");
             String loginId = "admin";
             SaveMemberResponse superAdminMember = memberService.saveMember(new SaveMemberRequest("최상위 관리자", Gender.MALE, "", "", ""));
-            memberService.grantNewAccount(new GrantNewAccountRequest("superAdmin", superAdminMember.getMemberId(), "super_admin"));
+            memberService.grantNewAccount(superAdminMember.getMemberId(), new GrantNewAccountRequest("superAdmin", "super_admin"));
             for (int i = 0; i < 50; i++) {
                 String name = "회원" + i;
                 SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MALE, "", "", ""));
                 if(i < 25){
-                    memberService.grantNewAccount(new GrantNewAccountRequest(loginId + i, saveMemberResponse.getMemberId(), "admin"));
+                    memberService.grantNewAccount(saveMemberResponse.getMemberId(), new GrantNewAccountRequest(loginId + i, "admin"));
                 }
                 else{
-                    memberService.grantNewAccount(new GrantNewAccountRequest(loginId + i, saveMemberResponse.getMemberId(), "translator"));
+                    memberService.grantNewAccount(saveMemberResponse.getMemberId(), new GrantNewAccountRequest(loginId + i, "translator"));
                 }
             }
             log.info("Member 데이터 삽입 끝");

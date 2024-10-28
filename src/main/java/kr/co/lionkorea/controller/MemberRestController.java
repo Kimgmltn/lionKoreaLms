@@ -2,6 +2,7 @@ package kr.co.lionkorea.controller;
 
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.MemberService;
@@ -44,9 +45,9 @@ public class MemberRestController {
 //        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
 //    }
 
-    @PostMapping("/newAccount")
-    public ResponseEntity<GrantNewAccountResponse> grantNewAccount(@RequestBody GrantNewAccountRequest request){
-        return ResponseEntity.ok(memberService.grantNewAccount(request));
+    @PostMapping("/{memberId}/newAccount")
+    public ResponseEntity<GrantNewAccountResponse> grantNewAccount(@PathVariable Long memberId, @RequestBody GrantNewAccountRequest request){
+        return ResponseEntity.ok(memberService.grantNewAccount(memberId, request));
 
     }
 
@@ -55,8 +56,13 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.findMemberAccount(memberId));
     }
 
-    @PatchMapping("/{memberId}/updatePassword")
-    public ResponseEntity<?> updatePassword(@PathVariable(value = "memberId") Long memberId){
+    @PatchMapping("/{memberId}/accounts/{accountId}")
+    public ResponseEntity<SaveAccountDetailResponse> updateAccountDetail(@PathVariable Long memberId, @PathVariable Long accountId, @RequestBody SaveAccountDetailRequest request){
+        return ResponseEntity.ok(memberService.updateAccountDetail(memberId, accountId, request));
+    }
+
+    @PatchMapping("/{memberId}/accounts/{accountId}/password")
+    public ResponseEntity<?> updatePassword(@PathVariable(value = "memberId") Long memberId, @PathVariable Long accountId){
         return ResponseEntity.ok().build();
     }
 

@@ -238,14 +238,14 @@
                                                     <tr>
                                                         <td>권한</td>
                                                         <td>
-                                                            <div class="form-floating">
+                                                            <div class="form-floating" id="crateRoleTag">
                                                                 <div class="form-check-inline col-lg-4">
-                                                                    <input class="form-check-input" name="role" type="radio" id="admin" value="ADMIN" required checked/>
-                                                                    <label class="form-check-label" for="admin">관리자</label>
+                                                                    <input class="form-check-input" name="role" type="radio" value="admin" id="creatAdmin" required checked/>
+                                                                    <label class="form-check-label" for="creatAdmin">관리자</label>
                                                                 </div>
                                                                 <div class="form-check-inline col-lg-4">
-                                                                    <input class="form-check-input" name="role" type="radio" id="translator" value="TRANSLATOR" required/>
-                                                                    <label class="form-check-label" for="translator">번역가</label>
+                                                                    <input class="form-check-input" name="role" type="radio" value="translator" id="createTranslator" required/>
+                                                                    <label class="form-check-label" for="createTranslator">번역가</label>
                                                                 </div>
                                                             </div>
                                                         </td>
@@ -269,6 +269,69 @@
                                                 <div class="modal-footer">
                                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                                     <button type="submit" class="btn btn-primary" id="submitFormButton">저장</button>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            <div class="modal fade show" id="assignIdUpdateModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">세부정보</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <form id="assignIdUpdateForm">
+                                                <input type="hidden" name="accountId" id="inputAccountId">
+                                                <table class="table">
+                                                    <tbody>
+                                                    <tr>
+                                                        <td>Login Id</td>
+                                                        <td>
+                                                            <input type="text" class="form-control" id="inputUpdateLoginId" name="loginId" disabled>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>권한</td>
+                                                        <td>
+                                                            <div class="form-floating" id="updateRoleTag">
+                                                                <div class="form-check-inline col-lg-4">
+                                                                    <input class="form-check-input" name="role" type="radio" value="admin" id="updateAdmin" required disabled/>
+                                                                    <label class="form-check-label" for="updateAdmin">관리자</label>
+                                                                </div>
+                                                                <div class="form-check-inline col-lg-4">
+                                                                    <input class="form-check-input" name="role" type="radio" value="translator" id="updateTranslator" required disabled/>
+                                                                    <label class="form-check-label" for="updateTranslator">번역가</label>
+                                                                </div>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>사용여부</td>
+                                                        <td>
+                                                            <div class="form-check form-switch">
+                                                                <input class="form-check-input" type="checkbox" id="inputUpdateUseYn" name="useYn" checked>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    <tr>
+                                                        <td>비밀번호 재발급</td>
+                                                        <td>
+                                                            <div>
+                                                                <input type="text" class="form-control" id="inputUpdatePasswordChangeYn" disabled>
+                                                                <button class="btn btn-primary" type="button" id="changePasswordButton">재발급</button>
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                                    <button type="submit" class="btn btn-primary" id="submitUpdateButton">수정</button>
                                                 </div>
                                             </form>
                                         </div>
@@ -304,6 +367,7 @@
             </script>
         </th:block>
         <script src="../static/js/memberDetail.js" th:src="@{/js/memberDetail.js}" type="module"></script>
+        <script src="../static/js/assignDetail.js" th:src="@{/js/assignDetail.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>

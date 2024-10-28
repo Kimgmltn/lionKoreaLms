@@ -7,6 +7,7 @@ import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.enums.Role;
@@ -31,7 +32,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
 import java.security.SecureRandom;
-import java.util.Base64;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -89,7 +89,7 @@ public class MemberServiceImpl implements MemberService {
 
     @Override
     @Transactional
-    public GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request) {
+    public GrantNewAccountResponse grantNewAccount(Long memberId, GrantNewAccountRequest request) {
 
         boolean isExistsLoginId = isExistsLoginId(request.getLoginId());
         if (isExistsLoginId) {
@@ -103,7 +103,6 @@ public class MemberServiceImpl implements MemberService {
 
         log.info("{}의 password : {}", request.getLoginId(), randomPassword);
 
-        Long memberId = request.getMemberId();
         request.setPassword(encoder.encode(randomPassword));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
         Role role = Role.valueOf(("role_" + request.getRole()).toUpperCase());
@@ -158,6 +157,15 @@ public class MemberServiceImpl implements MemberService {
             dto.setRoleEng(dto.getRole().getEnglishName());
         });
         return list;
+    }
+
+    @Override
+    @Transactional
+    public SaveAccountDetailResponse updateAccountDetail(Long memberId, Long accountId, SaveAccountDetailRequest request) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AccountException(HttpStatus.NOT_FOUND, "존재하지 않은 LoginId입니다."));
+        account.changeUseYn(request);
+        accountRepository.save(account);
+        return new SaveAccountDetailResponse("저장되었습니다.") ;
     }
 
     @Override

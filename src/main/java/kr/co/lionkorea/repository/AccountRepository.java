@@ -3,7 +3,6 @@ package kr.co.lionkorea.repository;
 import kr.co.lionkorea.domain.Account;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import java.util.List;
 import java.util.Optional;
 
 public interface AccountRepository extends JpaRepository<Account, Long>, AccountQueryDslRepository {
@@ -12,4 +11,7 @@ public interface AccountRepository extends JpaRepository<Account, Long>, Account
     Optional<Account> findByLoginIdAndUseYnIsTrue(String loginId);
 
     Account findByLoginIdAndPassword(String loginId, String password);
+
+
+    Optional<Account> findById(Long accountId);
 }

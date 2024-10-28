@@ -3,6 +3,7 @@ package kr.co.lionkorea.service;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.FindMembersRequest;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.*;
 import org.springframework.data.domain.Pageable;
@@ -17,7 +18,7 @@ public interface MemberService {
 
     void saveMemberAll(List<SaveMemberRequest> requests);
 
-    GrantNewAccountResponse grantNewAccount(GrantNewAccountRequest request);
+    GrantNewAccountResponse grantNewAccount(Long memberId, GrantNewAccountRequest request);
 
     boolean isExistsLoginId(String loginId);
 
@@ -30,4 +31,6 @@ public interface MemberService {
     List<FindMemberByAccountResponse> findMemberAccount(Long memberId);
 
     DecodeShortUrlResponse decodeShortUrl(String shortUrl);
+
+    SaveAccountDetailResponse updateAccountDetail(Long memberId, Long accountId, SaveAccountDetailRequest request);
 }
