@@ -1,6 +1,6 @@
 // api.js
 
-const EXCLUDE_URL_LIST = ['/api/auth/login', '/api/members/*/valid']
+const EXCLUDE_URL_LIST = ['/api/auth/login', '/api/members/*/valid', '/api/members/accounts/*/password']
 let isRefreshing = false; // Refresh 진행 여부 플래그
 let refreshSubscribers = []; // 대기 중인 요청을 저장하는 배열
 

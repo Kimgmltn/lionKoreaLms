@@ -1,9 +1,6 @@
 package kr.co.lionkorea.controller;
 
-import kr.co.lionkorea.dto.request.FindMembersRequest;
-import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
-import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
-import kr.co.lionkorea.dto.request.SaveMemberRequest;
+import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -61,9 +58,9 @@ public class MemberRestController {
         return ResponseEntity.ok(memberService.updateAccountDetail(memberId, accountId, request));
     }
 
-    @PatchMapping("/{memberId}/accounts/{accountId}/password")
-    public ResponseEntity<?> updatePassword(@PathVariable(value = "memberId") Long memberId, @PathVariable Long accountId){
-        return ResponseEntity.ok().build();
+    @PatchMapping("/accounts/{accountId}/password")
+    public ResponseEntity<SavePasswordResponse> updatePassword(@PathVariable Long accountId, @RequestBody SavePasswordRequest request){
+        return ResponseEntity.ok(memberService.updatePassword(accountId, request));
     }
 
     @GetMapping("/{shortUrl}/valid")

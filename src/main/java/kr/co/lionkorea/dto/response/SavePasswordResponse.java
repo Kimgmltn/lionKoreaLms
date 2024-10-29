@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DecodeShortUrlResponse {
-    private Long accountId;
+public class SavePasswordResponse {
+    private String result;
 }

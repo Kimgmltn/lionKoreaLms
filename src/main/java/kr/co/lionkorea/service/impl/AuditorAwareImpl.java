@@ -18,6 +18,11 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
             return Optional.empty();
         }
 
-        return Optional.of(((CustomUserDetails) authentication.getPrincipal()).getMemberId());
+        Object principal = authentication.getPrincipal();
+        if(principal instanceof CustomUserDetails) {
+            return Optional.of(((CustomUserDetails) principal).getMemberId());
+        }else{
+            return Optional.empty();
+        }
     }
 }

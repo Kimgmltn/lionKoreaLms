@@ -69,4 +69,8 @@ public class Account extends BaseEntity{
     public void changeUseYn(SaveAccountDetailRequest request) {
         this.useYn = request.isUseYn();
     }
+
+    public void changePassword(String password) {
+        this.password = password;
+    }
 }

@@ -1,13 +1,11 @@
 package kr.co.lionkorea.service;
 
 import kr.co.lionkorea.dto.MemberDetails;
-import kr.co.lionkorea.dto.request.FindMembersRequest;
-import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
-import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
-import kr.co.lionkorea.dto.request.SaveMemberRequest;
+import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -33,4 +31,9 @@ public interface MemberService {
     DecodeShortUrlResponse decodeShortUrl(String shortUrl);
 
     SaveAccountDetailResponse updateAccountDetail(Long memberId, Long accountId, SaveAccountDetailRequest request);
+
+    SavePasswordResponse updatePassword(Long accountId, SavePasswordRequest request);
+
+    @Transactional
+    void deleteShortUrlAccountIdMap(Long accountId);
 }

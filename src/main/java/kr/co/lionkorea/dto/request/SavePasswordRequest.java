@@ -1,4 +1,4 @@
-package kr.co.lionkorea.dto.response;
+package kr.co.lionkorea.dto.request;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class DecodeShortUrlResponse {
-    private Long accountId;
+public class SavePasswordRequest {
+    private String password;
 }

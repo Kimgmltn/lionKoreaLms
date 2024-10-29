@@ -2,10 +2,7 @@ package kr.co.lionkorea.service.impl;
 
 import kr.co.lionkorea.domain.*;
 import kr.co.lionkorea.dto.MemberDetails;
-import kr.co.lionkorea.dto.request.FindMembersRequest;
-import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
-import kr.co.lionkorea.dto.request.SaveAccountDetailRequest;
-import kr.co.lionkorea.dto.request.SaveMemberRequest;
+import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.exception.AccountException;
@@ -16,7 +13,6 @@ import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.repository.ShortUrlAccountMapRepository;
 import kr.co.lionkorea.service.EmailService;
 import kr.co.lionkorea.service.MemberService;
-import kr.co.lionkorea.service.RedisService;
 import kr.co.lionkorea.utils.Base62;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -47,7 +43,6 @@ public class MemberServiceImpl implements MemberService {
     private final AccountRepository accountRepository;
     private final RolesRepository rolesRepository;
     private final BCryptPasswordEncoder encoder;
-    private final RedisService redisService;
     private final EmailService emailService;
     private final ShortUrlAccountMapRepository shortUrlAccountMapRepository;
 
@@ -102,7 +97,7 @@ public class MemberServiceImpl implements MemberService {
             randomPassword = "superAdmin1234";
         }
 
-        log.info("{}의 password : {}", request.getLoginId(), randomPassword);
+        log.info("{}의 random password : {}", request.getLoginId(), randomPassword);
 
         request.setPassword(encoder.encode(randomPassword));
         Member member = memberRepository.findById(memberId).orElseThrow(() -> new MemberException(HttpStatus.NOT_FOUND, "존재하지 않은 회원입니다."));
@@ -177,6 +172,24 @@ public class MemberServiceImpl implements MemberService {
         }
         Long accountId = entity.get().getAccountId();
         return new DecodeShortUrlResponse(accountId);
+    }
+
+    @Override
+    @Transactional
+    public SavePasswordResponse updatePassword(Long accountId, SavePasswordRequest request) {
+        Account account = accountRepository.findById(accountId).orElseThrow(() -> new AccountException(HttpStatus.NOT_FOUND, "존재하지 않는 ID입니다."));
+        account.changePassword(encoder.encode(request.getPassword()));
+        accountRepository.save(account);
+
+        // 비밀번호가 변경되면 삭제
+        deleteShortUrlAccountIdMap(accountId);
+        return new SavePasswordResponse("변경되었습니다.");
+    }
+
+    @Override
+    @Transactional
+    public void deleteShortUrlAccountIdMap(Long accountId){
+        shortUrlAccountMapRepository.deleteByAccountId(accountId);
     }
 
     private String getRandomPassword(){

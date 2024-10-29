@@ -9,4 +9,6 @@ import java.util.Optional;
 
 public interface ShortUrlAccountMapRepository extends JpaRepository<ShortUrlAccountMap, Long> {
     Optional<ShortUrlAccountMap> findByShortUrlAndCreatedDateAfter(String shortUrl, LocalDateTime localDateTime);
+
+    void deleteByAccountId(Long accountId);
 }
