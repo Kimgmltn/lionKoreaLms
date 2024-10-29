@@ -11,6 +11,7 @@ import java.util.Optional;
 @Service
 public class AuditorAwareImpl implements AuditorAware<Long> {
 
+    private static final Long SYSTEM_ID = -1L;
     @Override
     public Optional<Long> getCurrentAuditor() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -22,7 +23,7 @@ public class AuditorAwareImpl implements AuditorAware<Long> {
         if(principal instanceof CustomUserDetails) {
             return Optional.of(((CustomUserDetails) principal).getMemberId());
         }else{
-            return Optional.empty();
+            return Optional.of(SYSTEM_ID);
         }
     }
 }
