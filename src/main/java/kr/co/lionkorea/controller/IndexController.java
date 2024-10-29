@@ -37,7 +37,8 @@ public class IndexController {
     public String memberSaveForm(){
         return "memberRegister";
     }
-    @GetMapping("/project")
+
+    @GetMapping("/projects")
     public String project(){
         return "project";
     }
