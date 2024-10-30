@@ -44,7 +44,8 @@ public class DataInitializationConfig {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project", "fa-diagram-project", null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/admin", "fa-diagram-project", null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/translator", "fa-diagram-project", null));
             menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
 //            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
@@ -59,9 +60,9 @@ public class DataInitializationConfig {
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L, 6L)));
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
 
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 2L, 3L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 3L, 4L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 3L, 4L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(2L)));
             log.info("Role-Menu 데이터 삽입 끝");
 
             log.info("Member 데이터 삽입");

@@ -16,21 +16,31 @@ spring:
           new_generator_mappings: false
       show-sql: false
   datasource:
-    url: jdbc:postgresql://aws-0-ap-northeast-2.pooler.supabase.com:6543/postgres
-    username: postgres.jljftvddfkqbvhraqgcr
+    url: ${DB_URL}
+    username: ${DB_USERNAME}
     driver-class-name: org.postgresql.Driver
+    password: ${DB_PASSWORD}
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+            required: true
 
   jwt:
-    secret: fkdldhszhfldkfmfdnlgksxhdgkqrhksfltjqltmfmfaksemsmswnddlek
+    secret: ${JWT_SECREATE_KEY}
 
   data:
     redis:
-      host: redis-19104.c340.ap-northeast-2-1.ec2.redns.redis-cloud.com
-      port: 19104
-      username: default
-      password: wAgkh0VGUECkrwLvj7UByVHi2d8A3iVC
+      host: ${REDIS_HOST}
+      port: ${REDIS_PORT}
+      username: ${REDIS_USERNAME}
+      password: ${REDIS_PASSWORD}
       ssl:
         enabled: true
-
-supabase:
-  url: https://jljftvddfkqbvhraqgcr.supabase.co
