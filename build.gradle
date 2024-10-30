@@ -32,7 +32,7 @@ dependencies {
     // mail 설정
     implementation 'org.springframework.boot:spring-boot-starter-mail:3.3.4'
     // mail 설정 끝
-    implementation 'org.postgresql:postgresql'
+//    implementation 'org.postgresql:postgresql'
     // Redis 설정
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     // Redis 설정 끝
@@ -50,8 +50,8 @@ dependencies {
     // querydsl 로그 보기
     implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     compileOnly 'org.projectlombok:lombok'
-//    runtimeOnly 'org.postgresql:postgresql'
-//    runtimeOnly 'com.h2database:h2'
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'com.h2database:h2'
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     testImplementation 'org.springframework.security:spring-security-test'
