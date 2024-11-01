@@ -38,9 +38,14 @@ public class IndexController {
         return "memberRegister";
     }
 
-    @GetMapping("/projects")
-    public String project(){
-        return "project";
+    @GetMapping("/projects/admin")
+    public String projectAdmin(){
+        return "project-admin";
+    }
+
+    @GetMapping("/projects/translator")
+    public String projectTranslator(){
+        return "project-translator";
     }
 
     @GetMapping("/dashboard")

@@ -1,4 +1,7 @@
 import { post } from './api.js';
+import {parseJWT} from "./common.js";
+
+const TRANSLATOR = 'ROLE_TRANSLATOR'
 
 document.getElementById('loginForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
@@ -25,7 +28,15 @@ document.getElementById('loginForm').addEventListener('submit', async function(e
         }
 
         // 로그인 성공 시 리다이렉트
-        window.location.href = '/project';
+
+        const obj = parseJWT(access);
+        const role = obj.payload.roles[0];
+        if(role === TRANSLATOR){
+            window.location.href = '/projects/translator';
+        }else {
+            window.location.href = '/projects/admin';
+        }
+
     } catch (error) {
         console.error('Error:', error);
 

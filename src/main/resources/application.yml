@@ -17,6 +17,10 @@ spring:
       show-sql: false
     database-platform: org.hibernate.dialect.PostgreSQLDialect
   datasource:
+    hikari:
+      maximum-pool-size: 10
+      data-source-properties:
+        cachePrepStmts: false
     url: ${DB_URL}
     username: ${DB_USERNAME}
     driver-class-name: org.postgresql.Driver

@@ -188,4 +188,29 @@ const renderPagination = (dom, pageData, renderFunction) => {
     paginationContainer.appendChild(nextButton);
 }
 
-export {createConfirmModal, inputOnlyNumber, renderPagination}
+const parseJWT = (token) => {
+    try {
+        // 토큰의 각 부분 분리 (헤더, 페이로드, 서명)
+        const [header, payload, signature] = token.split('.');
+
+        // Base64 디코딩
+        const decodeBase64 = (str) => JSON.parse(decodeURIComponent(atob(str).split('').map(function(c) {
+            return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+        }).join('')));
+
+        // 각 부분을 JSON으로 파싱
+        const headerJSON = decodeBase64(header);
+        const payloadJSON = decodeBase64(payload);
+
+        return {
+            header: headerJSON,
+            payload: payloadJSON,
+            signature: signature  // 서명은 그대로 유지
+        };
+    } catch (error) {
+        console.error("Invalid JWT token:", error);
+        return null;
+    }
+}
+
+export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT}
