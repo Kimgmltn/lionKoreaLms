@@ -39,16 +39,16 @@ jobs:
       run: ./gradlew clean build --exclude-task test
 
     - name: Deploy to Oracle Cloud
-      - if: success()
-        env:
-          SSH_SECREAT_KEY: ${{ secrets.SSH_SECREAT_KEY }}
-          SERVER_IP: ${{ secreats.SERVER_IP }}
-          SERVER_USERNAME: ${{ secreats.SERVER_USERNAME }}
-        run: | 
-          mkdir -p ~/.ssh
-          echo "${SSH_SECREAT_KEY}" > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh -o StrictHostKeyChecking=no $SEVER_USERNAME@$SERVER_IP 'bash -s' < deploy.sh
+      if: success()
+      env:
+        SSH_SECREAT_KEY: ${{ secrets.SSH_SECREAT_KEY }}
+        SERVER_IP: ${{ secreats.SERVER_IP }}
+        SERVER_USERNAME: ${{ secreats.SERVER_USERNAME }}
+      run: | 
+        mkdir -p ~/.ssh
+        echo "${SSH_SECREAT_KEY}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh -o StrictHostKeyChecking=no $SEVER_USERNAME@$SERVER_IP 'bash -s' < deploy.sh
     # NOTE: The Gradle Wrapper is the default and recommended way to run Gradle (https://docs.gradle.org/current/userguide/gradle_wrapper.html).
     # If your project does not have the Gradle Wrapper configured, you can use the following configuration to run Gradle with a specified version.
     #
