@@ -42,8 +42,8 @@ jobs:
       if: success()
       env:
         SSH_SECREAT_KEY: ${{ secrets.SSH_SECREAT_KEY }}
-        SERVER_IP: ${{ secreats.SERVER_IP }}
-        SERVER_USERNAME: ${{ secreats.SERVER_USERNAME }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
       run: | 
         mkdir -p ~/.ssh
         echo "${SSH_SECREAT_KEY}" > ~/.ssh/id_rsa
