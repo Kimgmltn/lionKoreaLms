@@ -16,7 +16,6 @@ on:
 env:
   SERVER_IP: ${{ secrets.SERVER_IP }}
   SERVER_USERNAME: ${{ secrets.SERVER_USERNAME }}
-  SSH_KEY: ${{ secrets.SSH_SECREAT_KEY }}
 
 jobs:
   build:
@@ -59,7 +58,7 @@ jobs:
 
       - name: Transfer JAR to Remote Server
         run: |
-          echo "$SSH_KEY" > private_key.pem
+          echo "${{ secrets.SSH_SECREAT_KEY }}" > private_key.pem
           chmod 600 private_key.pem
           
           scp -i private_key.pem -o StrictHostKeyChecking=no \
