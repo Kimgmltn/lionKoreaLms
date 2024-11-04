@@ -41,6 +41,10 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew clean build --exclude-task test
 
+    - name: Check JAR file location
+      run: |
+        ls -R build/
+
 
   deploy:
     runs-on: ubuntu-24.04
