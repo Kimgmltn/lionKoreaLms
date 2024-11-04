@@ -41,9 +41,11 @@ jobs:
     - name: Build with Gradle Wrapper
       run: ./gradlew clean build --exclude-task test
 
-    - name: Check JAR file location
-      run: |
-        ls -R build/
+    - name: Upload JAR as artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: jar-artifact
+          path: build/libs/*-SNAPSHOT.jar
 
 
   deploy:
@@ -53,6 +55,12 @@ jobs:
     steps:
       - name: Check out the code
         uses: actions/checkout@v4
+
+      - name: Download JAR artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: jar-artifact
+          path: build/libs
 
       - name: Find JAR file
         id: jar
