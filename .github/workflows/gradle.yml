@@ -42,7 +42,7 @@ jobs:
       run: ./gradlew clean build --exclude-task test
 
     - name: Upload JAR as artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: jar-artifact
         path: build/libs/*-SNAPSHOT.jar
