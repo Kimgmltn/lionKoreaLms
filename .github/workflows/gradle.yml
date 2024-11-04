@@ -57,8 +57,12 @@ jobs:
       - name: Find JAR file
         id: jar
         run: |
+          if [ ! -d build/libs ]; then
+            echo "Error: build/libs directory not found."
+            exit 1
+          fi
+          
           JAR_FILE=$(find build/libs -name "*-SNAPSHOT.jar" | head -n 1)
-          echo "JAR_FILE found at: $JAR_FILE"
           if [ -z "$JAR_FILE" ]; then
             echo "Error: JAR file not found."
             exit 1
