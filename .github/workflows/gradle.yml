@@ -53,7 +53,11 @@ jobs:
       - name: Find JAR file
         id: jar
         run: |
-          JAR_FILE=$(ls build/libs/lionKorea-*-SNAPSHOT.jar | head -n 1)
+          JAR_FILE=$(find build/libs -name "lionKorea-*-SNAPSHOT.jar" | head -n 1)
+          if [ -z "$JAR_FILE" ]; then
+            echo "Error: JAR file not found."
+            exit 1
+          fi
           echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
 
       - name: Transfer JAR to Remote Server
