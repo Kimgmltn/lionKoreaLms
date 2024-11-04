@@ -51,13 +51,19 @@ jobs:
       - name: Check out the code
         uses: actions/checkout@v4
 
+      - name: Find JAR file
+        id: jar
+        run: |
+          JAR_FILE=$(ls build/libs/lionKorea-*-SNAPSHOT.jar | head -n 1)
+          echo "JAR_FILE=$JAR_FILE" >> $GITHUB_ENV
+
       - name: Transfer JAR to Remote Server
         run: |
           echo "$SSH_KEY" > private_key.pem
           chmod 600 private_key.pem
           
           scp -i private_key.pem -o StrictHostKeyChecking=no \
-            ./build/libs/lionKorea-*-SNAPSHOT.jar \
+            $JAR_FILE \
             $SERVER_USERNAME@$SERVER_IP:/home/$SERVER_USERNAME/app/
 
       - name: Deploy Application on Remote Server
@@ -74,7 +80,7 @@ jobs:
             export REDIS_PORT=${{ secrets.REDIS_PORT }}
             export REDIS_USERNAME=${{ secrets.REDIS_USERNAME }}
           
-            pkill -f 'lionKorea-*-SNAPSHOT.jar' || true
+            ps aux | grep 'lionKorea-.*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
             nohup java -jar /home/$SERVER_USERNAME/app/lionKorea-*-SNAPSHOT.jar > /home/$SERVER_USERNAME/app/app.log 2>&1 &
           EOF
 
