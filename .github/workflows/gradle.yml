@@ -94,6 +94,7 @@ jobs:
       - name: Deploy Application on Remote Server
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
+            chmod +x /home/$SERVER_USERNAME/app/lionKorea-0.0.1-SNAPSHOT.jar
             ps aux | grep 'lionKorea-.*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
             nohup env \
               DB_URL="${{ secrets.DB_URL }}" \
