@@ -95,7 +95,8 @@ jobs:
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF          
             ps aux | grep 'lionKorea-.*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
-            nohup DB_URL="${{ secrets.DB_URL }}" \
+            nohup env \
+              DB_URL="${{ secrets.DB_URL }}" \
               DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
               DB_USERNAME="${{ secrets.DB_USERNAME }}" \
               JWT_SECREATE_KEY="${{ secrets.JWT_SECREATE_KEY }}" \
