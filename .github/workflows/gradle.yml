@@ -94,7 +94,7 @@ jobs:
       - name: Deploy Application on Remote Server
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
-            JAR_FILE=$(find /home/$SERVER_USERNAME/app -name "*-SNAPSHOT.jar" | head -n 1)
+            JAR_FILE_APP=$(find /home/$SERVER_USERNAME/app -name "*-SNAPSHOT.jar" | head -n 1)
             ps aux | grep 'lionKorea-.*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
             nohup env \
               DB_URL="${{ secrets.DB_URL }}" \
@@ -107,7 +107,7 @@ jobs:
               REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
               REDIS_PORT="${{ secrets.REDIS_PORT }}" \
               REDIS_USERNAME="${{ secrets.REDIS_USERNAME }}" \
-              java -jar $JAR_FILE > /home/$SERVER_USERNAME/app/app.log 2>&1 &
+              java -jar $JAR_FILE_APP > /home/$SERVER_USERNAME/app/app.log 2>&1 &
           EOF
 
       - name: Clean up
