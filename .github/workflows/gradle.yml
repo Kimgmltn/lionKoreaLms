@@ -93,20 +93,20 @@ jobs:
 
       - name: Deploy Application on Remote Server
         run: |
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
-            export DB_URL=${{ secrets.DB_URL }}
-            export DB_PASSWORD=${{ secrets.DB_URL }}
-            export DB_USERNAME=${{ secrets.DB_USERNAME }}
-            export JWT_SECREATE_KEY=${{ secrets.JWT_SECREATE_KEY }}
-            export MAIL_PASSWORD=${{ secrets.MAIL_PASSWORD }}
-            export MAIL_USERNAME=${{ secrets.MAIL_USERNAME }}
-            export REDIS_HOST=${{ secrets.REDIS_HOST }}
-            export REDIS_PASSWORD=${{ secrets.REDIS_PASSWORD }}
-            export REDIS_PORT=${{ secrets.REDIS_PORT }}
-            export REDIS_USERNAME=${{ secrets.REDIS_USERNAME }}
-          
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF          
             ps aux | grep 'lionKorea-.*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
-            nohup java -jar /home/$SERVER_USERNAME/app/lionKorea-*-SNAPSHOT.jar > /home/$SERVER_USERNAME/app/app.log 2>&1 &
+            nohup 
+              DB_URL="${{ secrets.DB_URL }}" \
+              DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
+              DB_USERNAME="${{ secrets.DB_USERNAME }}" \
+              JWT_SECREATE_KEY="${{ secrets.JWT_SECREATE_KEY }}" \
+              MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
+              MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
+              REDIS_HOST="${{ secrets.REDIS_HOST }}" \
+              REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
+              REDIS_PORT="${{ secrets.REDIS_PORT }}" \
+              REDIS_USERNAME="${{ secrets.REDIS_USERNAME }}" \
+              java -jar /home/$SERVER_USERNAME/app/lionKorea-*-SNAPSHOT.jar > /home/$SERVER_USERNAME/app/app.log 2>&1 &
           EOF
 
       - name: Clean up
