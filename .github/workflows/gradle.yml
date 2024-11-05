@@ -106,7 +106,7 @@ jobs:
               REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
               REDIS_PORT="${{ secrets.REDIS_PORT }}" \
               REDIS_USERNAME="${{ secrets.REDIS_USERNAME }}" \
-              java -jar /home/$SERVER_USERNAME/app/lionKorea-*-SNAPSHOT.jar > /home/$SERVER_USERNAME/app/app.log 2>&1 &
+              java -jar $(ls /home/$SERVER_USERNAME/app/lionKorea-*-SNAPSHOT.jar | sort -V | tail -n 1) > /home/$SERVER_USERNAME/app/app.log 2>&1 &
           EOF
 
       - name: Clean up
