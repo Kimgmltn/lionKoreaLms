@@ -48,6 +48,8 @@ spring:
 
 logging:
   level:
+    com.zaxxer.jikari.HikariConfig: DEBUG
+    com.zaxxer.jikari: trace
     org:
       hibernate:
         type:

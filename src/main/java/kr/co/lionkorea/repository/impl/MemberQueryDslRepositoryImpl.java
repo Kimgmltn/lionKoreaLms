@@ -12,6 +12,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 
 import java.util.List;
+import java.util.Optional;
 
 import static kr.co.lionkorea.domain.QMember.member;
 
@@ -34,9 +35,10 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
                 .limit(pageable.getPageSize())
                 .fetch();
 
-        long total = query.select(Expressions.constant(1))
+        long total = Optional.ofNullable(query.select(member.count())
                 .from(member)
-                .fetch().size();
+                .fetchOne())
+                .orElse(0L);
 
 
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
