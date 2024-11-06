@@ -95,7 +95,13 @@ jobs:
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
             chmod +x /home/$SERVER_USERNAME/app/lionkorea-0.0.1-SNAPSHOT.jar
-            ps aux | grep 'lionkorea-*-SNAPSHOT.jar' | grep -v grep | awk '{print $2}' | xargs -r kill -9 || true
+            PID=$(sudo netstat -tulnp | grep 8080 | awk '{print $7}' | cut -d'/' -f1)
+            if [ -n "$PID" ]; then
+              sudo kill -9 "$PID"
+              echo "프로세스 $PID가 종료되었습니다."
+              else
+              echo "8080 포트를 사용하는 프로세스가 없습니다."
+            fi
             nohup env \
               DB_URL="${{ secrets.DB_URL }}" \
               DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
