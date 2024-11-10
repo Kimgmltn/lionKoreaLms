@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-<head th:replace="~{header :: main_header(title_name ='프로젝트 관리')}">
+<head th:replace="~{header :: project_header(title_name ='프로젝트 관리')}">
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -8,6 +8,24 @@
     <meta name="author" content="" />
     <link href="/static/css/styles.css" rel="stylesheet" />
     <script src="/static/js/all.js" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+    <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+    <script>
+        $( function() {
+            let today = new Date().toISOString().split('T')[0];
+            $( "#datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+                changeMonth: true,
+                changeYear: true,
+                onSelect: function(dateText){
+                    sendDateToApi(dateText);
+                }
+            });
+        } );
+    </script>
 </head>
 <body class="sb-nav-fixed">
 <nav th:replace="~{nav :: top_nav}">
@@ -126,9 +144,10 @@
                 <div class="d-flex justify-content-between align-items-center mb-3 js">
                     <div class="search-bar">
                         <div class="input-group">
-                            <input type="text" class="form-control h4" placeholder="프로젝트명" id="searchName">
-                            <label for="searchName" class="form-check-label"></label>
-                            <button class="btn btn-primary h4" type="button">검색</button>
+<!--                            <input type="text" class="form-control h4" placeholder="프로젝트명" id="searchName">-->
+<!--                            <label for="searchName" class="form-check-label"></label>-->
+<!--                            <button class="btn btn-primary h4" type="button">검색</button>-->
+                            <p>Date: <input type="text" id="datepicker"></p>
                         </div>
                     </div>
                     <a href="companyRegister.html" th:href="@{/company/register}"><button class="btn btn-primary h4" type="button">신규등록</button></a>
@@ -197,7 +216,7 @@
         window.isLocalMode = true;
     </script>
 </th:block>
-<script src="../static/js/company.js" type="module" th:src="@{/js/company.js}"></script>
+<script src="../static/js/project.js" type="module" th:src="@{/js/project.js}"></script>
 <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
 </body>
 </html>
