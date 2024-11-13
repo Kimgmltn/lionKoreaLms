@@ -8,7 +8,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name="company")
+@Table(name="project")
 @Getter
 @SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
