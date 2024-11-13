@@ -38,7 +38,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
 const renderCompany = async () => {
     const companyId = getCompanyId();
-    const response = await get(`/api/company/${companyId}`)
+    const response = await get(`/api/company/buyer/${companyId}`)
 
     if(response.ok)
     {
@@ -53,7 +53,7 @@ const renderCompany = async () => {
         createConfirmModal({
             title: errorData.message
         }, function(){
-            window.location.href = '/company';
+            window.location.href = '/company/buyer';
         });
     }
     else{
@@ -165,7 +165,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
 
     try {
         const companyId = getCompanyId();
-        const response = await patch(`/api/company/save/${companyId}`, companyData);
+        const response = await patch(`/api/company/buyer/save/${companyId}`, companyData);
 
         if(response.ok)
         {
@@ -184,7 +184,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
             createConfirmModal({
                 title: errorData.message
             }, function(){
-                window.location.href = '/company';
+                window.location.href = '/company/buyer';
             });
         }
     } catch (error) {

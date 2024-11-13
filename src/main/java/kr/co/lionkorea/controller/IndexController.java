@@ -68,9 +68,14 @@ public class IndexController {
         return "companyRegister";
     }
 
-    @GetMapping({"/company/domestic/{companyId}", "/company/buyer/{companyId}"})
-    public String companyDetail(@PathVariable Long companyId) {
-        return "companyDetail";
+    @GetMapping("/company/domestic/{companyId}")
+    public String domesticCompanyDetail(@PathVariable Long companyId) {
+        return "companyDetail-domestic";
+    }
+
+    @GetMapping("/company/buyer/{companyId}")
+    public String buyerDetail(@PathVariable Long companyId) {
+        return "companyDetail-buyer";
     }
 
     @GetMapping("/password/{shortUrl}")

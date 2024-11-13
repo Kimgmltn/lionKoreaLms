@@ -1,5 +1,6 @@
 package kr.co.lionkorea.service;
 
+import kr.co.lionkorea.domain.Company;
 import kr.co.lionkorea.dto.request.FindCompaniesRequest;
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
 import kr.co.lionkorea.dto.response.FindCompaniesResponse;
@@ -21,7 +22,10 @@ public interface CompanyService {
 
     PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType);
 
-    FindCompanyDetailResponse findCompanyById(Long companyId);
+    Company findCompanyById(Long companyId, String dType);
+
+    FindCompanyDetailResponse findDomesticCompanyById(Long companyId);
+    FindCompanyDetailResponse findBuyerById(Long companyId);
 
     PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable);
     PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable);

@@ -43,9 +43,14 @@ public class CompanyRestController {
         return ResponseEntity.ok(companyService.findBuyers(request, pageable));
     }
 
-    @GetMapping("/{companyId}")
-    public ResponseEntity<FindCompanyDetailResponse> findCompanyById(@PathVariable Long companyId){
-        return ResponseEntity.ok(companyService.findCompanyById(companyId));
+    @GetMapping("/domestic/{companyId}")
+    public ResponseEntity<FindCompanyDetailResponse> findDomesticCompanyById(@PathVariable Long companyId){
+        return ResponseEntity.ok(companyService.findDomesticCompanyById(companyId));
+    }
+
+    @GetMapping("/buyer/{companyId}")
+    public ResponseEntity<FindCompanyDetailResponse> findBuyerById(@PathVariable Long companyId){
+        return ResponseEntity.ok(companyService.findBuyerById(companyId));
     }
 
 }

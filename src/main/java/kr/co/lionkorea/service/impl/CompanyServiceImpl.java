@@ -71,8 +71,19 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public FindCompanyDetailResponse findCompanyById(Long companyId) {
-        Company findCompany = companyRepository.findById(companyId).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
+    public Company findCompanyById(Long companyId, String dType) {
+        return companyRepository.findById(companyId).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
+    }
+
+    @Override
+    public FindCompanyDetailResponse findDomesticCompanyById(Long companyId) {
+        Company findCompany = this.findCompanyById(companyId, "D");
+        return FindCompanyDetailResponse.entityToDto(findCompany);
+    }
+
+    @Override
+    public FindCompanyDetailResponse findBuyerById(Long companyId) {
+        Company findCompany = this.findCompanyById(companyId, "B");
         return FindCompanyDetailResponse.entityToDto(findCompany);
     }
 }

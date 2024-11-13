@@ -117,7 +117,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4 display-2"><b>회사조회</b></h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a th:href="@{/company}" href="company-domestic.html">회사관리</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/company/domestic}" href="company-domestic.html">회사관리</a></li>
                             <li class="breadcrumb-item active">회사조회</li>
                         </ol>
                         <div class="card border-0 mt-5">
@@ -223,7 +223,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/companyDetail.js" th:src="@{/js/companyDetail.js}" type="module"></script>
+        <script src="../static/js/companyDetail-domestic.js" th:src="@{/js/companyDetail-domestic.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>
