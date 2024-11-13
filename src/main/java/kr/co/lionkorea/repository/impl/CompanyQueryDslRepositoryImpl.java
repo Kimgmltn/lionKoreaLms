@@ -23,12 +23,13 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
     private final JPAQueryFactory query;
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable) {
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType) {
         List<FindCompaniesResponse> result = query.select(Projections.fields(FindCompaniesResponse.class,
                         company.id.as("companyId"),
                         company.companyName,
                         company.manager))
                 .from(company)
+                .where(company.dType.eq(dType))
                 .orderBy(company.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())

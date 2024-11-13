@@ -2,15 +2,15 @@ import { get } from './api.js';
 import { renderPagination } from './common.js'
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    renderCompanies();
+    renderDomesticCompanies();
 })
 
-const renderCompanies = async (page = 0, size = 20) => {
+const renderDomesticCompanies = async (page = 0, size = 20) => {
     const queryParams = new URLSearchParams({
         page:page,
         size:size
     })
-    const response = await get(`/api/company?${queryParams.toString()}`);
+    const response = await get(`/api/company/domestic?${queryParams.toString()}`);
     const companiesData = await response.json()
 
     const datatablesSimple = document.getElementById('datatablesSimple');
@@ -26,7 +26,7 @@ const renderCompanies = async (page = 0, size = 20) => {
 
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
-            window.location.href = `/company/${company.companyId}`;
+            window.location.href = `/company/domestic/${company.companyId}`;
         })
 
         Object.values(company).forEach((value, index) => {
@@ -43,5 +43,5 @@ const renderCompanies = async (page = 0, size = 20) => {
     });
 
     const dom = document.getElementById('paginationContainer');
-    renderPagination(dom, companiesData.page, renderCompanies);
+    renderPagination(dom, companiesData.page, renderDomesticCompanies);
 }

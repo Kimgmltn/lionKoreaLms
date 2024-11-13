@@ -14,7 +14,8 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Company extends BaseEntity {
+@DiscriminatorColumn(name = "d_type")
+public abstract class Company extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id")
     private Long id;
@@ -38,21 +39,23 @@ public class Company extends BaseEntity {
     private String phoneNumber;
     @Column(name="memo")
     private String memo;
+    @Column(name = "d_type", insertable = false, updatable = false)
+    private String dType;
 
-    public static Company dtoToEntity(SaveCompanyRequest request) {
-        return Company.builder()
-                .companyName(request.getCompanyName())
-                .englishName(request.getEnglishName())
-                .companyRegistrationNumber(request.getCompanyRegistrationNumber())
-                .roadNameAddress(request.getRoadNameAddress())
-                .products(request.getProducts())
-                .homepageUrl(request.getHomepageUrl())
-                .manager(request.getManager())
-                .email(request.getEmail())
-                .phoneNumber(request.getPhoneNumber())
-                .memo(request.getMemo())
-                .build();
-    }
+//    public static Company dtoToEntity(SaveCompanyRequest request) {
+//        return Company.builder()
+//                .companyName(request.getCompanyName())
+//                .englishName(request.getEnglishName())
+//                .companyRegistrationNumber(request.getCompanyRegistrationNumber())
+//                .roadNameAddress(request.getRoadNameAddress())
+//                .products(request.getProducts())
+//                .homepageUrl(request.getHomepageUrl())
+//                .manager(request.getManager())
+//                .email(request.getEmail())
+//                .phoneNumber(request.getPhoneNumber())
+//                .memo(request.getMemo())
+//                .build();
+//    }
 
     public void changeInfo(SaveCompanyRequest request) {
         this.companyName = getCompanyName().equals(request.getCompanyName()) ? getCompanyName() : request.getCompanyName();

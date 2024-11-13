@@ -1,6 +1,8 @@
 package kr.co.lionkorea.service.impl;
 
+import kr.co.lionkorea.domain.Buyer;
 import kr.co.lionkorea.domain.Company;
+import kr.co.lionkorea.domain.DomesticCompany;
 import kr.co.lionkorea.dto.request.FindCompaniesRequest;
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
 import kr.co.lionkorea.dto.response.FindCompaniesResponse;
@@ -23,10 +25,24 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
 
+//    @Override
+//    @Transactional
+//    public SaveCompanyResponse saveCompany(SaveCompanyRequest request) {
+//        Company savedCompany = companyRepository.save(Company.dtoToEntity(request));
+//        return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
+//    }
+
     @Override
     @Transactional
-    public SaveCompanyResponse saveCompany(SaveCompanyRequest request) {
-        Company savedCompany = companyRepository.save(Company.dtoToEntity(request));
+    public SaveCompanyResponse saveDomesticCompany(SaveCompanyRequest request) {
+        Company savedCompany = companyRepository.save(DomesticCompany.dtoToEntity(request));
+        return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
+    }
+
+    @Override
+    @Transactional
+    public SaveCompanyResponse saveBuyer(SaveCompanyRequest request) {
+        Company savedCompany = companyRepository.save(Buyer.dtoToEntity(request));
         return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
     }
 
@@ -40,8 +56,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable) {
-        return companyRepository.findCompanies(request, pageable);
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType) {
+        return companyRepository.findCompanies(request, pageable, dType);
+    }
+
+    @Override
+    public PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable) {
+        return this.findCompanies(request, pageable, "D");
+    }
+
+    @Override
+    public PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable) {
+        return this.findCompanies(request, pageable, "B");
     }
 
     @Override

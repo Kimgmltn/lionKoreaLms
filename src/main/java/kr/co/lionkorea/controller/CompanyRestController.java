@@ -18,19 +18,29 @@ import org.springframework.web.bind.annotation.*;
 public class CompanyRestController {
     private final CompanyService companyService;
 
-    @PostMapping("/save")
-    public ResponseEntity<SaveCompanyResponse> saveCompany(@RequestBody SaveCompanyRequest request){
-        return ResponseEntity.ok(companyService.saveCompany(request));
+    @PostMapping("/domestic/save")
+    public ResponseEntity<SaveCompanyResponse> saveDomesticCompany(@RequestBody SaveCompanyRequest request){
+        return ResponseEntity.ok(companyService.saveDomesticCompany(request));
     }
 
-    @PatchMapping("/save/{companyId}")
+    @PostMapping("/buyer/save")
+    public ResponseEntity<SaveCompanyResponse> saveBuyer(@RequestBody SaveCompanyRequest request){
+        return ResponseEntity.ok(companyService.saveBuyer(request));
+    }
+
+    @PatchMapping({"/domestic/save/{companyId}", "/buyer/save/{companyId}"})
     public ResponseEntity<SaveCompanyResponse> updateCompany(@PathVariable("companyId") Long companyId, @RequestBody SaveCompanyRequest request){
         return ResponseEntity.ok(companyService.updateCompany(companyId, request));
     }
 
-    @GetMapping()
-    public ResponseEntity<PagedModel<FindCompaniesResponse>> findCompanies(@ModelAttribute FindCompaniesRequest request, Pageable pageable){
-        return ResponseEntity.ok(companyService.findCompanies(request, pageable));
+    @GetMapping("/domestic")
+    public ResponseEntity<PagedModel<FindCompaniesResponse>> findDomesticCompanies(@ModelAttribute FindCompaniesRequest request, Pageable pageable){
+        return ResponseEntity.ok(companyService.findDomesticCompanies(request, pageable));
+    }
+
+    @GetMapping("/buyer")
+    public ResponseEntity<PagedModel<FindCompaniesResponse>> findBuyers(@ModelAttribute FindCompaniesRequest request, Pageable pageable){
+        return ResponseEntity.ok(companyService.findBuyers(request, pageable));
     }
 
     @GetMapping("/{companyId}")

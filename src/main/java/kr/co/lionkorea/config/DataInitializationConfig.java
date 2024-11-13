@@ -50,7 +50,8 @@ public class DataInitializationConfig {
 //            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus", "fa-bars", null));
-            menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company", "fa-building", null));
+            menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", null));
+            menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building", null));
 //            menuService.saveMenu(new SaveMenuRequest("대시보드", "/dashboard", "fa-compass", null));
 
             log.info("Menu 데이터 삽입 끝");
@@ -60,8 +61,8 @@ public class DataInitializationConfig {
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L, 6L)));
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
 
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 3L, 4L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 3L, 4L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L,2L, 3L, 4L,5L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L,2L, 3L, 4L,5L)));
             rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(2L)));
             log.info("Role-Menu 데이터 삽입 끝");
 
@@ -85,7 +86,7 @@ public class DataInitializationConfig {
             for (int i = 0; i < 10; i++) {
                 String companyName = "회사" + i;
                 String managerName = "매니저" + i;
-                companyService.saveCompany(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
+                companyService.saveDomesticCompany(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
             }
             log.info("Company 데이터 삽입 끝");
 

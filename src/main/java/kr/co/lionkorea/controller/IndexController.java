@@ -53,9 +53,14 @@ public class IndexController {
         return "dashboard";
     }
 
-    @GetMapping("/company")
-    public String company(){
-        return "company";
+    @GetMapping("/company/domestic")
+    public String domesticCompany(){
+        return "company-domestic";
+    }
+
+    @GetMapping("/company/buyer")
+    public String buyer(){
+        return "company-buyer";
     }
 
     @GetMapping("/company/register")
@@ -63,7 +68,7 @@ public class IndexController {
         return "companyRegister";
     }
 
-    @GetMapping("/company/{companyId}")
+    @GetMapping({"/company/domestic/{companyId}", "/company/buyer/{companyId}"})
     public String companyDetail(@PathVariable Long companyId) {
         return "companyDetail";
     }
