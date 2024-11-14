@@ -18,7 +18,7 @@ public interface CompanyService {
 
     SaveCompanyResponse saveBuyer(SaveCompanyRequest request);
 
-    SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request);
+    SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String dType);
 
     PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType);
 
@@ -29,4 +29,7 @@ public interface CompanyService {
 
     PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable);
     PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable);
+
+    SaveCompanyResponse updateDomesticCompany(Long companyId, SaveCompanyRequest request);
+    SaveCompanyResponse updateBuyer(Long companyId, SaveCompanyRequest request);
 }

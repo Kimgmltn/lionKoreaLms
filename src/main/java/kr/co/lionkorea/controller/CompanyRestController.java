@@ -28,9 +28,14 @@ public class CompanyRestController {
         return ResponseEntity.ok(companyService.saveBuyer(request));
     }
 
-    @PatchMapping({"/domestic/save/{companyId}", "/buyer/save/{companyId}"})
-    public ResponseEntity<SaveCompanyResponse> updateCompany(@PathVariable("companyId") Long companyId, @RequestBody SaveCompanyRequest request){
-        return ResponseEntity.ok(companyService.updateCompany(companyId, request));
+    @PatchMapping("/domestic/save/{companyId}")
+    public ResponseEntity<SaveCompanyResponse> updateDomesticCompany(@PathVariable("companyId") Long companyId, @RequestBody SaveCompanyRequest request){
+        return ResponseEntity.ok(companyService.updateDomesticCompany(companyId, request));
+    }
+
+    @PatchMapping("/buyer/save/{companyId}")
+    public ResponseEntity<SaveCompanyResponse> updateBuyer(@PathVariable("companyId") Long companyId, @RequestBody SaveCompanyRequest request){
+        return ResponseEntity.ok(companyService.updateBuyer(companyId, request));
     }
 
     @GetMapping("/domestic")

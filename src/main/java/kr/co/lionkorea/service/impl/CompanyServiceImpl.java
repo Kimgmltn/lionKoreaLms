@@ -48,11 +48,23 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request) {
-        Company findCompany = companyRepository.findById(companyId).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
+    public SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String dType) {
+        Company findCompany = companyRepository.findByIdAndDType(companyId, dType).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
         findCompany.changeInfo(request);
         companyRepository.save(findCompany);
         return new SaveCompanyResponse(findCompany.getId(), "수정되었습니다.");
+    }
+
+    @Override
+    @Transactional
+    public SaveCompanyResponse updateDomesticCompany(Long companyId, SaveCompanyRequest request) {
+        return this.updateCompany(companyId, request, "D");
+    }
+
+    @Override
+    @Transactional
+    public SaveCompanyResponse updateBuyer(Long companyId, SaveCompanyRequest request) {
+        return this.updateCompany(companyId, request, "B");
     }
 
     @Override

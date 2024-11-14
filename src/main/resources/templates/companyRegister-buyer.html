@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{header :: main_header('회사등록')}">
+    <head th:replace="~{header :: main_header('바이어 등록')}">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -115,10 +115,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2"><b>회사등록</b></h1>
+                        <h1 class="mt-4 display-2"><b>바이어 등록</b></h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a th:href="@{/company}" href="company-domestic.html">회사관리</a></li>
-                            <li class="breadcrumb-item active">회사등록</li>
+                            <li class="breadcrumb-item"><a th:href="@{/company/buyer}" href="company-buyer.html">바이어 관리</a></li>
+                            <li class="breadcrumb-item active">바이어 등록</li>
                         </ol>
                         <div class="card border-0 mt-5">
                             <div class="card-body shadow-lg rounded-4">
@@ -219,7 +219,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/companyRegister.js" th:src="@{/js/companyRegister.js}" type="module"></script>
+        <script src="../static/js/companyRegister-buyer.js" th:src="@{/js/companyRegister-buyer.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>

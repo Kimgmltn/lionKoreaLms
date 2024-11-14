@@ -19,13 +19,13 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     };
 
     try {
-        const response = await post('/api/company/save', companyData);
+        const response = await post('/api/company/buyer/save', companyData);
         const data = await response.json();
 
         await createConfirmModal({
             title: data.result
         }, function(){
-            window.location.href=`/company/${data.companyId}`
+            window.location.href=`/company/buyer/${data.companyId}`
         });
 
     } catch (error) {
