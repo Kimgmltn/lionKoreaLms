@@ -33,15 +33,17 @@ public class ProdDataInitService {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            SaveMenuResponse projectMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project", "fa-diagram-project", null));
+            SaveMenuResponse projectTranslatorMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/translator", "fa-diagram-project", null));
+            SaveMenuResponse projectAdminMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/admin", "fa-file-shield", null));
             SaveMenuResponse memberMenu = menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
-            SaveMenuResponse companyMenu = menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company", "fa-building", null));
+            SaveMenuResponse companyMenu = menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", null));
+            SaveMenuResponse buyer = menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", null));
             log.info("Menu 데이터 삽입 끝");
 
             log.info("Role-Menu 데이터 삽입");
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getRoleId(), List.of(projectMenu.getMenuId(), memberMenu.getMenuId(), companyMenu.getMenuId())));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getRoleId(), List.of(projectMenu.getMenuId(), memberMenu.getMenuId(), companyMenu.getMenuId())));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getRoleId(), List.of(projectMenu.getMenuId())));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getRoleId(), List.of(projectAdminMenu.getMenuId(), memberMenu.getMenuId(), companyMenu.getMenuId(), buyer.getMenuId())));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getRoleId(), List.of(projectAdminMenu.getMenuId(), memberMenu.getMenuId(), companyMenu.getMenuId(), buyer.getMenuId())));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getRoleId(), List.of(projectTranslatorMenu.getMenuId())));
             log.info("Role-Menu 데이터 삽입 끝");
 
             log.info("Member 데이터 삽입");
