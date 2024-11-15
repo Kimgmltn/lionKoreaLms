@@ -25,7 +25,17 @@
     <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     <script>
         $( function() {
-            $( "#datepicker" ).datepicker();
+            let today = new Date().toISOString().split('T')[0];
+            $( "#datepicker" ).datepicker({
+                dateFormat: 'yy-mm-dd',
+                dayNamesMin: ['일', '월', '화', '수', '목', '금', '토'],
+                monthNamesShort: ['1','2','3','4','5','6','7','8','9','10','11','12'],
+                changeMonth: true,
+                changeYear: true,
+                onSelect: function(dateText){
+                    sendDateToApi(dateText);
+                }
+            });
         } );
     </script>
     <!--    <link href="https://cdn.jsdelivr.net/npm/simple-datatables@7.1.2/dist/style.min.css" rel="stylesheet" />-->
