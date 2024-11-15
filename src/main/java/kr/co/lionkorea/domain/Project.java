@@ -30,9 +30,9 @@ public class Project extends BaseEntity{
     @Column(name = "time_period")
     private String timePeriod;
     @Column(name = "hour")
-    private Integer hour;
+    private String hour;
     @Column(name = "minute")
-    private Integer minute;
+    private String minute;
     @Column(name = "consultation_notes")
     private String consultationNotes;
 
