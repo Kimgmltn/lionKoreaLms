@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{header :: main_header('프로젝트 등록')}">
+    <head th:replace="~{header :: project_header('프로젝트 등록')}">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -8,6 +8,9 @@
         <meta name="author" content="" />
         <link href="/static/css/styles.css" rel="stylesheet" />
         <script src="/static/js/all.js" crossorigin="anonymous"></script>
+        <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+        <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav th:replace="~{nav :: top_nav}">
@@ -117,7 +120,7 @@
                     <div class="container-fluid px-4">
                         <h1 class="mt-4 display-2"><b>프로젝트 등록</b></h1>
                         <ol class="breadcrumb mb-4">
-                            <li class="breadcrumb-item"><a th:href="@{/projects/admin}" href="project-admin.html">회사관리</a></li>
+                            <li class="breadcrumb-item"><a th:href="@{/projects/admin}" href="project-admin.html">프로젝트 관리</a></li>
                             <li class="breadcrumb-item active">프로젝트 등록</li>
                         </ol>
                         <div class="card border-0 mt-5">
@@ -166,6 +169,45 @@
                                         </div>
                                     </div>
                                     <div class="row mb-3">
+<!--                                        <div class="fw-bold mb-2">상담 시간</div>-->
+                                        <div class="form-floating col-md-2">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input type="text" id="datepicker" class="form-control" name="consultationDate">
+                                                <label for="datepicker">상담 날짜</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col-md-1">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select class="form-select" id="inputHour" name="hour" required>
+                                                    <option value="1" selected>1</option>
+                                                    <option value="2">2</option>
+                                                    <option value="3">3</option>
+                                                    <option value="4">4</option>
+                                                    <option value="5">5</option>
+                                                    <option value="6">6</option>
+                                                    <option value="7">7</option>
+                                                    <option value="8">8</option>
+                                                    <option value="9">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                                <label for="inputHour">시간</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col-md-1">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select class="form-select" id="inputMinute" name="hour" required>
+                                                    <option value="00" selected>00</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="40">40</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                <label for="inputMinute">분</label>
+                                            </div>
+                                        </div>
                                         <div class="form-floating col-md-1">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputTimePeriod" name="manager" required>
@@ -174,25 +216,14 @@
                                                 </select>
                                                 <label for="inputTimePeriod">AM / PM</label>
                                             </div>
-
                                         </div>
-<!--                                        <div class="col-md-6">-->
-<!--                                            <div class="form-floating mb-3 mb-md-0">-->
-<!--                                                <input class="form-control" id="inputHomepageUrl" type="text" name="homepageUrl"/>-->
-<!--                                                <label for="inputHomepageUrl">회사 홈페이지 URL</label>-->
-<!--                                            </div>-->
-<!--                                        </div>-->
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputRoadNameAddr" name="roadNameAddress" type="text">
-                                        <label for="inputRoadNameAddr">회사 주소</label>
-                                    </div>
-                                    <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
-                                        <label for="inputMemo">Memo</label>
+                                        <textarea class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden"></textarea>
+                                        <label for="inputConsultationNotes">상담 내용</label>
                                     </div>
                                     <div class="mt-4 mb-0">
-                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회사 등록</button></div>
+                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">프로젝트 등록</button></div>
                                     </div>
                                 </form>
                             </div>
@@ -223,7 +254,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/companyRegister-domestic.js" th:src="@{/js/companyRegister-domestic.js}" type="module"></script>
+        <script src="../static/js/projectRegister-admin.js" th:src="@{/js/projectRegister-admin.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>
