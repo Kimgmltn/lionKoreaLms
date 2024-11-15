@@ -36,6 +36,10 @@ public class Member extends BaseEntity{
     @Builder.Default
     private List<Account> account = new ArrayList<>();
 
+    public Member(Long memberId) {
+        this.id = memberId;
+    }
+
     public static Member dtoToEntity(SaveMemberRequest request) {
         return Member.builder()
                 .memberName(request.getMemberName())

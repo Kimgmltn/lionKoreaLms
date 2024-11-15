@@ -17,6 +17,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class DomesticCompany extends Company{
 
+    public DomesticCompany(Long companyId){
+        super(companyId);
+    }
+
     public static DomesticCompany dtoToEntity(SaveCompanyRequest request) {
         return DomesticCompany.builder()
                 .companyName(request.getCompanyName())

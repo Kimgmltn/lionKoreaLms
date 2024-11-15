@@ -1,6 +1,7 @@
 package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
+import kr.co.lionkorea.dto.request.SaveProjectRequest;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -45,4 +46,22 @@ public class Project extends BaseEntity{
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "domestic_id", referencedColumnName = "company_id")
     private DomesticCompany domesticCompany;
+
+    public static Project dtoToEntity(SaveProjectRequest request){
+        return Project.builder()
+                .projectName(request.getProjectName())
+                .language(request.getLanguage())
+                .processStatus("대기")
+                .consultationDate(request.getConsultationDate())
+                .timePeriod(request.getTimePeriod())
+                .hour(request.getHour())
+                .minute(request.getMinute())
+                .consultationNotes(request.getConsultationNotes())
+                .translator(new Member(request.getTranslatorId()))
+                .buyer(new Buyer(request.getBuyerId()))
+                .domesticCompany(new DomesticCompany(request.getDomesticCompanyId()))
+                .build();
+
+    }
+
 }

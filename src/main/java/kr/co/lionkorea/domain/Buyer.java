@@ -14,6 +14,10 @@ import lombok.experimental.SuperBuilder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Buyer extends Company{
 
+    public Buyer(Long companyId) {
+        super(companyId);
+    }
+
     public static Buyer dtoToEntity(SaveCompanyRequest request) {
         return Buyer.builder()
                 .companyName(request.getCompanyName())

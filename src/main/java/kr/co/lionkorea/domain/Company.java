@@ -42,6 +42,10 @@ public abstract class Company extends BaseEntity {
     @Column(name = "d_type", insertable = false, updatable = false)
     private String dType;
 
+    protected Company(Long id) {
+        this.id = id;
+    }
+
 //    public static Company dtoToEntity(SaveCompanyRequest request) {
 //        return Company.builder()
 //                .companyName(request.getCompanyName())
