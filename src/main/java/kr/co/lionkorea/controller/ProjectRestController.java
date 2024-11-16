@@ -14,7 +14,7 @@ public class ProjectRestController {
 
     private final ProjectService projectService;
 
-    @PostMapping("/admin/register")
+    @PostMapping("/admin/save")
     public ResponseEntity<SaveProjectResponse> saveProject(@RequestBody SaveProjectRequest request) {
         return ResponseEntity.ok(projectService.saveProject(request));
     }
