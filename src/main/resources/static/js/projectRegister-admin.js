@@ -1,4 +1,4 @@
-import {post} from "./api.js";
+import {get, post} from "./api.js";
 import {createConfirmModal} from './common.js'
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -12,6 +12,27 @@ document.addEventListener('DOMContentLoaded', () => {
         // onSelect:
     });
 } );
+
+const inputBuyerTag = document.getElementById('inputBuyer');
+const buyerTag = document.getElementById('buyerModal');
+const buyerModal = new bootstrap.Modal(buyerTag,{
+    backdrop: 'static',
+    keyboard: true
+})
+
+const inputDomesticCompanyTag = document.getElementById('inputDomesticCompany');
+const domesticCompanyTag = document.getElementById('domesticCompanyModal')
+const domesticCompanyModal = new bootstrap.Modal(domesticCompanyTag,{
+    backdrop: 'static',
+    keyboard: true
+})
+
+const inputManageTag = document.getElementById('inputManager');
+const translatorTag = document.getElementById('manageModal')
+const managerModal = new bootstrap.Modal(translatorTag,{
+    backdrop: 'static',
+    keyboard: true
+})
 
 document.getElementById('registerForm').addEventListener('submit', async function(event) {
     event.preventDefault(); // 폼의 기본 제출 동작 방지
@@ -48,8 +69,65 @@ document.getElementById('registerForm').addEventListener('submit', async functio
     }
 });
 
-
 document.getElementById('inputConsultationNotes').addEventListener('input', function (){
     this.style.height = 'auto';
     this.style.height = this.scrollHeight + 'px';
+})
+
+inputBuyerTag.addEventListener('click', function(event){
+    event.preventDefault();
+    buyerModal.show();
+})
+
+inputDomesticCompanyTag.addEventListener('click', function(event){
+    event.preventDefault();
+    domesticCompanyModal.show();
+})
+
+inputManageTag.addEventListener('click', function(event){
+    event.preventDefault();
+    managerModal.show();
+})
+
+buyerModal.addEventListener('hide.bs.modal', function (){
+    document.getElementById('searchBuyer').reset();
+    this.querySelector('table').innerHTML = '';
+})
+domesticCompanyModal.addEventListener('hide.bs.modal', function (){
+    document.getElementById('searchDomesticCompany').reset();
+    this.querySelector('table').innerHTML = '';
+})
+managerModal.addEventListener('hide.bs.modal', function(){
+    document.getElementById('searchTranslator').reset();
+    this.querySelector('table').innerHTML = '';
+})
+
+document.getElementById('buyerSearchButton').addEventListener('click', async function(){
+    const companyName = document.getElementById('inputBuyerName').value;
+    if(!companyName.trim()){
+        alert('바이어 명칭을 입력하세요.')
+        return;
+    }
+
+    const response = await get('')
+})
+
+document.getElementById('domesticCompanySearchButton').addEventListener('click', async function(){
+    const companyName = document.getElementById('inputDomesticCompanyName').value;
+    if(!companyName.trim()){
+        alert('국내회사 명칭을 입력하세요.')
+        return;
+    }
+
+    const response = await get('')
+})
+
+document.getElementById('translatorSearchButton').addEventListener('click', async function(){
+    const companyName = document.getElementById('inputTranslatorName').value;
+    if(!companyName.trim()){
+        alert('이름을 입력하세요.')
+        return;
+    }
+
+    const response = await get('')
 })

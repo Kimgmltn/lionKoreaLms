@@ -1,5 +1,5 @@
 import {get, patch, post} from './api.js'
-import {createConfirmModal, inputOnlyNumber} from './common.js'
+import {createConfirmModal} from './common.js'
 
 // ID 발급 모달 창
 const assignIdTag = document.getElementById('assignIdModal')

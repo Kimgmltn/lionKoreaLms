@@ -129,17 +129,15 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputBuyer" name="buyerId" required>
-<!--                                                    <option value="" disabled selected>회사명</option>-->
-                                                </select>
+                                                <input class="form-control" id="inputBuyer" required readonly>
+                                                <input type="hidden" name="buyerId">
                                                 <label for="inputBuyer">바이어</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputDomesticCompany" name="domesticCompanyId" required>
-                                                    <!--                                                    <option value="" disabled selected>회사명</option>-->
-                                                </select>
+                                                <input class="form-control" id="inputDomesticCompany" required readonly>
+                                                <input type="hidden" name="domesticCompanyId">
                                                 <label for="inputDomesticCompany">국내업체</label>
                                             </div>
                                         </div>
@@ -153,9 +151,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputManager" name="translatorId" required>
-                                                    <!--                                                    <option value="" disabled selected>회사명</option>-->
-                                                </select>
+                                                <input class="form-control" id="inputManager" required readonly>
+                                                <input type="hidden" name="translatorId">
                                                 <label for="inputManager">상담자</label>
                                             </div>
                                         </div>
@@ -229,6 +226,84 @@
                             </div>
                         </div>
                     </div>
+
+                    <div class="modal fade show" id="buyerModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">바이어 검색</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="searchBuyer">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="inputBuyerName" name="companyName" placeholder="바이어 명칭">
+                                            <button type="button" class="btn btn-primary" id="buyerSearchButton">검색</button>
+                                        </div>
+                                    </form>
+                                    <table class="table" id="buyerTable">
+
+                                    </table>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+<!--                                            <button type="submit" class="btn btn-primary" id="submitUpdateButton">수정</button>-->
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade show" id="domesticCompanyModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">국내기업 검색</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="searchDomesticCompany">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="inputDomesticCompanyName" name="companyName" placeholder="국내기업 명">
+                                            <button type="button" class="btn btn-primary" id="domesticCompanySearchButton">검색</button>
+                                        </div>
+                                    </form>
+                                    <table class="table" id="domesticCompanyTable">
+
+                                    </table>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal fade show" id="manageModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title">번역가 검색</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form id="searchTranslator">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" id="inputTranslatorName" name="managerName" placeholder="이름">
+                                            <button type="button" class="btn btn-primary" id="translatorSearchButton">검색</button>
+                                        </div>
+                                    </form>
+                                    <table class="table" id="translatorTable">
+                                    </table>
+                                    <div class="text-end">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
                 </main>
                 <footer th:replace="~{footer :: main_footer}">
                     <footer class="py-4 bg-light mt-auto" th:fragment="main_footer">
