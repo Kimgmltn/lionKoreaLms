@@ -1,5 +1,5 @@
 import {get, post} from "./api.js";
-import {createConfirmModal} from './common.js'
+import {createConfirmModal, renderPagination} from './common.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     let today = new Date().toISOString().split('T')[0];
@@ -109,7 +109,43 @@ document.getElementById('buyerSearchButton').addEventListener('click', async fun
         return;
     }
 
-    const response = await get('')
+    const queryParams = new URLSearchParams({
+        page:0,
+        size:5,
+        companyName: companyName
+    })
+
+    const response = await get(`/api/company/buyer?${queryParams}`)
+
+    const companiesData = await response.json();
+    const table = document.querySelector('#buyerTable tbody');
+    table.innerHTML = '';
+
+    const tbody = document.createElement('tbody');
+    const tr = document.createElement('tbody');
+
+    companiesData.content.forEach((company) => {
+
+        const tr = document.createElement('tr');
+        tr.addEventListener('click',()=>{
+            window.location.href = `/company/domestic/${company.companyId}`;
+        })
+
+        Object.values(company).forEach((value, index) => {
+            const td = document.createElement('td');
+            td.textContent = value;
+
+            if(index === 0){
+                td.hidden = true;
+            }
+            tr.appendChild(td);
+        })
+
+        tbody.appendChild(tr);
+    });
+
+    const dom = document.getElementById('paginationContainer');
+    renderPagination(dom, companiesData.page, renderDomesticCompanies);
 })
 
 document.getElementById('domesticCompanySearchButton').addEventListener('click', async function(){
@@ -119,7 +155,15 @@ document.getElementById('domesticCompanySearchButton').addEventListener('click',
         return;
     }
 
-    const response = await get('')
+    const queryParams = new URLSearchParams({
+        page:0,
+        size:5,
+        companyName: companyName
+    })
+
+    const response = await get(`/api/company/domestic?${queryParams}`)
+
+
 })
 
 document.getElementById('translatorSearchButton').addEventListener('click', async function(){
