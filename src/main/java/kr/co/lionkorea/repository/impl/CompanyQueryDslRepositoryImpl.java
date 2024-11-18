@@ -1,10 +1,9 @@
 package kr.co.lionkorea.repository.impl;
 
-import com.querydsl.core.Tuple;
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
-import kr.co.lionkorea.domain.QCompany;
 import kr.co.lionkorea.dto.request.FindCompaniesRequest;
 import kr.co.lionkorea.dto.response.FindCompaniesResponse;
 import kr.co.lionkorea.repository.CompanyQueryDslRepository;
@@ -12,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -23,13 +23,16 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
     private final JPAQueryFactory query;
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType) {
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName) {
+
         List<FindCompaniesResponse> result = query.select(Projections.fields(FindCompaniesResponse.class,
                         company.id.as("companyId"),
                         company.companyName,
                         company.manager))
                 .from(company)
-                .where(company.dType.eq(dType))
+                .where(
+                        company.dType.eq(dType),
+                        companyNameEq(companyName))
                 .orderBy(company.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -37,8 +40,15 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
 
         int total = query.select(Expressions.constant(1))
                 .from(company)
+                .where(companyNameEq(companyName))
                 .fetch().size();
 
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
     }
+
+    private Predicate companyNameEq(String companyName) {
+        return StringUtils.hasText(companyName) ? company.companyName.containsIgnoreCase(companyName) : null;
+    }
+
+
 }

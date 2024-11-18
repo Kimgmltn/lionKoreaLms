@@ -68,18 +68,18 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType) {
-        return companyRepository.findCompanies(request, pageable, dType);
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName) {
+        return companyRepository.findCompanies(request, pageable, dType, companyName);
     }
 
     @Override
-    public PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable) {
-        return this.findCompanies(request, pageable, "D");
+    public PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable, String companyName) {
+        return this.findCompanies(request, pageable, "D", companyName);
     }
 
     @Override
-    public PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable) {
-        return this.findCompanies(request, pageable, "B");
+    public PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable, String companyName) {
+        return this.findCompanies(request, pageable, "B", companyName);
     }
 
     @Override

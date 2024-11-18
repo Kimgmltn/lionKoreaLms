@@ -8,7 +8,6 @@ import kr.co.lionkorea.dto.response.FindCompanyDetailResponse;
 import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
-import org.springframework.transaction.annotation.Transactional;
 
 public interface CompanyService {
 
@@ -20,15 +19,15 @@ public interface CompanyService {
 
     SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String dType);
 
-    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType);
+    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName);
 
     Company findCompanyById(Long companyId, String dType);
 
     FindCompanyDetailResponse findDomesticCompanyById(Long companyId);
     FindCompanyDetailResponse findBuyerById(Long companyId);
 
-    PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable);
-    PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable);
+    PagedModel<FindCompaniesResponse> findDomesticCompanies(FindCompaniesRequest request, Pageable pageable, String companyName);
+    PagedModel<FindCompaniesResponse> findBuyers(FindCompaniesRequest request, Pageable pageable, String companyName);
 
     SaveCompanyResponse updateDomesticCompany(Long companyId, SaveCompanyRequest request);
     SaveCompanyResponse updateBuyer(Long companyId, SaveCompanyRequest request);

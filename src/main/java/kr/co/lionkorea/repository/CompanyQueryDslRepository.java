@@ -7,5 +7,5 @@ import org.springframework.data.web.PagedModel;
 
 public interface CompanyQueryDslRepository {
 
-    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType);
+    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName);
 }
