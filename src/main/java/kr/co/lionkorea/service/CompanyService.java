@@ -17,11 +17,11 @@ public interface CompanyService {
 
     SaveCompanyResponse saveBuyer(SaveCompanyRequest request);
 
-    SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String dType);
+    SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String companyType);
 
-    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName);
+    PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String companyType, String companyName);
 
-    Company findCompanyById(Long companyId, String dType);
+    Company findCompanyById(Long companyId, String companyType);
 
     FindCompanyDetailResponse findDomesticCompanyById(Long companyId);
     FindCompanyDetailResponse findBuyerById(Long companyId);

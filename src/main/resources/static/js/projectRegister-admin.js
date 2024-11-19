@@ -102,26 +102,25 @@ managerModal.addEventListener('hide.bs.modal', function(){
     this.querySelector('table').innerHTML = '';
 })
 
-document.getElementById('buyerSearchButton').addEventListener('click', async function(){
-    const companyName = document.getElementById('inputBuyerName').value;
-    if(!companyName.trim()){
-        alert('바이어 명칭을 입력하세요.')
-        return;
-    }
-
+const renderCompanies = async ({
+   page = 0,
+   size = 5,
+   companyType,
+   companyName,
+   tableDom
+}) => {
     const queryParams = new URLSearchParams({
-        page:0,
-        size:5,
+        page:page,
+        size:size,
         companyName: companyName
     })
 
-    const response = await get(`/api/company/buyer?${queryParams}`)
-
+    const response = await get(`/api/company/${companyType}?${queryParams}`)
     const companiesData = await response.json();
-    const table = document.querySelector('#buyerTable tbody');
+
+    const table = tableDom;
     table.innerHTML = '';
 
-    const tbody = document.createElement('tbody');
     const tr = document.createElement('tbody');
 
     companiesData.content.forEach((company) => {
@@ -146,6 +145,19 @@ document.getElementById('buyerSearchButton').addEventListener('click', async fun
 
     const dom = document.getElementById('paginationContainer');
     renderPagination(dom, companiesData.page, renderDomesticCompanies);
+}
+document.getElementById('buyerSearchButton').addEventListener('click', async function(){
+    const companyName = document.getElementById('inputBuyerName').value;
+    if(!companyName.trim()){
+        alert('바이어 명칭을 입력하세요.')
+        return;
+    }
+
+    renderCompanies({
+        companyType:"buyer",
+        companyName:companyName,
+        tableDom: document.querySelector('#buyerTable tbody')
+    });
 })
 
 document.getElementById('domesticCompanySearchButton').addEventListener('click', async function(){

@@ -14,23 +14,23 @@ document.addEventListener('DOMContentLoaded', () => {
             renderMembers(this.value);
         });
     });*/
-    renderMembers();
+    renderMembers({});
 });
 
-const renderMembers = async (page = 0, size = 20) => {
+const renderMembers = async ({page = 0, size = 20}) => {
     const queryParams = new URLSearchParams({
         page:page,
         size:size
     })
-    const response = await get(`/api/members?${queryParams.toString()}`);
-    const membersData = await response.json()
-
     const datatablesSimple = document.getElementById('datatablesSimple');
 
     if (!datatablesSimple) {
         console.error('No datatablesSimple element found on the page.');
         return;
     }
+    const response = await get(`/api/members?${queryParams.toString()}`);
+
+    const membersData = await response.json()
 
     const tbody = datatablesSimple.querySelector('tbody');
     tbody.innerHTML = '';

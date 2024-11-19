@@ -39,12 +39,12 @@ public class CompanyRestController {
     }
 
     @GetMapping("/domestic")
-    public ResponseEntity<PagedModel<FindCompaniesResponse>> findDomesticCompanies(@ModelAttribute FindCompaniesRequest request, Pageable pageable, @RequestParam("companyName") String companyName){
+    public ResponseEntity<PagedModel<FindCompaniesResponse>> findDomesticCompanies(@ModelAttribute FindCompaniesRequest request, Pageable pageable, @RequestParam(value="companyName", required = false) String companyName){
         return ResponseEntity.ok(companyService.findDomesticCompanies(request, pageable, companyName));
     }
 
     @GetMapping("/buyer")
-    public ResponseEntity<PagedModel<FindCompaniesResponse>> findBuyers(@ModelAttribute FindCompaniesRequest request, Pageable pageable, @RequestParam("companyName") String companyName){
+    public ResponseEntity<PagedModel<FindCompaniesResponse>> findBuyers(@ModelAttribute FindCompaniesRequest request, Pageable pageable, @RequestParam(value="companyName", required = false) String companyName){
         return ResponseEntity.ok(companyService.findBuyers(request, pageable, companyName));
     }
 

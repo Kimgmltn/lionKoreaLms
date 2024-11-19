@@ -2,23 +2,24 @@ import { get } from './api.js';
 import { renderPagination } from './common.js'
 
 document.addEventListener('DOMContentLoaded', ()=>{
-    renderDomesticCompanies();
+    renderDomesticCompanies({});
 })
 
-const renderDomesticCompanies = async (page = 0, size = 20) => {
+const renderDomesticCompanies = async ({page = 0, size = 20, companyName}) => {
     const queryParams = new URLSearchParams({
         page:page,
-        size:size
+        size:size,
+        ...(companyName && {companyName})
     })
-    const response = await get(`/api/company/domestic?${queryParams.toString()}`);
-    const companiesData = await response.json()
-
     const datatablesSimple = document.getElementById('datatablesSimple');
 
     if (!datatablesSimple) {
         console.error('No datatablesSimple element found on the page.');
         return;
     }
+    const response = await get(`/api/company/domestic?${queryParams.toString()}`);
+
+    const companiesData = await response.json()
 
     const tbody = datatablesSimple.querySelector('tbody');
     tbody.innerHTML = '';

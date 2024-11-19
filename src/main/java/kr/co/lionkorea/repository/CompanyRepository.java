@@ -7,5 +7,5 @@ import java.util.Optional;
 
 public interface CompanyRepository extends JpaRepository<Company, Long>, CompanyQueryDslRepository {
 
-    Optional<Company> findByIdAndDType(Long companyId, String dType);
+    Optional<Company> findByIdAndCompanyType(Long companyId, String companyType);
 }

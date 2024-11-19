@@ -48,8 +48,8 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     @Transactional
-    public SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String dType) {
-        Company findCompany = companyRepository.findByIdAndDType(companyId, dType).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
+    public SaveCompanyResponse updateCompany(Long companyId, SaveCompanyRequest request, String companyType) {
+        Company findCompany = companyRepository.findByIdAndCompanyType(companyId, companyType).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
         findCompany.changeInfo(request);
         companyRepository.save(findCompany);
         return new SaveCompanyResponse(findCompany.getId(), "수정되었습니다.");
@@ -68,8 +68,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName) {
-        return companyRepository.findCompanies(request, pageable, dType, companyName);
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String companyType, String companyName) {
+        return companyRepository.findCompanies(request, pageable, companyType, companyName);
     }
 
     @Override
@@ -83,8 +83,8 @@ public class CompanyServiceImpl implements CompanyService {
     }
 
     @Override
-    public Company findCompanyById(Long companyId, String dType) {
-        return companyRepository.findById(companyId).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
+    public Company findCompanyById(Long companyId, String companyType) {
+        return companyRepository.findByIdAndCompanyType(companyId, companyType).orElseThrow(() -> new CompanyException(HttpStatus.NOT_FOUND, "등록되지 않은 회사입니다."));
     }
 
     @Override

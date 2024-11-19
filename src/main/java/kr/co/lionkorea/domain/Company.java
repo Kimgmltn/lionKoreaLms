@@ -39,8 +39,8 @@ public abstract class Company extends BaseEntity {
     private String phoneNumber;
     @Column(name="memo")
     private String memo;
-    @Column(name = "d_type", insertable = false, updatable = false)
-    private String dType;
+    @Column(name = "company_type", insertable = false, updatable = false)
+    private String companyType;
 
     protected Company(Long id) {
         this.id = id;

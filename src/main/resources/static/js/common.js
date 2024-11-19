@@ -148,7 +148,7 @@ const renderPagination = (dom, pageData, renderFunction) => {
     prevLink.href = '#';
     prevLink.textContent = 'Previous';
     prevLink.addEventListener('click', () => {
-        if (currentPage > 0) renderFunction(currentPage - 1);
+        if (currentPage > 0) renderFunction({page:currentPage -1});
     });
     prevButton.appendChild(prevLink);
     paginationContainer.appendChild(prevButton);
@@ -165,7 +165,7 @@ const renderPagination = (dom, pageData, renderFunction) => {
         pageLink.href = '#';
         pageLink.textContent = i + 1;
         pageLink.addEventListener('click', () => {
-            renderFunction(i);
+            renderFunction({page:i});
         });
         pageButton.appendChild(pageLink);
         paginationContainer.appendChild(pageButton);
@@ -182,7 +182,7 @@ const renderPagination = (dom, pageData, renderFunction) => {
     nextLink.href = '#';
     nextLink.textContent = 'Next';
     nextLink.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) renderFunction(currentPage + 1);
+        if (currentPage < totalPages - 1) renderFunction({page:currentPage +1});
     });
     nextButton.appendChild(nextLink);
     paginationContainer.appendChild(nextButton);

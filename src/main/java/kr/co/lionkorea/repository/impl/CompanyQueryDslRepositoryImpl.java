@@ -23,7 +23,7 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
     private final JPAQueryFactory query;
 
     @Override
-    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String dType, String companyName) {
+    public PagedModel<FindCompaniesResponse> findCompanies(FindCompaniesRequest request, Pageable pageable, String companyType, String companyName) {
 
         List<FindCompaniesResponse> result = query.select(Projections.fields(FindCompaniesResponse.class,
                         company.id.as("companyId"),
@@ -31,7 +31,7 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
                         company.manager))
                 .from(company)
                 .where(
-                        company.dType.eq(dType),
+                        company.companyType.eq(companyType),
                         companyNameEq(companyName))
                 .orderBy(company.id.desc())
                 .offset(pageable.getOffset())
@@ -40,7 +40,7 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
 
         int total = query.select(Expressions.constant(1))
                 .from(company)
-                .where(companyNameEq(companyName))
+                .where(company.companyType.eq(companyType),companyNameEq(companyName))
                 .fetch().size();
 
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
