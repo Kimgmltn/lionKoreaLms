@@ -112,39 +112,39 @@ const renderCompanies = async ({
     const queryParams = new URLSearchParams({
         page:page,
         size:size,
-        companyName: companyName
+        ...(companyName && {companyName})
     })
 
-    const response = await get(`/api/company/${companyType}?${queryParams}`)
+    const response = await get(`/api/company/${companyType}?${queryParams.toString()}`)
     const companiesData = await response.json();
 
-    const table = tableDom;
-    table.innerHTML = '';
-
-    const tr = document.createElement('tbody');
+    const tbody = tableDom;
+    tbody.innerHTML = '';
 
     companiesData.content.forEach((company) => {
 
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
-            window.location.href = `/company/domestic/${company.companyId}`;
+            // window.location.href = `/company/domestic/${company.companyId}`;
         })
 
-        Object.values(company).forEach((value, index) => {
+        const keysToInclude = ['companyId', 'companyName']; // 추출할 키
+        keysToInclude.forEach((key) => {
             const td = document.createElement('td');
-            td.textContent = value;
+            td.textContent = company[key];
 
-            if(index === 0){
+            // companyId는 숨김 처리
+            if (key === 'companyId') {
                 td.hidden = true;
             }
             tr.appendChild(td);
-        })
+        });
 
         tbody.appendChild(tr);
     });
 
-    const dom = document.getElementById('paginationContainer');
-    renderPagination(dom, companiesData.page, renderDomesticCompanies);
+    const dom = document.getElementById('buyer_paginationContainer');
+    renderPagination(dom, companiesData.page, renderCompanies, {size, companyType, companyName, tableDom});
 }
 document.getElementById('buyerSearchButton').addEventListener('click', async function(){
     const companyName = document.getElementById('inputBuyerName').value;

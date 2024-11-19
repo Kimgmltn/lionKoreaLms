@@ -120,7 +120,7 @@ const inputOnlyNumber = (e) => {
     e.target.value = formattedNumber;
 }
 
-const renderPagination = (dom, pageData, renderFunction) => {
+const renderPagination = (dom, pageData, renderFunction, searchParam = {}) => {
     const paginationContainer = dom;
 
     if (!paginationContainer) {
@@ -148,7 +148,7 @@ const renderPagination = (dom, pageData, renderFunction) => {
     prevLink.href = '#';
     prevLink.textContent = 'Previous';
     prevLink.addEventListener('click', () => {
-        if (currentPage > 0) renderFunction({page:currentPage -1});
+        if (currentPage > 0) renderFunction({page:currentPage -1, ...searchParam});
     });
     prevButton.appendChild(prevLink);
     paginationContainer.appendChild(prevButton);
@@ -182,7 +182,7 @@ const renderPagination = (dom, pageData, renderFunction) => {
     nextLink.href = '#';
     nextLink.textContent = 'Next';
     nextLink.addEventListener('click', () => {
-        if (currentPage < totalPages - 1) renderFunction({page:currentPage +1});
+        if (currentPage < totalPages - 1) renderFunction({page:currentPage +1, ...searchParam});
     });
     nextButton.appendChild(nextLink);
     paginationContainer.appendChild(nextButton);

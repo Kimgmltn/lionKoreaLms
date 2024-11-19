@@ -44,5 +44,5 @@ const renderDomesticCompanies = async ({page = 0, size = 20, companyName}) => {
     });
 
     const dom = document.getElementById('paginationContainer');
-    renderPagination(dom, companiesData.page, renderDomesticCompanies);
+    renderPagination(dom, companiesData.page, renderDomesticCompanies, {size, companyName});
 }
