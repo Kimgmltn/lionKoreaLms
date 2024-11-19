@@ -13,21 +13,18 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 } );
 
-const inputBuyerTag = document.getElementById('inputBuyer');
 const buyerTag = document.getElementById('buyerModal');
 const buyerModal = new bootstrap.Modal(buyerTag,{
     backdrop: 'static',
     keyboard: true
 })
 
-const inputDomesticCompanyTag = document.getElementById('inputDomesticCompany');
 const domesticCompanyTag = document.getElementById('domesticCompanyModal')
 const domesticCompanyModal = new bootstrap.Modal(domesticCompanyTag,{
     backdrop: 'static',
     keyboard: true
 })
 
-const inputManageTag = document.getElementById('inputManager');
 const translatorTag = document.getElementById('manageModal')
 const managerModal = new bootstrap.Modal(translatorTag,{
     backdrop: 'static',
@@ -74,32 +71,17 @@ document.getElementById('inputConsultationNotes').addEventListener('input', func
     this.style.height = this.scrollHeight + 'px';
 })
 
-inputBuyerTag.addEventListener('click', function(event){
-    event.preventDefault();
-    buyerModal.show();
-})
-
-inputDomesticCompanyTag.addEventListener('click', function(event){
-    event.preventDefault();
-    domesticCompanyModal.show();
-})
-
-inputManageTag.addEventListener('click', function(event){
-    event.preventDefault();
-    managerModal.show();
-})
-
 buyerModal.addEventListener('hide.bs.modal', function (){
     document.getElementById('searchBuyer').reset();
-    this.querySelector('table').innerHTML = '';
+    this.querySelector('table tbody').innerHTML = '';
 })
 domesticCompanyModal.addEventListener('hide.bs.modal', function (){
     document.getElementById('searchDomesticCompany').reset();
-    this.querySelector('table').innerHTML = '';
+    this.querySelector('table tbody').innerHTML = '';
 })
 managerModal.addEventListener('hide.bs.modal', function(){
     document.getElementById('searchTranslator').reset();
-    this.querySelector('table').innerHTML = '';
+    this.querySelector('table tbody').innerHTML = '';
 })
 
 const renderCompanies = async ({
@@ -123,29 +105,38 @@ const renderCompanies = async ({
 
     companiesData.content.forEach((company) => {
 
+        const companyId = company.companyId;
+        const companyName = company.companyName;
+
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
-            // window.location.href = `/company/domestic/${company.companyId}`;
+            if(companyType === 'buyer'){
+                document.getElementById('inputBuyerId').value = companyId;
+                document.getElementById('inputBuyer').value = companyName;
+                buyerModal.hide();
+            } else {
+                document.getElementById('inputDomesticCompanyId').value = companyId;
+                document.getElementById('inputDomesticCompany').value = companyName;
+                domesticCompanyModal.hide();
+            }
         })
 
-        const keysToInclude = ['companyId', 'companyName']; // 추출할 키
-        keysToInclude.forEach((key) => {
-            const td = document.createElement('td');
-            td.textContent = company[key];
+        const companyIdTd = document.createElement('td');
+        companyIdTd.textContent = companyId;
+        companyIdTd.hidden = true;
+        const companyNameTd = document.createElement('td');
+        companyNameTd.textContent = companyName;
 
-            // companyId는 숨김 처리
-            if (key === 'companyId') {
-                td.hidden = true;
-            }
-            tr.appendChild(td);
-        });
+        tr.appendChild(companyIdTd)
+        tr.appendChild(companyNameTd)
 
         tbody.appendChild(tr);
     });
 
-    const dom = document.getElementById('buyer_paginationContainer');
+    const dom = document.getElementById(`${companyType}_paginationContainer`);
     renderPagination(dom, companiesData.page, renderCompanies, {size, companyType, companyName, tableDom});
 }
+
 document.getElementById('buyerSearchButton').addEventListener('click', async function(){
     const companyName = document.getElementById('inputBuyerName').value;
     if(!companyName.trim()){
@@ -167,14 +158,11 @@ document.getElementById('domesticCompanySearchButton').addEventListener('click',
         return;
     }
 
-    const queryParams = new URLSearchParams({
-        page:0,
-        size:5,
-        companyName: companyName
-    })
-
-    const response = await get(`/api/company/domestic?${queryParams}`)
-
+    renderCompanies({
+        companyType:"domestic",
+        companyName:companyName,
+        tableDom: document.querySelector('#domesticCompanyTable tbody')
+    });
 
 })
 
