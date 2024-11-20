@@ -14,7 +14,7 @@ import lombok.experimental.SuperBuilder;
 @SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@DiscriminatorColumn(name = "d_type")
+@DiscriminatorColumn(name = "company_type")
 public abstract class Company extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id")

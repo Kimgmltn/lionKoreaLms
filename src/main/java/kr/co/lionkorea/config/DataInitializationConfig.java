@@ -44,8 +44,8 @@ public class DataInitializationConfig {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/admin", "fa-file-shield", null));
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/translator", "fa-diagram-project", null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/admin", "fa-file-shield", null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
             menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
 //            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
