@@ -73,8 +73,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    public PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable) {
-        return memberRepository.findMembersPaging(request, pageable);
+    public PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable, String memberName) {
+        return memberRepository.findMembersPaging(request, pageable, memberName);
+    }
+
+    @Override
+    public PagedModel<FindTranslatorsResponse> findTranslators(Pageable pageable, String memberName) {
+        return accountRepository.findTranslatorsPaging(pageable, memberName);
     }
 
     @Override

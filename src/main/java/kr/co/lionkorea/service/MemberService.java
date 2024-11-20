@@ -22,7 +22,7 @@ public interface MemberService {
 
     MemberDetails findUserDetails(String username);
 
-    PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable);
+    PagedModel<FindMembersResponse> findMembers(FindMembersRequest request, Pageable pageable, String memberName);
 
     FindMemberDetailResponse findMemberById(Long memberId);
 
@@ -36,4 +36,6 @@ public interface MemberService {
 
     @Transactional
     void deleteShortUrlAccountIdMap(Long accountId);
+
+    PagedModel<FindTranslatorsResponse> findTranslators(Pageable pageable, String memberName);
 }

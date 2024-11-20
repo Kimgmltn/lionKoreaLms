@@ -7,5 +7,5 @@ import org.springframework.data.web.PagedModel;
 
 public interface MemberQueryDslRepository {
 
-    PagedModel<FindMembersResponse> findMembersPaging(FindMembersRequest request, Pageable pageable);
+    PagedModel<FindMembersResponse> findMembersPaging(FindMembersRequest request, Pageable pageable, String memberName);
 }

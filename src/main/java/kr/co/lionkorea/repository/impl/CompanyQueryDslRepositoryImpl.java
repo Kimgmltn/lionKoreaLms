@@ -32,7 +32,7 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
                 .from(company)
                 .where(
                         company.companyType.eq(companyType),
-                        companyNameEq(companyName))
+                        companyNameContainsIgnoreCase(companyName))
                 .orderBy(company.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -40,13 +40,13 @@ public class CompanyQueryDslRepositoryImpl implements CompanyQueryDslRepository 
 
         int total = query.select(Expressions.constant(1))
                 .from(company)
-                .where(company.companyType.eq(companyType),companyNameEq(companyName))
+                .where(company.companyType.eq(companyType), companyNameContainsIgnoreCase(companyName))
                 .fetch().size();
 
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
     }
 
-    private Predicate companyNameEq(String companyName) {
+    private Predicate companyNameContainsIgnoreCase(String companyName) {
         return StringUtils.hasText(companyName) ? company.companyName.containsIgnoreCase(companyName) : null;
     }
 

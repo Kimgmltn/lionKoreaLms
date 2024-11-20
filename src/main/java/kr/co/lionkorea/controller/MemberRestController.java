@@ -29,8 +29,13 @@ public class MemberRestController {
     }
 
     @GetMapping()
-    public ResponseEntity<PagedModel<FindMembersResponse>> findMembers(@ModelAttribute FindMembersRequest request, Pageable pageable){
-        return ResponseEntity.ok(memberService.findMembers(request, pageable));
+    public ResponseEntity<PagedModel<FindMembersResponse>> findMembers(@ModelAttribute FindMembersRequest request, Pageable pageable, @RequestParam(value = "memberName", required = false) String memberName){
+        return ResponseEntity.ok(memberService.findMembers(request, pageable, memberName));
+    }
+
+    @GetMapping("/translator")
+    public ResponseEntity<PagedModel<FindTranslatorsResponse>> findTranslators(Pageable pageable, @RequestParam(value = "memberName", required = false) String memberName){
+        return ResponseEntity.ok(memberService.findTranslators(pageable, memberName));
     }
 
     @GetMapping("/{memberId}/detail")

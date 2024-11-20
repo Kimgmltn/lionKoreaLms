@@ -1,5 +1,6 @@
 package kr.co.lionkorea.repository.impl;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.core.types.dsl.Expressions;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -10,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,7 +24,7 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
     private final JPAQueryFactory query;
 
     @Override
-    public PagedModel<FindMembersResponse> findMembersPaging(FindMembersRequest request, Pageable pageable) {
+    public PagedModel<FindMembersResponse> findMembersPaging(FindMembersRequest request, Pageable pageable, String memberName) {
 
         List<FindMembersResponse> result = query.select(Projections.fields(FindMembersResponse.class,
                         member.id.as("memberId"),
@@ -30,6 +32,7 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
                         member.memberName.as("memberName"),
                         member.email.as("email")))
                 .from(member)
+                .where(memberNameContainsIgnoreCase(memberName))
                 .orderBy(member.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -37,12 +40,14 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
 
         long total = Optional.ofNullable(query.select(member.count())
                 .from(member)
+                .where(memberNameContainsIgnoreCase(memberName))
                 .fetchOne())
                 .orElse(0L);
-
 
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
     }
 
-
+    private Predicate memberNameContainsIgnoreCase(String memberName) {
+        return StringUtils.hasText(memberName) ? member.memberName.containsIgnoreCase(memberName) : null;
+    }
 }

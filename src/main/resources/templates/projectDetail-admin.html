@@ -129,15 +129,17 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input type="hidden" id="inputBuyerId" name="buyerId">
+                                                <input type="hidden" id="inputBuyerId">
                                                 <input class="form-control" type="text" id="inputBuyer" required readonly data-bs-toggle="modal" data-bs-target="#buyerModal">
+                                                <input type="hidden" name="buyerId">
                                                 <label for="inputBuyer">바이어</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input type="hidden" id="inputDomesticCompanyId" name="domesticCompanyId">
+                                                <input type="hidden" id="inputDomesticCompanyId">
                                                 <input class="form-control" type="text" id="inputDomesticCompany" required readonly data-bs-toggle="modal" data-bs-target="#domesticCompanyModal">
+                                                <input type="hidden" name="domesticCompanyId">
                                                 <label for="inputDomesticCompany">국내업체</label>
                                             </div>
                                         </div>
@@ -151,8 +153,8 @@
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManager" required readonly data-bs-toggle="modal" data-bs-target="#manageModal">
-                                                <input type="hidden" name="translatorId" id="translatorId">
+                                                <input class="form-control" id="inputManager" required readonly data-bs-toggle="modal" data-bs-target="#managerModal">
+                                                <input type="hidden" name="translatorId">
                                                 <label for="inputManager">상담자</label>
                                             </div>
                                         </div>

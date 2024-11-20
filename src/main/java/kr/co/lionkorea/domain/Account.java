@@ -43,6 +43,10 @@ public class Account extends BaseEntity{
     @Builder.Default
     private List<AccountRole> accountRoles = new ArrayList<>();
 
+    public Account(Long accountId) {
+        this.id = accountId;
+    }
+
     public static Account dtoToEntity(GrantNewAccountRequest request, Member member, Roles roles) {
         LocalDateTime now = LocalDateTime.now();
         Account account = Account.builder()

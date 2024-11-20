@@ -9,7 +9,7 @@ import lombok.NoArgsConstructor;
 import lombok.experimental.SuperBuilder;
 
 @Entity
-@Table(name="project")
+@Table(name="projects")
 @Getter
 @SuperBuilder
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -30,16 +30,16 @@ public class Project extends BaseEntity{
     private String consultationDate;
     @Column(name = "time_period")
     private String timePeriod;
-    @Column(name = "hour")
+    @Column(name = "consultation_hour")
     private String hour;
-    @Column(name = "minute")
+    @Column(name = "consultation_minute")
     private String minute;
     @Column(name = "consultation_notes")
     private String consultationNotes;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "translator_id", referencedColumnName = "member_id")
-    private Member translator;
+    @JoinColumn(name = "translator_id", referencedColumnName = "account_id")
+    private Account translator;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "buyer_id", referencedColumnName = "company_id")
     private Buyer buyer;
@@ -57,7 +57,7 @@ public class Project extends BaseEntity{
                 .hour(request.getHour())
                 .minute(request.getMinute())
                 .consultationNotes(request.getConsultationNotes())
-                .translator(new Member(request.getTranslatorId()))
+                .translator(new Account(request.getTranslatorId()))
                 .buyer(new Buyer(request.getBuyerId()))
                 .domesticCompany(new DomesticCompany(request.getDomesticCompanyId()))
                 .build();

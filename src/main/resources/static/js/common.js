@@ -165,7 +165,7 @@ const renderPagination = (dom, pageData, renderFunction, searchParam = {}) => {
         pageLink.href = '#';
         pageLink.textContent = i + 1;
         pageLink.addEventListener('click', () => {
-            renderFunction({page:i});
+            renderFunction({page:i, ...searchParam});
         });
         pageButton.appendChild(pageLink);
         paginationContainer.appendChild(pageButton);

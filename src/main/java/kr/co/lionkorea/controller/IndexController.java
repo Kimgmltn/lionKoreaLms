@@ -51,6 +51,11 @@ public class IndexController {
         return "projectRegister-admin";
     }
 
+    @GetMapping("/projects/admin/{projectId}")
+    public String projectDetailAdmin(@PathVariable Long projectId){
+        return "projectDetail-admin";
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(){
         return "dashboard";

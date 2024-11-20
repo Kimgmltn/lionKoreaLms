@@ -18,4 +18,9 @@ public class ProjectRestController {
     public ResponseEntity<SaveProjectResponse> saveProject(@RequestBody SaveProjectRequest request) {
         return ResponseEntity.ok(projectService.saveProject(request));
     }
+
+    @GetMapping("/admin/{projectId}")
+    public ResponseEntity<?> findProjectForAdminById(@PathVariable("projectId") Long projectId) {
+        return ResponseEntity.ok().build();
+    }
 }

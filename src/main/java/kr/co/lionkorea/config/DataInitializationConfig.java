@@ -61,8 +61,8 @@ public class DataInitializationConfig {
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 2L, 3L, 4L, 6L)));
 //            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(1L)));
 
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L,2L, 3L, 4L,5L)));
-            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L,2L, 3L, 4L,5L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(superAdmin.getId(), List.of(1L, 3L, 4L,5L)));
+            rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(admin.getId(), List.of(1L, 3L, 4L,5L)));
             rolesService.matchRolesAndMenus(new MatchRolesAndMenusRequest(translator.getId(), List.of(2L)));
             log.info("Role-Menu 데이터 삽입 끝");
 
@@ -83,10 +83,16 @@ public class DataInitializationConfig {
             log.info("Member 데이터 삽입 끝");
 
             log.info("Company 데이터 삽입");
-            for (int i = 0; i < 10; i++) {
+            for (int i = 0; i < 30; i++) {
                 String companyName = "회사" + i;
                 String managerName = "매니저" + i;
                 companyService.saveDomesticCompany(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
+            }
+
+            for (int i = 30; i < 60; i++) {
+                String companyName = "바이어" + i;
+                String managerName = "매니저" + i;
+                companyService.saveBuyer(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
             }
             log.info("Company 데이터 삽입 끝");
         };
