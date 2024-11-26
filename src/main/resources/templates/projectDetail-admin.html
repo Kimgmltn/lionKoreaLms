@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html lang="ko" xmlns:th="http://www.thymeleaf.org">
-    <head th:replace="~{header :: project_header('프로젝트 등록')}">
+    <head th:replace="~{header :: project_header('프로젝트 조회')}">
         <meta charset="utf-8" />
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
@@ -8,9 +8,9 @@
         <meta name="author" content="" />
         <link href="/static/css/styles.css" rel="stylesheet" />
         <script src="/static/js/all.js" crossorigin="anonymous"></script>
-        <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
-        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-        <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
+<!--        <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">-->
+<!--        <script src="https://code.jquery.com/jquery-3.7.1.js"></script>-->
+<!--        <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>-->
     </head>
     <body class="sb-nav-fixed">
         <nav th:replace="~{nav :: top_nav}">
@@ -118,10 +118,10 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2"><b>프로젝트 등록</b></h1>
+                        <h1 class="mt-4 display-2"><b>프로젝트 조회</b></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/projects/admin}" href="project-admin.html">프로젝트 관리</a></li>
-                            <li class="breadcrumb-item active">프로젝트 등록</li>
+                            <li class="breadcrumb-item active">프로젝트 조회</li>
                         </ol>
                         <div class="card border-0 mt-5">
                             <div class="card-body shadow-lg rounded-4">
@@ -130,7 +130,7 @@
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputBuyerId">
-                                                <input class="form-control" type="text" id="inputBuyer" required readonly data-bs-toggle="modal" data-bs-target="#buyerModal">
+                                                <input class="form-control" type="text" id="inputBuyer" disabled>
                                                 <input type="hidden" name="buyerId">
                                                 <label for="inputBuyer">바이어</label>
                                             </div>
@@ -138,7 +138,7 @@
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputDomesticCompanyId">
-                                                <input class="form-control" type="text" id="inputDomesticCompany" required readonly data-bs-toggle="modal" data-bs-target="#domesticCompanyModal">
+                                                <input class="form-control" type="text" id="inputDomesticCompany" disabled>
                                                 <input type="hidden" name="domesticCompanyId">
                                                 <label for="inputDomesticCompany">국내업체</label>
                                             </div>
@@ -147,13 +147,13 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputProjectName" type="text" name="projectName"/>
+                                                <input class="form-control" id="inputProjectName" type="text" name="projectName" disabled/>
                                                 <label for="inputProjectName">프로젝트 명</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManager" required readonly data-bs-toggle="modal" data-bs-target="#managerModal">
+                                                <input class="form-control" id="inputManager" disabled>
                                                 <input type="hidden" name="translatorId">
                                                 <label for="inputManager">상담자</label>
                                             </div>
@@ -162,7 +162,7 @@
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputLanguage" type="text" name="language" required/>
+                                                <input class="form-control" id="inputLanguage" type="text" name="language" disabled/>
                                                 <label for="inputLanguage">언어</label>
                                             </div>
                                         </div>
@@ -171,13 +171,13 @@
 <!--                                        <div class="fw-bold mb-2">상담 시간</div>-->
                                         <div class="form-floating col-md-2">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input type="text" id="datepicker" class="form-control" name="consultationDate">
+                                                <input type="text" id="datepicker" class="form-control" name="consultationDate" disabled>
                                                 <label for="datepicker">상담 날짜</label>
                                             </div>
                                         </div>
                                         <div class="form-floating col-md-1">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputHour" name="hour" required>
+                                                <select class="form-select" id="inputHour" name="hour" disabled>
                                                     <option value="1" selected>1</option>
                                                     <option value="2">2</option>
                                                     <option value="3">3</option>
@@ -196,7 +196,7 @@
                                         </div>
                                         <div class="form-floating col-md-1">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputMinute" name="minute" required>
+                                                <select class="form-select" id="inputMinute" name="minute" disabled>
                                                     <option value="00" selected>00</option>
                                                     <option value="10">10</option>
                                                     <option value="20">20</option>
@@ -209,7 +209,7 @@
                                         </div>
                                         <div class="form-floating col-md-1">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <select class="form-select" id="inputTimePeriod" name="timePeriod" required>
+                                                <select class="form-select" id="inputTimePeriod" name="timePeriod" disabled>
                                                     <option value="AM">AM</option>
                                                     <option value="PM">PM</option>
                                                 </select>
@@ -218,111 +218,44 @@
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden"></textarea>
+                                        <textarea class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden" disabled></textarea>
                                         <label for="inputConsultationNotes">상담 내용</label>
                                     </div>
-                                    <div class="mt-4 mb-0">
-                                        <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">프로젝트 등록</button></div>
-                                    </div>
                                 </form>
+                                <div class="mt-4 mb-0">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#rejectModal">반려</button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="modal fade show" id="buyerModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+                    <div class="modal fade" id="rejectModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
                             <div class="modal-content">
                                 <div class="modal-header">
-                                    <h5 class="modal-title">바이어 검색</h5>
+                                    <h5 class="modal-title">반려</h5>
                                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
                                     <form id="searchBuyer">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="inputBuyerName" name="companyName" placeholder="바이어 명칭">
-                                            <button type="button" class="btn btn-primary" id="buyerSearchButton">검색</button>
-                                        </div>
+<!--                                        <div class="input-group">-->
+                                            <input type="text" class="form-control" id="inputBuyerName" name="companyName" placeholder="반려 사유">
+<!--                                        </div>-->
                                     </form>
-                                    <table class="table" id="buyerTable">
+                                    <table class="table">
                                         <tbody>
                                         </tbody>
                                     </table>
-                                    <nav aria-label="Page navigation">
-                                        <ul id="buyer_paginationContainer" class="pagination justify-content-center">
-
-                                        </ul>
-                                    </nav>
                                     <div class="text-end">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-<!--                                            <button type="submit" class="btn btn-primary" id="submitUpdateButton">수정</button>-->
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal fade show" id="domesticCompanyModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">국내기업 검색</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="searchDomesticCompany">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="inputDomesticCompanyName" name="companyName" placeholder="국내기업 명">
-                                            <button type="button" class="btn btn-primary" id="domesticCompanySearchButton">검색</button>
-                                        </div>
-                                    </form>
-                                    <table class="table" id="domesticCompanyTable">
-                                        <tbody>
-                                        </tbody>
-                                    </table>
-                                    <nav aria-label="Page navigation">
-                                        <ul id="domestic_paginationContainer" class="pagination justify-content-center">
-
-                                        </ul>
-                                    </nav>
-                                    <div class="text-end">
+                                        <button type="button" id="rejectButton" class="btn btn-danger">반려</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <div class="modal fade show" id="manageModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title">번역가 검색</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-                                    <form id="searchTranslator">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" id="inputTranslatorName" name="managerName" placeholder="이름">
-                                            <button type="button" class="btn btn-primary" id="translatorSearchButton">검색</button>
-                                        </div>
-                                    </form>
-                                    <table class="table" id="translatorTable">
-                                        <tbody></tbody>
-                                    </table>
-                                    <nav aria-label="Page navigation">
-                                        <ul id="translator_paginationContainer" class="pagination justify-content-center">
-
-                                        </ul>
-                                    </nav>
-                                    <div class="text-end">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
 
                 </main>
                 <footer th:replace="~{footer :: main_footer}">
@@ -349,7 +282,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-        <script src="../static/js/projectRegister-admin.js" th:src="@{/js/projectRegister-admin.js}" type="module"></script>
+<!--        <script src="../static/js/projectRegister-admin.js" th:src="@{/js/projectRegister-admin.js}" type="module"></script>-->
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>
