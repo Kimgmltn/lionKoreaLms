@@ -1,5 +1,5 @@
 import {get, patch, post} from './api.js'
-import {createConfirmModal} from './common.js'
+import {createConfirmModal, getLastPath} from './common.js'
 
 // ID 발급 모달 창
 const assignIdTag = document.getElementById('assignIdModal')
@@ -69,13 +69,8 @@ const closeUpdateAssignModal = () => {
 assignIdTag.addEventListener('hide.bs.modal', closeInputAssignModal)
 assignIdUpdateTag.addEventListener('hide.bs.modal', closeUpdateAssignModal)
 
-const getMemberId = () => {
-    const pathname = window.location.pathname;
-    return pathname.substring(pathname.lastIndexOf('/') + 1);
-}
-
 const renderAssignedId = async ()=> {
-    const memberId = getMemberId();
+    const memberId = getLastPath();
     const response = await get(`/api/members/${memberId}/accounts`);
 
     if(response.ok)
@@ -151,7 +146,7 @@ document.getElementById('assignBtn').addEventListener('click', (event)=>{
 document.getElementById('assignIdForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const memberId = getMemberId();
+    const memberId = getLastPath();
 
     const formData = new FormData(event.target);
     const request = {
@@ -181,7 +176,7 @@ document.getElementById('assignIdForm').addEventListener('submit', async (event)
 document.getElementById('assignIdUpdateForm').addEventListener('submit', async (event) => {
     event.preventDefault();
 
-    const memberId = getMemberId();
+    const memberId = getLastPath();
 
     const formData = new FormData(event.target);
     const accountId = formData.get('accountId');

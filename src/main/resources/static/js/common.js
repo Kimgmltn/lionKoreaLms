@@ -213,4 +213,9 @@ const parseJWT = (token) => {
     }
 }
 
-export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT}
+const getLastPath = () => {
+    const pathname = window.location.pathname;
+    return pathname.substring(pathname.lastIndexOf('/') + 1);
+}
+
+export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath}

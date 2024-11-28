@@ -1,5 +1,5 @@
 import {get, patch, post} from './api.js'
-import {createConfirmModal, inputOnlyNumber} from './common.js'
+import {createConfirmModal, inputOnlyNumber, getLastPath} from './common.js'
 
 const renderInfo = {
     name: '',
@@ -24,14 +24,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
     renderMember();
 })
 
-// memberId 획득
-const getMemberId = () => {
-    const pathname = window.location.pathname;
-    return pathname.substring(pathname.lastIndexOf('/') + 1);
-}
 // 상세정보 랜더링
 const renderMember = async ()=> {
-    const memberId = getMemberId();
+    const memberId = getLastPath();
     const response = await get(`/api/members/${memberId}/detail`);
 
     if(response.ok)
@@ -145,7 +140,7 @@ document.getElementById('updateForm').addEventListener('submit', async function(
 
     try {
         setInfo(memberData);
-        const memberId = getMemberId();
+        const memberId = getLastPath();
         const response = await patch(`/api/members/save/${memberId}`, memberData);
 
         if(response.ok)
