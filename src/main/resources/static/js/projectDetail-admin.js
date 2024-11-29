@@ -1,5 +1,15 @@
-import {get} from './api.js'
-import {getLastPath, PROCESS_STATUS} from './common.js'
+import {get, patch, post} from './api.js'
+import {createConfirmModal, getLastPath, PROCESS_STATUS} from './common.js'
+
+const rejectModalTag = document.getElementById('rejectModal')
+const rejectModal = new bootstrap.Modal(rejectModalTag,{
+    backdrop: 'static',
+    keyboard: true
+})
+
+rejectModalTag.addEventListener('hide.bs.modal', function(){
+    document.getElementById('rejectForm').reset();
+})
 
 document.addEventListener('DOMContentLoaded', () => {
     renderProjectInfo()
@@ -22,19 +32,53 @@ const renderProjectInfo = async () => {
         document.getElementById('inputConsultationNotes').value = projectDetail.consultationNotes;
         const caption = document.getElementById('caption');
         switch(projectDetail.processStatus){
-            case PROCESS_STATUS.WAITING:
+            case "WAITING":
                 caption.classList.add('bg-secondary');
                 caption.textContent = PROCESS_STATUS.WAITING
                 break;
-            case PROCESS_STATUS.PROGRESS:
+            case "PROGRESS":
                 caption.classList.add('bg-warning');
                 caption.textContent = PROCESS_STATUS.PROGRESS
                 break;
-            case PROCESS_STATUS.COMPLETED:
+            case "COMPLETED":
                 caption.classList.add('bg-success');
                 caption.textContent = PROCESS_STATUS.COMPLETED
                 break;
         }
     }
 }
+
+document.getElementById('rejectForm').addEventListener('submit',async function (event){
+    event.preventDefault();
+
+    const projectId = getLastPath();
+    const formData = new FormData(this);
+    const request = {
+        buyerId: projectId,
+        rejectReason: formData.get('inputRejectReason'),
+    };
+
+    try {
+        const response = await patch(`/api/projects/admin/${projectId}/reject`, request);
+        if(response.ok){
+            const data = await response.json();
+
+            await createConfirmModal({
+                title: data.result
+            }, function(){
+                window.location.href=`/projects/admin/${data.projectId}`
+            });
+        }else{
+            await createConfirmModal({
+                    title: data.result
+                },
+            );
+        }
+    } catch (error) {
+        console.error('Error:', error);
+
+        // 실패 처리 (예: 메시지 표시)
+        alert('등록 실패: ' + error.message);
+    }
+})
 

@@ -1,5 +1,6 @@
 package kr.co.lionkorea.dto.response;
 
+import kr.co.lionkorea.enums.ProcessStatus;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -16,7 +17,7 @@ public class FindProjectDetailForAdminResponse {
     private String projectName;
     private String translatorName;
     private String language;
-    private String processStatus;
+    private ProcessStatus processStatus;
     private String consultationDate;
     private String timePeriod;
     private String hour;

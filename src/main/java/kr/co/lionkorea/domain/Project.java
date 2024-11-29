@@ -2,6 +2,7 @@ package kr.co.lionkorea.domain;
 
 import jakarta.persistence.*;
 import kr.co.lionkorea.dto.request.SaveProjectRequest;
+import kr.co.lionkorea.enums.ProcessStatus;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -24,8 +25,9 @@ public class Project extends BaseEntity{
     private String projectName;
     @Column(name = "language")
     private String language;
+    @Enumerated(value = EnumType.STRING)
     @Column(name = "process_status")
-    private String processStatus;
+    private ProcessStatus processStatus;
     @Column(name = "consultation_date")
     private String consultationDate;
     @Column(name = "time_period")
@@ -51,7 +53,7 @@ public class Project extends BaseEntity{
         return Project.builder()
                 .projectName(request.getProjectName())
                 .language(request.getLanguage())
-                .processStatus("대기")
+                .processStatus(ProcessStatus.WAITING)
                 .consultationDate(request.getConsultationDate())
                 .timePeriod(request.getTimePeriod())
                 .hour(request.getHour())

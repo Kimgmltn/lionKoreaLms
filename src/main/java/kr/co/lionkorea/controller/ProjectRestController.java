@@ -1,6 +1,7 @@
 package kr.co.lionkorea.controller;
 
 import kr.co.lionkorea.dto.request.SaveProjectRequest;
+import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
 import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
 import kr.co.lionkorea.dto.response.SaveProjectResponse;
 import kr.co.lionkorea.service.ProjectService;
@@ -23,5 +24,10 @@ public class ProjectRestController {
     @GetMapping("/admin/{projectId}")
     public ResponseEntity<FindProjectDetailForAdminResponse> findProjectForAdminById(@PathVariable("projectId") Long projectId) {
         return ResponseEntity.ok(projectService.findProjectDetailForAdmin(projectId));
+    }
+
+    @PatchMapping("/admin/{projectId}/reject")
+    public ResponseEntity<?> rejectProject(@PathVariable Long projectId, @RequestBody SaveRejectProjectRequest request){
+        return ResponseEntity.ok().build();
     }
 }
