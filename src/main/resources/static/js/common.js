@@ -218,4 +218,10 @@ const getLastPath = () => {
     return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
 
-export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath}
+const PROCESS_STATUS = Object.freeze({
+    WAITING:'대기',
+    PROGRESS:'작성 중',
+    COMPLETED:'작성 완료'
+})
+
+export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath, PROCESS_STATUS}
