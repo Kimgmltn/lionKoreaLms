@@ -44,6 +44,10 @@ const renderProjectInfo = async () => {
                 caption.classList.add('bg-success');
                 caption.textContent = PROCESS_STATUS.COMPLETED
                 break;
+            case "REJECT":
+                caption.classList.add('bg-danger');
+                caption.textContent = PROCESS_STATUS.REJECT
+                break;
         }
     }
 }
@@ -71,7 +75,9 @@ document.getElementById('rejectForm').addEventListener('submit',async function (
         }else{
             await createConfirmModal({
                     title: data.result
-                },
+                }, function (){
+                    window
+                }
             );
         }
     } catch (error) {

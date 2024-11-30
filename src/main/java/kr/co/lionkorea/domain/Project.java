@@ -38,6 +38,8 @@ public class Project extends BaseEntity{
     private String minute;
     @Column(name = "consultation_notes")
     private String consultationNotes;
+    @Column(name = "reject_reason")
+    private String rejectReason;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "translator_id", referencedColumnName = "account_id")
@@ -63,7 +65,11 @@ public class Project extends BaseEntity{
                 .buyer(new Buyer(request.getBuyerId()))
                 .domesticCompany(new DomesticCompany(request.getDomesticCompanyId()))
                 .build();
+    }
 
+    public void rejectProject(String rejectReason) {
+        this.rejectReason = rejectReason;
+        this.processStatus = ProcessStatus.REJECT;
     }
 
 }

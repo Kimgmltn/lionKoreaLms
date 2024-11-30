@@ -4,6 +4,7 @@ import kr.co.lionkorea.dto.request.SaveProjectRequest;
 import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
 import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
 import kr.co.lionkorea.dto.response.SaveProjectResponse;
+import kr.co.lionkorea.dto.response.SaveRejectProjectResponse;
 import kr.co.lionkorea.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -27,7 +28,7 @@ public class ProjectRestController {
     }
 
     @PatchMapping("/admin/{projectId}/reject")
-    public ResponseEntity<?> rejectProject(@PathVariable Long projectId, @RequestBody SaveRejectProjectRequest request){
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SaveRejectProjectResponse> rejectProject(@PathVariable Long projectId, @RequestBody SaveRejectProjectRequest request){
+        return ResponseEntity.ok(projectService.rejectProject(projectId, request));
     }
 }

@@ -242,11 +242,11 @@
                                 <div class="modal-body">
                                     <form id="rejectForm">
                                         <input type="text" class="form-control" id="inputRejectReason" name="companyName" placeholder="반려 사유">
-                                    </form>
                                     <div class="text-end">
-                                        <button type="button" id="rejectButton" class="btn btn-danger">반려</button>
+                                        <button type="submit" id="rejectButton" class="btn btn-danger">반려</button>
                                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
                                     </div>
+                                    </form>
                                 </div>
                             </div>
                         </div>
@@ -277,7 +277,7 @@
                 window.isLocalMode = true;
             </script>
         </th:block>
-<!--        <script src="../static/js/projectRegister-admin.js" th:src="@{/js/projectRegister-admin.js}" type="module"></script>-->
+        <script src="../static/js/projectDetail-admin.js" th:src="@{/js/projectDetail-admin.js}" type="module"></script>
         <script src="../static/js/sideNav.js" type="module" th:src="@{/js/sideNav.js}"></script>
     </body>
 </html>

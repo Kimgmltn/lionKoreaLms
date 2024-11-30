@@ -221,7 +221,8 @@ const getLastPath = () => {
 const PROCESS_STATUS = Object.freeze({
     WAITING:'대기',
     PROGRESS:'작성 중',
-    COMPLETED:'작성 완료'
+    COMPLETED:'작성 완료',
+    REJECT:'반려'
 })
 
 export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath, PROCESS_STATUS}

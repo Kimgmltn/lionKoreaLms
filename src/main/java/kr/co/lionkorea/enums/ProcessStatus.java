@@ -6,5 +6,6 @@ import lombok.Getter;
 public enum ProcessStatus {
     WAITING,
     PROGRESS,
-    COMPLETED
+    COMPLETED,
+    REJECT
 }
