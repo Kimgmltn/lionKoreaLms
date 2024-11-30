@@ -23,4 +23,5 @@ public class FindProjectDetailForAdminResponse {
     private String hour;
     private String minute;
     private String consultationNotes;
+    private String rejectReason;
 }

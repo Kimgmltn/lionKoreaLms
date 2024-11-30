@@ -47,6 +47,8 @@ const renderProjectInfo = async () => {
             case "REJECT":
                 caption.classList.add('bg-danger');
                 caption.textContent = PROCESS_STATUS.REJECT
+                document.getElementById('inputRejectReason').value = projectDetail.rejectReason
+                document.getElementById('rejectButton').disable = true;
                 break;
         }
     }
@@ -59,7 +61,7 @@ document.getElementById('rejectForm').addEventListener('submit',async function (
     const formData = new FormData(this);
     const request = {
         buyerId: projectId,
-        rejectReason: formData.get('inputRejectReason'),
+        rejectReason: formData.get('rejectReason'),
     };
 
     try {
@@ -70,13 +72,13 @@ document.getElementById('rejectForm').addEventListener('submit',async function (
             await createConfirmModal({
                 title: data.result
             }, function(){
-                window.location.href=`/projects/admin/${data.projectId}`
+                window.location.href=`/projects/admin/${projectId}`
             });
         }else{
             await createConfirmModal({
                     title: data.result
                 }, function (){
-                    window
+                    window.location.reload()
                 }
             );
         }

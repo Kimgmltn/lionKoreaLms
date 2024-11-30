@@ -32,7 +32,8 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                         project.timePeriod,
                         project.hour,
                         project.minute,
-                        project.consultationNotes
+                        project.consultationNotes,
+                        project.rejectReason
                 ))
                 .from(project)
                 .innerJoin(project.buyer, buyer)
