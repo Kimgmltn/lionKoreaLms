@@ -2,12 +2,10 @@ package kr.co.lionkorea.service.impl;
 
 import kr.co.lionkorea.domain.Project;
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
+import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
 import kr.co.lionkorea.dto.request.SaveProjectRequest;
 import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
-import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForAdminResponse;
-import kr.co.lionkorea.dto.response.SaveProjectResponse;
-import kr.co.lionkorea.dto.response.SaveRejectProjectResponse;
+import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.exception.ProjectException;
 import kr.co.lionkorea.repository.ProjectRepository;
 import kr.co.lionkorea.service.ProjectService;
@@ -53,5 +51,10 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public PagedModel<FindProjectsForAdminResponse> findProjectsForAdmin(FindProjectsForAdminRequest request, Pageable pageable) {
         return projectRepository.findProjectsForAdmin(request, pageable);
+    }
+
+    @Override
+    public PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable) {
+        return projectRepository.findProjectsForTranslator(request, pageable);
     }
 }

@@ -1,20 +1,13 @@
 package kr.co.lionkorea.controller;
 
-import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
-import kr.co.lionkorea.dto.request.SaveProjectRequest;
-import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
-import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForAdminResponse;
-import kr.co.lionkorea.dto.response.SaveProjectResponse;
-import kr.co.lionkorea.dto.response.SaveRejectProjectResponse;
+import kr.co.lionkorea.dto.request.*;
+import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.ProjectService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -41,5 +34,15 @@ public class ProjectRestController {
     @GetMapping("/admin")
     public ResponseEntity<PagedModel<FindProjectsForAdminResponse>> findProjectsForAdmin(@ModelAttribute FindProjectsForAdminRequest request, Pageable pageable) {
         return ResponseEntity.ok(projectService.findProjectsForAdmin(request, pageable));
+    }
+
+    @GetMapping("/translator")
+    public ResponseEntity<PagedModel<FindProjectsForTranslatorResponse>> findProjectsForTranslator(@ModelAttribute FindProjectsForTranslatorRequest request, Pageable pageable){
+        return ResponseEntity.ok(projectService.findProjectsForTranslator(request, pageable));
+    }
+
+    @PatchMapping("/translator/{projectId}/complete")
+    public ResponseEntity<?> completeConsultation(@PathVariable Long projectId, @RequestBody SaveCompleteConsultationRequest request) {
+        return ResponseEntity.ok().build();
     }
 }
