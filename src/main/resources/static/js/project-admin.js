@@ -1,5 +1,5 @@
 import {get} from './api.js'
-import {renderPagination} from "./common";
+import {renderPagination} from "./common.js";
 
 
 document.addEventListener('DOMContentLoaded', () => {
