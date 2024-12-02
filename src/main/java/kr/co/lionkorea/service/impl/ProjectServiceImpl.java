@@ -19,6 +19,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
@@ -62,5 +63,14 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     public FindProjectDetailForTranslatorResponse findProjectDetailForTranslator(Long projectId, CustomUserDetails userDetails) {
         return projectRepository.findProjectDetailForTranslator(projectId, userDetails.getAccountId()).orElseThrow(()-> new ProjectException(HttpStatus.NOT_ACCEPTABLE, "해당 프로젝트의 담당자가 아닙니다."));
+    }
+
+    @Override
+    @Transactional
+    public Void startConsultation(Long projectId) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectException(HttpStatus.NOT_FOUND, "존재하지 않는 프로젝트입니다."));
+        project.startProject();
+        projectRepository.save(project);
+        return null;
     }
 }

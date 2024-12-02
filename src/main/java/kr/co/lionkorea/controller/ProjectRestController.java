@@ -54,7 +54,7 @@ public class ProjectRestController {
     }
 
     @PatchMapping("/translator/{projectId}/start")
-    public ResponseEntity<?> startConsultation(@PathVariable Long projectId) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<Void> startConsultation(@PathVariable Long projectId) {
+        return ResponseEntity.ok(projectService.startConsultation(projectId));
     }
 }

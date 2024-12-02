@@ -21,4 +21,6 @@ public interface ProjectService {
     PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable, CustomUserDetails userDetails);
 
     FindProjectDetailForTranslatorResponse findProjectDetailForTranslator(Long projectId, CustomUserDetails userDetails);
+
+    Void startConsultation(Long projectId);
 }

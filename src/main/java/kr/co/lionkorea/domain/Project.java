@@ -72,4 +72,8 @@ public class Project extends BaseEntity{
         this.processStatus = ProcessStatus.REJECT;
     }
 
+    public void startProject(){
+        this.processStatus = ProcessStatus.PROGRESS;
+    }
+
 }
