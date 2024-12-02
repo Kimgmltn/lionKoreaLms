@@ -52,4 +52,9 @@ public class ProjectRestController {
     public ResponseEntity<?> completeConsultation(@PathVariable Long projectId, @RequestBody SaveCompleteConsultationRequest request) {
         return ResponseEntity.ok().build();
     }
+
+    @PatchMapping("/translator/{projectId}/start")
+    public ResponseEntity<?> startConsultation(@PathVariable Long projectId) {
+        return ResponseEntity.ok().build();
+    }
 }
