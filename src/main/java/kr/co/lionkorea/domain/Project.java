@@ -76,4 +76,9 @@ public class Project extends BaseEntity{
         this.processStatus = ProcessStatus.PROGRESS;
     }
 
+    public void completeProject(String consultationNotes){
+        this.processStatus = ProcessStatus.COMPLETED;
+        this.consultationNotes = consultationNotes;
+    }
+
 }

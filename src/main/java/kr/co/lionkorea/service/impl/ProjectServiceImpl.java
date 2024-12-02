@@ -2,10 +2,7 @@ package kr.co.lionkorea.service.impl;
 
 import kr.co.lionkorea.domain.Project;
 import kr.co.lionkorea.dto.CustomUserDetails;
-import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
-import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
-import kr.co.lionkorea.dto.request.SaveProjectRequest;
-import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
+import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.exception.ProjectException;
 import kr.co.lionkorea.repository.ProjectRepository;
@@ -72,5 +69,14 @@ public class ProjectServiceImpl implements ProjectService {
         project.startProject();
         projectRepository.save(project);
         return null;
+    }
+
+    @Override
+    @Transactional
+    public SaveCompleteConsultationResponse completeConsultation(Long projectId, SaveCompleteConsultationRequest request) {
+        Project project = projectRepository.findById(projectId).orElseThrow(() -> new ProjectException(HttpStatus.NOT_FOUND, "존재하지 않는 프로젝트입니다."));
+        project.completeProject(request.getConsultationNotes());
+        projectRepository.save(project);
+        return new SaveCompleteConsultationResponse("저장되었습니다.");
     }
 }

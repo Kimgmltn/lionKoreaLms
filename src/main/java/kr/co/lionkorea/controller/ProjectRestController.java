@@ -49,8 +49,8 @@ public class ProjectRestController {
     }
 
     @PatchMapping("/translator/{projectId}/complete")
-    public ResponseEntity<?> completeConsultation(@PathVariable Long projectId, @RequestBody SaveCompleteConsultationRequest request) {
-        return ResponseEntity.ok().build();
+    public ResponseEntity<SaveCompleteConsultationResponse> completeConsultation(@PathVariable Long projectId, @RequestBody SaveCompleteConsultationRequest request) {
+        return ResponseEntity.ok(projectService.completeConsultation(projectId, request));
     }
 
     @PatchMapping("/translator/{projectId}/start")

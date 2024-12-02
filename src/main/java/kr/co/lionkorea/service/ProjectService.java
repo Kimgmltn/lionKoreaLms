@@ -1,10 +1,7 @@
 package kr.co.lionkorea.service;
 
 import kr.co.lionkorea.dto.CustomUserDetails;
-import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
-import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
-import kr.co.lionkorea.dto.request.SaveProjectRequest;
-import kr.co.lionkorea.dto.request.SaveRejectProjectRequest;
+import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
@@ -23,4 +20,6 @@ public interface ProjectService {
     FindProjectDetailForTranslatorResponse findProjectDetailForTranslator(Long projectId, CustomUserDetails userDetails);
 
     Void startConsultation(Long projectId);
+
+    SaveCompleteConsultationResponse completeConsultation(Long projectId, SaveCompleteConsultationRequest request);
 }
