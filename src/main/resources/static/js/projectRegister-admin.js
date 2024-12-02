@@ -191,7 +191,7 @@ document.getElementById('translatorSearchButton').addEventListener('click', asyn
         return;
     }
 
-    await renderTranslator({translatorName});
+    await renderTranslator({memberName:translatorName});
 })
 
 document.getElementById('inputBuyerName').addEventListener('keydown', async function(event){
@@ -240,15 +240,15 @@ document.getElementById('inputTranslatorName').addEventListener('keydown', async
             return;
         }
 
-        await renderTranslator({translatorName:translatorName});
+        await renderTranslator({memberName:translatorName});
     }
 })
 
-const renderTranslator = async ({page = 0 , size = 5, translatorName}) => {
+const renderTranslator = async ({page = 0 , size = 5, memberName}) => {
     const queryParams = new URLSearchParams({
         page:page,
         size:size,
-        ...(translatorName && {translatorName})
+        ...(memberName && {memberName})
     })
     const tbody = document.querySelector('#translatorTable tbody');
     tbody.innerHTML = '';
@@ -282,7 +282,7 @@ const renderTranslator = async ({page = 0 , size = 5, translatorName}) => {
         });
 
         const dom = document.getElementById(`translator_paginationContainer`);
-        renderPagination(dom, membersData.page, renderTranslator, {size, translatorName});
+        renderPagination(dom, membersData.page, renderTranslator, {size, memberName});
     }else{
         const tr = document.createElement('tr');
         const td = document.createElement('td');
