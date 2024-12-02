@@ -1,6 +1,7 @@
 package kr.co.lionkorea.service.impl;
 
 import kr.co.lionkorea.domain.Project;
+import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
 import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
 import kr.co.lionkorea.dto.request.SaveProjectRequest;
@@ -54,7 +55,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable) {
-        return projectRepository.findProjectsForTranslator(request, pageable);
+    public PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable, CustomUserDetails userDetails) {
+        return projectRepository.findProjectsForTranslator(request, pageable, userDetails.getAccountId());
+    }
+
+    @Override
+    public FindProjectDetailForTranslatorResponse findProjectDetailForTranslator(Long projectId, CustomUserDetails userDetails) {
+        return projectRepository.findProjectDetailForTranslator(projectId, userDetails.getAccountId()).orElseThrow(()-> new ProjectException(HttpStatus.NOT_ACCEPTABLE, "해당 프로젝트의 담당자가 아닙니다."));
     }
 }

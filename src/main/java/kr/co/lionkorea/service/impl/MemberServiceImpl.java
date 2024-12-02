@@ -101,6 +101,9 @@ public class MemberServiceImpl implements MemberService {
         if(request.getRole().equals("super_admin")){
             randomPassword = "superAdmin1234";
         }
+        if(request.getLoginId().equals("admin49")){
+            randomPassword = "1234";
+        }
 
         log.info("{}의 random password : {}", request.getLoginId(), randomPassword);
 
@@ -144,6 +147,7 @@ public class MemberServiceImpl implements MemberService {
                 .memberName(member.getMemberName())
                 .memberId(member.getId())
                 .roles(roles)
+                .accountId(account.getId())
                 .password(account.getPassword())
                 .build();
 

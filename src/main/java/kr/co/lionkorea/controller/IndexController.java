@@ -56,6 +56,11 @@ public class IndexController {
         return "projectDetail-admin";
     }
 
+    @GetMapping("/projects/translator/{projectId}")
+    public String projectDetailTranslator(@PathVariable Long projectId){
+        return "projectDetail-translator";
+    }
+
     @GetMapping("/dashboard")
     public String dashboard(){
         return "dashboard";

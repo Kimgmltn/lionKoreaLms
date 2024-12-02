@@ -16,4 +16,5 @@ public class MemberDetails {
     private Set<Role> roles;
     private String memberName;
     private Long memberId;
+    private Long accountId;
 }

@@ -48,7 +48,8 @@ const renderProjectInfo = async () => {
                 caption.classList.add('bg-danger');
                 caption.textContent = PROCESS_STATUS.REJECT
                 document.getElementById('inputRejectReason').value = projectDetail.rejectReason
-                document.getElementById('rejectButton').disable = true;
+                document.getElementById('inputRejectReason').disabled = true;
+                document.getElementById('rejectButton').hidden = true;
                 break;
         }
     }

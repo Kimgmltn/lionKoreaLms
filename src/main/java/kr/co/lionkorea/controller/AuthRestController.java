@@ -92,6 +92,7 @@ public class AuthRestController {
                 .roles(jwtUtil.getRoles(refresh))
                 .memberId(jwtUtil.getMemberId(refresh))
                 .loginId(jwtUtil.getLoginId(refresh))
+                .accountId(jwtUtil.getAccountId(refresh))
                 .build();
 
         CustomUserDetails customUserDetails = new CustomUserDetails(memberDetails);

@@ -59,6 +59,10 @@ public class JwtUtil {
         return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("category", String.class);
     }
 
+    public Long getAccountId(String token) {
+        return Jwts.parser().verifyWith(secretKey).build().parseSignedClaims(token).getPayload().get("accountId", Long.class);
+    }
+
     public String createJwt(String category, CustomUserDetails customUserDetails){
         if ("access".equals(category)) {
             return Jwts.builder()
@@ -66,6 +70,7 @@ public class JwtUtil {
                     .claim("memberName", customUserDetails.getUsername())
                     .claim("roles", customUserDetails.getRoles())
                     .claim("memberId", customUserDetails.getMemberId())
+                    .claim("accountId", customUserDetails.getAccountId())
                     .issuedAt(new Date(System.currentTimeMillis()))
                     .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS_ACCESS))
                     .signWith(secretKey)
@@ -76,6 +81,7 @@ public class JwtUtil {
                     .claim("memberName", customUserDetails.getUsername())
                     .claim("roles", customUserDetails.getRoles())
                     .claim("memberId", customUserDetails.getMemberId())
+                    .claim("accountId", customUserDetails.getAccountId())
                     .issuedAt(new Date(System.currentTimeMillis()))
                     .expiration(new Date(System.currentTimeMillis() + JWT_EXPIRATION_MS_REFRESH)) // refresh token은 8시간
                     .signWith(secretKey)

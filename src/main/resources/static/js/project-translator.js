@@ -34,7 +34,7 @@ const renderProjects = async ({page = 0, size = 20, consultationDate}) => {
         return;
     }
 
-    const response = await get(`/api/projects/admin?${queryParams.toString()}`);
+    const response = await get(`/api/projects/translator?${queryParams.toString()}`);
 
     const projects = await response.json()
 
@@ -44,7 +44,7 @@ const renderProjects = async ({page = 0, size = 20, consultationDate}) => {
 
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
-            window.location.href = `/projects/admin/${project.projectId}`;
+            window.location.href = `/projects/translator/${project.projectId}`;
         })
 
         Object.values(project).forEach((value, index) => {

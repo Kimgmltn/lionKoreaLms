@@ -1,5 +1,6 @@
 package kr.co.lionkorea.controller;
 
+import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.ProjectService;
@@ -7,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -37,8 +39,13 @@ public class ProjectRestController {
     }
 
     @GetMapping("/translator")
-    public ResponseEntity<PagedModel<FindProjectsForTranslatorResponse>> findProjectsForTranslator(@ModelAttribute FindProjectsForTranslatorRequest request, Pageable pageable){
-        return ResponseEntity.ok(projectService.findProjectsForTranslator(request, pageable));
+    public ResponseEntity<PagedModel<FindProjectsForTranslatorResponse>> findProjectsForTranslator(@ModelAttribute FindProjectsForTranslatorRequest request, Pageable pageable, @AuthenticationPrincipal CustomUserDetails userDetails){
+        return ResponseEntity.ok(projectService.findProjectsForTranslator(request, pageable, userDetails));
+    }
+
+    @GetMapping("/translator/{projectId}")
+    public ResponseEntity<FindProjectDetailForTranslatorResponse> findProjectForTranslatorById(@PathVariable Long projectId, @AuthenticationPrincipal CustomUserDetails userDetails) {
+        return ResponseEntity.ok(projectService.findProjectDetailForTranslator(projectId, userDetails));
     }
 
     @PatchMapping("/translator/{projectId}/complete")

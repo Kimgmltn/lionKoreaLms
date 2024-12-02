@@ -155,6 +155,7 @@ public class JwtFilter extends OncePerRequestFilter {
                 .memberId(jwtUtil.getMemberId(token))
                 .memberName(jwtUtil.getMemberName(token))
                 .roles(jwtUtil.getRoles(token))
+                .accountId(jwtUtil.getAccountId(token))
                 .password(null)
                 .build();
         CustomUserDetails customUserDetails = new CustomUserDetails(memberDetails);

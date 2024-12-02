@@ -1,5 +1,6 @@
 package kr.co.lionkorea.service;
 
+import kr.co.lionkorea.dto.CustomUserDetails;
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
 import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
 import kr.co.lionkorea.dto.request.SaveProjectRequest;
@@ -17,5 +18,7 @@ public interface ProjectService {
 
     PagedModel<FindProjectsForAdminResponse> findProjectsForAdmin(FindProjectsForAdminRequest request, Pageable pageable);
 
-    PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable);
+    PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable, CustomUserDetails userDetails);
+
+    FindProjectDetailForTranslatorResponse findProjectDetailForTranslator(Long projectId, CustomUserDetails userDetails);
 }
