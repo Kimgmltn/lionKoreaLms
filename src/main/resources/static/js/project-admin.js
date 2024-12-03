@@ -1,5 +1,5 @@
 import {get} from './api.js'
-import {renderPagination} from "./common.js";
+import {PROCESS_STATUS, renderPagination} from "./common.js";
 
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -47,15 +47,51 @@ const renderProjects = async ({page = 0, size = 20, consultationDate}) => {
             window.location.href = `/projects/admin/${project.projectId}`;
         })
 
-        Object.values(project).forEach((value, index) => {
-            const td = document.createElement('td');
-            td.textContent = value;
+        const projectIdTd = document.createElement('td')
+        projectIdTd.hidden = true
+        projectIdTd.innerHTML = project.projectId
+        const projectNameTd = document.createElement('td')
+        projectNameTd.innerHTML = project.projectName
+        const buyerNameTd = document.createElement('td')
+        buyerNameTd.innerHTML = project.buyerName
+        const domesticCompanyNameTd = document.createElement('td')
+        domesticCompanyNameTd.innerHTML = project.domesticCompanyName
+        const translatorNameTd = document.createElement('td')
+        translatorNameTd.innerHTML = project.translatorName
+        const languageTd = document.createElement('td')
+        languageTd.innerHTML = project.language
+        const timeTd = document.createElement('td')
+        timeTd.innerHTML = `${project.hour}:${project.minute} ${project.timePeriod}`
+        const processStatusTd = document.createElement('td')
+        const processStatusSpan = document.createElement('span')
+        switch(project.processStatus){
+            case "WAITING":
+                processStatusSpan.classList= 'badge bg-secondary';
+                processStatusSpan.textContent = PROCESS_STATUS.WAITING
+                break;
+            case "PROGRESS":
+                processStatusSpan.classList= 'badge bg-warning';
+                processStatusSpan.textContent = PROCESS_STATUS.PROGRESS
+                break;
+            case "COMPLETED":
+                processStatusSpan.classList= 'badge bg-success';
+                processStatusSpan.textContent = PROCESS_STATUS.COMPLETED
+                break;
+            case "REJECT":
+                processStatusSpan.classList= 'badge bg-danger';
+                processStatusSpan.textContent = PROCESS_STATUS.REJECT
+                break;
+        }
+        processStatusTd.appendChild(processStatusSpan)
 
-            if(index === 0){
-                td.hidden = true;
-            }
-            tr.appendChild(td);
-        })
+        tr.appendChild(projectIdTd)
+        tr.appendChild(projectNameTd)
+        tr.appendChild(buyerNameTd)
+        tr.appendChild(domesticCompanyNameTd)
+        tr.appendChild(translatorNameTd)
+        tr.appendChild(languageTd)
+        tr.appendChild(timeTd)
+        tr.appendChild(processStatusTd)
 
         tbody.appendChild(tr);
     });
