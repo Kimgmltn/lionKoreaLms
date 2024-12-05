@@ -33,8 +33,8 @@ public class ProdDataInitService {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            SaveMenuResponse projectTranslatorMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/translator", "fa-diagram-project", null));
-            SaveMenuResponse projectAdminMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/project/admin", "fa-file-shield", null));
+            SaveMenuResponse projectTranslatorMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
+            SaveMenuResponse projectAdminMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
             SaveMenuResponse memberMenu = menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
             SaveMenuResponse companyMenu = menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", null));
             SaveMenuResponse buyer = menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", null));
