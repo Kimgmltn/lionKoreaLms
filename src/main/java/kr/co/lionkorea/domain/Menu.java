@@ -54,6 +54,7 @@ public class Menu {
                 .menuName(request.getMenuName())
                 .menuLink(request.getMenuLink())
                 .menuIkon(request.getMenuIkon())
+                .orderSeq(request.getOrderSeq())
                 .build();
     }
 

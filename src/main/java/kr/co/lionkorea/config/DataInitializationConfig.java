@@ -44,14 +44,14 @@ public class DataInitializationConfig {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/admin", "fa-file-shield", null));
-            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
-            menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/admin", "fa-file-shield", 1, null));
+            menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", 2, null));
+            menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", 3, null));
 //            menuService.saveMenu(new SaveMenuRequest("번역가", "/members/translator", "fa-language", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("관리자", "/members/admin", "fa-hammer", 2L));
 //            menuService.saveMenu(new SaveMenuRequest("메뉴 관리", "/menus", "fa-bars", null));
-            menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", null));
-            menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", null));
+            menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", 4, null));
+            menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", 5, null));
 //            menuService.saveMenu(new SaveMenuRequest("대시보드", "/dashboard", "fa-compass", null));
 
             log.info("Menu 데이터 삽입 끝");

@@ -33,11 +33,11 @@ public class ProdDataInitService {
             log.info("Roles 데이터 삽입 끝");
 
             log.info("Menu 데이터 삽입");
-            SaveMenuResponse projectTranslatorMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
-            SaveMenuResponse projectAdminMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", null));
-            SaveMenuResponse memberMenu = menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", null));
-            SaveMenuResponse companyMenu = menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", null));
-            SaveMenuResponse buyer = menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", null));
+            SaveMenuResponse projectTranslatorMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", 1,null));
+            SaveMenuResponse projectAdminMenu = menuService.saveMenu(new SaveMenuRequest("프로젝트", "/projects/translator", "fa-diagram-project", 2,null));
+            SaveMenuResponse memberMenu = menuService.saveMenu(new SaveMenuRequest("회원 관리", "/members", "fa-users", 3, null));
+            SaveMenuResponse companyMenu = menuService.saveMenu(new SaveMenuRequest("회사 관리", "/company/domestic", "fa-building", 4, null));
+            SaveMenuResponse buyer = menuService.saveMenu(new SaveMenuRequest("바이어 관리", "/company/buyer", "fa-building-user", 5, null));
             log.info("Menu 데이터 삽입 끝");
 
             log.info("Role-Menu 데이터 삽입");

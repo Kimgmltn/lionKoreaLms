@@ -12,7 +12,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "shortUrl_account_map")
+@Table(name = "short_url_account_map")
 @Getter
 @SuperBuilder
 @EntityListeners(AuditingEntityListener.class)
@@ -29,7 +29,7 @@ public class ShortUrlAccountMap {
     private Long accountId;
 
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
+    @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
 
     public static ShortUrlAccountMap createEntity(String shortUrl, Long accountId){
