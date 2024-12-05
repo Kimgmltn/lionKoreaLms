@@ -6,6 +6,7 @@ const projectId = getLastPath();
 const startButton = document.getElementById('start')
 const completeButton = document.getElementById('complete')
 const reStartButton = document.getElementById('reStart')
+const rejectReasonDiv = document.getElementById('rejectReasonDiv')
 const consultationNotes = document.getElementById('inputConsultationNotes')
 const caption = document.getElementById('caption')
 document.addEventListener('DOMContentLoaded', () => {
@@ -27,6 +28,7 @@ const renderProjectInfo = async () => {
         document.getElementById('inputMinute').value = projectDetail.minute;
         document.getElementById('inputTimePeriod').value = projectDetail.timePeriod;
         document.getElementById('inputConsultationNotes').value = projectDetail.consultationNotes;
+        document.getElementById('rejectReason').value = projectDetail.rejectReason;
         switch(projectDetail.processStatus){
             case "WAITING":
                 caption.classList.add('bg-secondary');
@@ -49,6 +51,7 @@ const renderProjectInfo = async () => {
                 caption.textContent = PROCESS_STATUS.REJECT
                 startButton.hidden = true
                 reStartButton.hidden = false
+                rejectReasonDiv.hidden = false
                 break;
         }
     }
@@ -76,6 +79,7 @@ reStartButton.addEventListener('click', async function(event){
         reStartButton.hidden =true
         completeButton.hidden = false
         consultationNotes.disabled = false
+        rejectReasonDiv.hidden = true
         caption.classList = 'badge fs-6 position-absolute top-0 start-0 bg-warning';
         caption.textContent = PROCESS_STATUS.PROGRESS
     }
