@@ -5,10 +5,11 @@ const buttonBox = document.getElementById('buttonBox')
 const projectId = getLastPath();
 const startButton = document.getElementById('start')
 const completeButton = document.getElementById('complete')
+const reStartButton = document.getElementById('reStart')
 const consultationNotes = document.getElementById('inputConsultationNotes')
 const caption = document.getElementById('caption')
 document.addEventListener('DOMContentLoaded', () => {
-    // renderProjectInfo()
+    renderProjectInfo()
 } );
 
 const renderProjectInfo = async () => {
@@ -47,6 +48,7 @@ const renderProjectInfo = async () => {
                 caption.classList.add('bg-danger');
                 caption.textContent = PROCESS_STATUS.REJECT
                 startButton.hidden = true
+                reStartButton.hidden = false
                 break;
         }
     }
@@ -58,6 +60,20 @@ startButton.addEventListener('click', async function(event){
     const response = await patch(`/api/projects/translator/${projectId}/start`)
     if(response.ok){
         startButton.hidden = true
+        completeButton.hidden = false
+        consultationNotes.disabled = false
+        caption.classList = 'badge fs-6 position-absolute top-0 start-0 bg-warning';
+        caption.textContent = PROCESS_STATUS.PROGRESS
+    }
+})
+
+reStartButton.addEventListener('click', async function(event){
+    event.preventDefault();
+
+    const response = await patch(`/api/projects/translator/${projectId}/start`)
+    if(response.ok){
+        startButton.hidden = true
+        reStartButton.hidden =true
         completeButton.hidden = false
         consultationNotes.disabled = false
         caption.classList = 'badge fs-6 position-absolute top-0 start-0 bg-warning';
@@ -89,39 +105,4 @@ completeButton.addEventListener('click', async function(event){
         });
     }
 })
-// document.getElementById('rejectForm').addEventListener('submit',async function (event){
-//     event.preventDefault();
-//
-//     const projectId = getLastPath();
-//     const formData = new FormData(this);
-//     const request = {
-//         buyerId: projectId,
-//         rejectReason: formData.get('rejectReason'),
-//     };
-//
-//     try {
-//         const response = await patch(`/api/projects/admin/${projectId}/reject`, request);
-//         if(response.ok){
-//             const data = await response.json();
-//
-//             await createConfirmModal({
-//                 title: data.result
-//             }, function(){
-//                 window.location.href=`/projects/admin/${projectId}`
-//             });
-//         }else{
-//             await createConfirmModal({
-//                     title: data.result
-//                 }, function (){
-//                     window.location.reload()
-//                 }
-//             );
-//         }
-//     } catch (error) {
-//         console.error('Error:', error);
-//
-//         // 실패 처리 (예: 메시지 표시)
-//         alert('등록 실패: ' + error.message);
-//     }
-// })
 
