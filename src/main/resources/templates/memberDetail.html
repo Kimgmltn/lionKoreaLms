@@ -176,13 +176,22 @@
                             </div>
                             <hr class="my-5"/>
                             <div class="card border-0">
-                                <div class="d-flex justify-content-between align-items-center">
-                                    <h3 class="mb-2">회원목록</h3>
-                                    <button type="button" id="assignBtn" class="btn btn-primary btn-block mb-2" data-bs-toggle="modal" data-bs-target="#assignIdModal">신규 ID 발급</button>
-                                </div>
+                                <div class="shadow-lg rounded-2 overflow-hidden" id="assignLoginIdTable">
+                                    <div class="d-flex justify-content-between align-items-center border-bottom bg-light p-2">
+                                        <span class="fs-5 fw-bolder">회원목록</span>
+                                        <button type="button" id="assignBtn" class="btn btn-primary btn-block fw-bolder" data-bs-toggle="modal" data-bs-target="#assignIdModal">
+                                            <div class="d-flex">
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" style="width: 24px; height:24px">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                                                </svg>
+                                                <div>
+                                                    신규 ID 발급
+                                                </div>
+                                            </div>
+                                        </button>
+                                    </div>
 
-                                <div class="card-body shadow-lg rounded-4" id="assignLoginIdTable">
-                                    <div class="table-responsive">
+                                    <div class="table-responsive m-2">
                                         <table class="table table-striped table-hover text-center" id="datatablesSimple">
                                             <thead class="">
                                             <tr>
