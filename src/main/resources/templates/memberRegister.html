@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <link href="/static/css/styles.css" rel="stylesheet" />
-        <script src="/static/js/all.js" crossorigin="anonymous"></script>
+        <link href="../static/css/styles.css" rel="stylesheet" />
+        <script src="../static/js/all.js" crossorigin="anonymous"></script>
     </head>
     <body class="sb-nav-fixed">
         <nav th:replace="~{nav :: top_nav}">
@@ -115,51 +115,57 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2"><b>회원등록</b></h1>
+                        <h1 class="mt-4"><b>회원등록</b></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/members}" href="./members.html">회원관리</a></li>
                             <li class="breadcrumb-item active">회원등록</li>
                         </ol>
-                        <div class="card border-0 mt-5">
-                            <div class="card-body shadow-lg rounded-4">
+                        <div class="card border-0">
+                            <div class="card-body shadow-lg rounded-4" style="max-width: 720px;">
                                 <form id="registerForm">
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputName" name="memberName" type="text"/>
-                                                <label for="inputName">이름</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6 align-content-center">
+                                    <div class="row ">
+                                        <div class="col-md-6 mb-2">
                                             <div class="form-floating">
-                                                <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_male" value="MALE" required checked/>
-                                                    <label class="form-check-label" for="gender_male">남성</label>
+                                                <input class="form-control" id="inputName" name="memberName" type="text"  placeholder="" />
+                                                <label class="text-black-50" for="inputName">이름</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6 align-content-center mb-2">
+                                            <div class="d-flex" style="width: 100%; height: 100%;" >
+                                                <div class="me-1" style="width: 100%; height: 100%;">
+                                                    <input class="btn-check" name="gender" type="radio" id="gender_male" value="MALE" required checked/>
+                                                    <label class="btn btn-outline-primary align-content-center " style="width: 100%; height: 100%;" for="gender_male">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                            <path stroke-width="1" stroke="currentColor" fill-rule="evenodd" d="M9.5 2a.5.5 0 0 1 0-1h5a.5.5 0 0 1 .5.5v5a.5.5 0 0 1-1 0V2.707L9.871 6.836a5 5 0 1 1-.707-.707L13.293 2zM6 6a4 4 0 1 0 0 8 4 4 0 0 0 0-8"/>
+                                                        </svg>
+                                                        남성
+                                                    </label>
                                                 </div>
-                                                <div class="form-check-inline col-lg-2">
-                                                    <input class="form-check-input" name="gender" type="radio" id="gender_female" value="FEMALE" required/>
-                                                    <label class="form-check-label" for="gender_female">여성</label>
+                                                <div class="ms-1" style="width: 100%; height: 100%;">
+                                                    <input class="btn-check" name="gender" type="radio" id="gender_female" value="FEMALE" required/>
+                                                    <label class="btn btn-outline-primary align-content-center" style="width: 100%; height: 100%;" for="gender_female">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
+                                                            <path stroke-width="1" stroke="currentColor" fill-rule="evenodd" d="M8 1a4 4 0 1 0 0 8 4 4 0 0 0 0-8M3 5a5 5 0 1 1 5.5 4.975V12h2a.5.5 0 0 1 0 1h-2v2.5a.5.5 0 0 1-1 0V13h-2a.5.5 0 0 1 0-1h2V9.975A5 5 0 0 1 3 5"/>
+                                                        </svg>
+                                                        여성
+                                                    </label>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputEmail" type="email" name="email"/>
-                                        <label for="inputEmail">Email</label>
+                                    <div class="form-floating mb-2">
+                                        <input class="form-control" id="inputEmail" type="email" name="email" placeholder=""/>
+                                        <label class="text-black-50" for="inputEmail">Email</label>
                                     </div>
-                                    <div class="row mb-3">
-                                        <div class="col">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputCellPhone" name="phoneNumber" type="text"/>
-                                                <label for="inputCellPhone">전화번호</label>
-                                            </div>
-                                        </div>
+                                    <div class="form-floating mb-2">
+                                        <input class="form-control" id="inputCellPhone" name="phoneNumber" type="text" placeholder=""/>
+                                        <label class="text-black-50" for="inputCellPhone">전화번호</label>
                                     </div>
-                                    <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
-                                        <label for="inputMemo">Memo</label>
+                                    <div class="form-floating mb-2">
+                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden" placeholder=""></textarea>
+                                        <label class="text-black-50" for="inputMemo">Memo</label>
                                     </div>
-                                    <div class="mt-4 mb-0">
+                                    <div class="mt-4">
                                         <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회원 등록</button></div>
                                     </div>
                                 </form>
@@ -185,8 +191,8 @@
         </div>
         <th:block th:replace="~{common :: common_js}">
             <script src="../static/js/logout.js" type="module"></script>
-            <script src="/static/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="/static/js/scripts.js"></script>
+            <script src="../static/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="../static/js/scripts.js"></script>
             <script>
                 window.isLocalMode = true;
             </script>
