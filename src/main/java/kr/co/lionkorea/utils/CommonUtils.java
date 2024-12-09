@@ -4,10 +4,10 @@ import jakarta.servlet.http.Cookie;
 
 public class CommonUtils {
 
-    public static Cookie createCookie(String key, String value){
+    public static Cookie createCookie(String key, String value, int maxTime){
         Cookie cookie = new Cookie(key, value);
         // Cookie 생명주기
-        cookie.setMaxAge(24*60*60);
+        cookie.setMaxAge(maxTime);
         // Cookie https 통신 진행시
 //        cookie.setSecure(true);
         // Cookie 적용할 범위

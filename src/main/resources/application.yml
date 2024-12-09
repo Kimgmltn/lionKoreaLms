@@ -1,5 +1,5 @@
 server:
-  host: https://
+  host: https://lionkorea.p-e.kr
 
 spring:
   application:

@@ -3,6 +3,7 @@ package kr.co.lionkorea.config;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.co.lionkorea.filter.JwtFilter;
 import kr.co.lionkorea.filter.LoginFilter;
+import kr.co.lionkorea.filter.CustomLogoutFilter;
 import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
 import kr.co.lionkorea.service.RedisService;
@@ -23,7 +24,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.util.matcher.RequestMatcher;
+import org.springframework.security.web.authentication.logout.LogoutFilter;
 
 import java.util.Arrays;
 
@@ -92,6 +93,7 @@ public class SecurityConfig {
                 // json 처리를 위한 필터 추가
                 .addFilterBefore(new JwtFilter(jwtUtil, authService), LoginFilter.class)
                 .addFilterAt(loginFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new CustomLogoutFilter(jwtUtil, redisService), LogoutFilter.class)
                 .rememberMe(Customizer.withDefaults())
                 .exceptionHandling(exceptionHandling -> exceptionHandling
                         .authenticationEntryPoint(((request, response, authException) -> {

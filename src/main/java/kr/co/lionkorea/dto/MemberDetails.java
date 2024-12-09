@@ -5,6 +5,10 @@ import lombok.*;
 
 import java.util.Set;
 
+
+/**
+ * Filter에서 사용하는 customUserDetail에 들어가는 클래스
+ */
 @Getter
 @Setter
 @AllArgsConstructor

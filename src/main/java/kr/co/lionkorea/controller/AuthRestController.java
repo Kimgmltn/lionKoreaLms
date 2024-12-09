@@ -30,15 +30,15 @@ public class AuthRestController {
     private final JwtUtil jwtUtil;
     private final RedisService redisService;
 
-    @PostMapping("/logout")
-    public ResponseEntity<String> logout(@RequestHeader(value = "Authorization") String token){
-        if (token != null && token.startsWith("Bearer ")) {
-            String tokenParse = token.substring(7); // 'Bearer ' 이후의 JWT 토큰
-            // 토큰을 블랙리스트에 추가하는 로직
-            authService.addTokenToBlacklist(tokenParse); // 블랙리스트 서비스 호출
-        }
-        return ResponseEntity.ok().build(); // 로그아웃 응답
-    }
+//    @PostMapping("/logout")
+//    public ResponseEntity<String> logout(@RequestHeader(value = "Authorization") String token){
+//        if (token != null && token.startsWith("Bearer ")) {
+//            String tokenParse = token.substring(7); // 'Bearer ' 이후의 JWT 토큰
+//            // 토큰을 블랙리스트에 추가하는 로직
+//            authService.addTokenToBlacklist(tokenParse); // 블랙리스트 서비스 호출
+//        }
+//        return ResponseEntity.ok().build(); // 로그아웃 응답
+//    }
 
     @PostMapping("/reissue")
     public ResponseEntity<?> reissue(HttpServletRequest request, HttpServletResponse response){
@@ -67,7 +67,7 @@ public class AuthRestController {
 
         if(jwtUtil.isExpire(refresh)){
             log.info("refresh Token is expired");
-            return new ResponseEntity<>("access token expire", HttpStatus.UNAUTHORIZED);
+            return new ResponseEntity<>("refresh token expire", HttpStatus.UNAUTHORIZED);
         }
 
         // 토큰이 refresh 인지 확인
@@ -104,7 +104,7 @@ public class AuthRestController {
         redisService.saveRefreshToken(memberId, newRefresh);
 
         response.setHeader("access", newAccess);
-        response.addCookie(CommonUtils.createCookie("refresh", newRefresh));
+        response.addCookie(CommonUtils.createCookie("refresh", newRefresh, 24*60*60));
         return ResponseEntity.ok().build();
     }
 }
