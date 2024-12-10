@@ -57,18 +57,21 @@ public class CustomLogoutFilter extends GenericFilterBean {
         }
 
         if (!"refresh".equals(jwtUtil.getCategory(refresh))) {
+            log.info("LogoutFilter : there is not refresh");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         Long memberId = jwtUtil.getMemberId(refresh);
         if (!redisService.hasKey(memberId)) {
+            log.info("LogoutFilter : there is no memberId");
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
         // 토큰 검증 끝
         
         // 로그아웃
+        log.info("Logout begin");
         redisService.deleteKey(memberId);
         Cookie newCookie = CommonUtils.createCookie("refresh", null, 0);
 
