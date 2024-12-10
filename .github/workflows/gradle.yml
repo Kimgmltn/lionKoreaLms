@@ -93,7 +93,8 @@ jobs:
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
             chmod +x /home/$SERVER_USERNAME/app/lionkorea-0.0.1-SNAPSHOT.jar
-            PID=$(lsof -t -i:8080)
+#            sudo fuser -k 8080/tcp
+            PID=$(sudo lsof -t -i:8080)
             if [ -n "$PID" ]; then
               sudo kill -9 "$PID"
               echo "프로세스 $PID가 종료되었습니다."
