@@ -93,7 +93,7 @@ jobs:
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
             chmod +x /home/$SERVER_USERNAME/app/lionkorea-0.0.1-SNAPSHOT.jar
-            PID=$(lsof -t -i:8080)
+            PID=$(sudo lsof -t -i:8080)
             echo "PID = $PID"
             if [ -n "$PID" ]; then
               sudo kill -9 "$PID"
