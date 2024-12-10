@@ -19,7 +19,7 @@
                 <!-- Navbar Search-->
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                        <input placeholder=""  class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                         <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
@@ -120,72 +120,72 @@
                             <li class="breadcrumb-item"><a th:href="@{/company/buyer}" href="company-buyer.html">바이어 관리</a></li>
                             <li class="breadcrumb-item active">바이어 등록</li>
                         </ol>
-                        <div class="card border-0 mt-5">
-                            <div class="card-body shadow-lg rounded-4">
+                        <div class="card border-0">
+                            <div class="card-body shadow-lg rounded-4" style="max-width: 720px;">
                                 <form id="registerForm">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputCompanyName" name="companyName" type="text" required/>
-                                                <label for="inputCompanyName">회사명</label>
+                                                <input placeholder=""  class="form-control" id="inputCompanyName" name="companyName" type="text" required/>
+                                                <label class="text-black-50" for="inputCompanyName">회사명</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputCompanyEnglishName" name="englishName" type="text"/>
-                                                <label for="inputCompanyEnglishName">영문명</label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputRegistrationNumber" type="text" name="companyRegistrationNumber"/>
-                                                <label for="inputRegistrationNumber">사업자 등록번호</label>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-6">
-                                            <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputProduct" type="text" name="products"/>
-                                                <label for="inputProduct">제품</label>
+                                                <input placeholder=""  class="form-control" id="inputCompanyEnglishName" name="englishName" type="text"/>
+                                                <label class="text-black-50" for="inputCompanyEnglishName">영문명</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManager" type="text" name="manager" required/>
-                                                <label for="inputManager">담당자</label>
+                                                <input placeholder=""  class="form-control" id="inputRegistrationNumber" type="text" name="companyRegistrationNumber"/>
+                                                <label class="text-black-50" for="inputRegistrationNumber">사업자 등록번호</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManagerEmail" type="email" name="email" required/>
-                                                <label for="inputManagerEmail">담당자 email</label>
+                                                <input placeholder=""  class="form-control" id="inputProduct" type="text" name="products"/>
+                                                <label class="text-black-50" for="inputProduct">제품</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManagerPhoneNumber" type="text" name="phoneNumber" required/>
-                                                <label for="inputManagerPhoneNumber">담당자 전화번호</label>
+                                                <input placeholder=""  class="form-control" id="inputManager" type="text" name="manager" required/>
+                                                <label class="text-black-50" for="inputManager">담당자</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputHomepageUrl" type="text" name="homepageUrl"/>
-                                                <label for="inputHomepageUrl">회사 홈페이지 URL</label>
+                                                <input placeholder=""  class="form-control" id="inputManagerEmail" type="email" name="email" required/>
+                                                <label class="text-black-50" for="inputManagerEmail">담당자 email</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input placeholder=""  class="form-control" id="inputManagerPhoneNumber" type="text" name="phoneNumber" required/>
+                                                <label class="text-black-50" for="inputManagerPhoneNumber">담당자 전화번호</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input placeholder=""  class="form-control" id="inputHomepageUrl" type="text" name="homepageUrl"/>
+                                                <label class="text-black-50" for="inputHomepageUrl">회사 홈페이지 URL</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <input class="form-control" id="inputRoadNameAddr" name="roadNameAddress" type="text">
-                                        <label for="inputRoadNameAddr">회사 주소</label>
+                                        <input placeholder=""  class="form-control" id="inputRoadNameAddr" name="roadNameAddress" type="text">
+                                        <label class="text-black-50" for="inputRoadNameAddr">회사 주소</label>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
-                                        <label for="inputMemo">Memo</label>
+                                        <textarea placeholder=""  class="form-control" id="inputMemo" name="memo" rows="1" style="resize:none; overflow: hidden"></textarea>
+                                        <label class="text-black-50" for="inputMemo">Memo</label>
                                     </div>
                                     <div class="mt-4 mb-0">
                                         <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">회사 등록</button></div>
