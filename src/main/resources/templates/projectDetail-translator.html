@@ -22,7 +22,7 @@
                 <!-- Navbar Search-->
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                        <input placeholder=""  class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                         <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
@@ -123,60 +123,60 @@
                             <li class="breadcrumb-item"><a th:href="@{/projects/translator}" href="project-translator.html">프로젝트 관리</a></li>
                             <li class="breadcrumb-item active">프로젝트 조회</li>
                         </ol>
-                        <div class="card border-0 mt-5 position-relative">
-                            <span id="caption" class="badge bg-secondary fs-6 position-absolute top-0 start-0" th:class="'badge fs-6 position-absolute top-0 start-0'" style="margin-top:-30px">캡션</span>
-                            <div class="card-body shadow-lg rounded-4">
+                        <span id="caption" class="badge bg-secondary fs-6 top-0 start-0" th:class="'badge fs-6 position-absolute top-0 start-0'" style="margin-top:-30px">캡션</span>
+                        <div class="card border-0">
+                            <div class="card-body shadow-lg rounded-4" style="max-width: 720px;">
                                 <form id="registerForm">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputBuyerId">
-                                                <input class="form-control" type="text" id="inputBuyer" disabled>
+                                                <input placeholder=""  class="form-control" type="text" id="inputBuyer" disabled>
                                                 <input type="hidden" name="buyerId">
-                                                <label for="inputBuyer">바이어</label>
+                                                <label class="text-black-50" for="inputBuyer">바이어</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputDomesticCompanyId">
-                                                <input class="form-control" type="text" id="inputDomesticCompany" disabled>
+                                                <input placeholder=""  class="form-control" type="text" id="inputDomesticCompany" disabled>
                                                 <input type="hidden" name="domesticCompanyId">
-                                                <label for="inputDomesticCompany">국내업체</label>
+                                                <label class="text-black-50" for="inputDomesticCompany">국내업체</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputProjectName" type="text" name="projectName" disabled/>
-                                                <label for="inputProjectName">프로젝트 명</label>
+                                                <input placeholder=""  class="form-control" id="inputProjectName" type="text" name="projectName" disabled/>
+                                                <label class="text-black-50" for="inputProjectName">프로젝트 명</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManager" disabled>
+                                                <input placeholder=""  class="form-control" id="inputManager" disabled>
                                                 <input type="hidden" name="translatorId">
-                                                <label for="inputManager">상담자</label>
+                                                <label class="text-black-50" for="inputManager">상담자</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputLanguage" type="text" name="language" disabled/>
-                                                <label for="inputLanguage">언어</label>
+                                                <input placeholder=""  class="form-control" id="inputLanguage" type="text" name="language" disabled/>
+                                                <label class="text-black-50" for="inputLanguage">언어</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
 <!--                                        <div class="fw-bold mb-2">상담 시간</div>-->
-                                        <div class="form-floating col-md-2">
+                                        <div class="form-floating col-sm-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="text" id="datepicker" class="form-control" name="consultationDate" disabled>
-                                                <label for="datepicker">상담 날짜</label>
+                                                <label class="text-black-50" for="datepicker">상담 날짜</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputHour" name="hour" disabled>
                                                     <option value="1" selected>1</option>
@@ -192,10 +192,10 @@
                                                     <option value="11">11</option>
                                                     <option value="12">12</option>
                                                 </select>
-                                                <label for="inputHour">시간</label>
+                                                <label class="text-black-50" for="inputHour">시간</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputMinute" name="minute" disabled>
                                                     <option value="00" selected>00</option>
@@ -205,22 +205,22 @@
                                                     <option value="40">40</option>
                                                     <option value="50">50</option>
                                                 </select>
-                                                <label for="inputMinute">분</label>
+                                                <label class="text-black-50" for="inputMinute">분</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputTimePeriod" name="timePeriod" disabled>
                                                     <option value="AM">AM</option>
                                                     <option value="PM">PM</option>
                                                 </select>
-                                                <label for="inputTimePeriod">AM / PM</label>
+                                                <label class="text-black-50" for="inputTimePeriod">AM / PM</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden" disabled></textarea>
-                                        <label for="inputConsultationNotes">상담 내용</label>
+                                        <textarea placeholder=""  class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden" disabled></textarea>
+                                        <label class="text-black-50" for="inputConsultationNotes">상담 내용</label>
                                     </div>
                                 </form>
                                 <div class="mt-4 mb-0">
@@ -235,8 +235,8 @@
                         <div class="card border-0 mt-2 position-relative" id="rejectReasonDiv" hidden>
                             <div class="card-body shadow-lg rounded-4">
                                 <div class="form-floating mb-3 mb-md-0">
-                                    <input class="form-control" id="rejectReason" type="text" disabled/>
-                                    <label for="rejectReason">반려 사유</label>
+                                    <input placeholder=""  class="form-control" id="rejectReason" type="text" disabled/>
+                                    <label class="text-black-50" for="rejectReason">반려 사유</label>
                                 </div>
                             </div>
                         </div>
