@@ -41,7 +41,7 @@ spring:
             required: true
 
   jwt:
-    secret: ${JWT_SECREATE_KEY}
+    secret: ${JWT_SECRET_KEY}
 
   data:
     redis:
