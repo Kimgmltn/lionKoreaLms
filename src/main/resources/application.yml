@@ -2,6 +2,8 @@ server:
   host: https://lionkorea.p-e.kr
 
 spring:
+  profiles:
+    active: prod
   application:
     name: lionkorea
   jpa:
