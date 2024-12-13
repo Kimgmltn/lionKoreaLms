@@ -92,6 +92,16 @@ jobs:
       - name: Deploy Application on Remote Server
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
+            export DB_URL="${DB_URL}"
+            export DB_PASSWORD="${DB_PASSWORD}"
+            export DB_USERNAME="${DB_USERNAME}"
+            export JWT_SECRET_KEY="${JWT_SECRET_KEY}"
+            export MAIL_PASSWORD="${MAIL_PASSWORD}"
+            export MAIL_USERNAME="${MAIL_USERNAME}"
+            export REDIS_HOST="${REDIS_HOST}"
+            export REDIS_PASSWORD="${REDIS_PASSWORD}"
+            export REDIS_PORT="${REDIS_PORT}"
+            export REDIS_USERNAME="${REDIS_USERNAME}"
             chmod +x /home/$SERVER_USERNAME/app/deploy.sh
             /home/$SERVER_USERNAME/app/deploy.sh
           EOF
