@@ -92,29 +92,20 @@ jobs:
       - name: Deploy Application on Remote Server
         run: |
           ssh -i private_key.pem -o StrictHostKeyChecking=no $SERVER_USERNAME@$SERVER_IP << EOF
-            chmod +x /home/$SERVER_USERNAME/app/lionkorea-0.0.1-SNAPSHOT.jar
-            echo "$(sudo netstat -nltp | grep java | awk '{print $7}' | cut -d'/' -f1)"
-            PID=$(sudo netstat -nltp | grep java | awk '{print $7}' | cut -d'/' -f1)
-            echo "PID = $PID"
-            if [ -n "$PID" ]; then
-              sudo kill -INT "$PID"
-              echo "프로세스 $PID가 종료되었습니다."
-            else
-              echo "8080 포트를 사용하는 프로세스가 없습니다."
-            fi
-            nohup env \
-              DB_URL="${{ secrets.DB_URL }}" \
-              DB_PASSWORD="${{ secrets.DB_PASSWORD }}" \
-              DB_USERNAME="${{ secrets.DB_USERNAME }}" \
-              JWT_SECREATE_KEY="${{ secrets.JWT_SECREATE_KEY }}" \
-              MAIL_PASSWORD="${{ secrets.MAIL_PASSWORD }}" \
-              MAIL_USERNAME="${{ secrets.MAIL_USERNAME }}" \
-              REDIS_HOST="${{ secrets.REDIS_HOST }}" \
-              REDIS_PASSWORD="${{ secrets.REDIS_PASSWORD }}" \
-              REDIS_PORT="${{ secrets.REDIS_PORT }}" \
-              REDIS_USERNAME="${{ secrets.REDIS_USERNAME }}" \
-              java -jar /home/$SERVER_USERNAME/app/lionkorea-0.0.1-SNAPSHOT.jar > /home/$SERVER_USERNAME/app/app.log 2>&1 &
+            chmod +x /home/$SERVER_USERNAME/app/deploy.sh
+            /home/$SERVER_USERNAME/app/deploy.sh
           EOF
+        env :
+          DB_URL: ${{ secrets.DB_URL }}
+          DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+          DB_USERNAME: ${{ secrets.DB_USERNAME }}
+          JWT_SECRET_KEY: ${{ secrets.JWT_SECRET_KEY }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          REDIS_HOST: ${{ secrets.REDIS_HOST }}
+          REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+          REDIS_PORT: ${{ secrets.REDIS_PORT }}
+          REDIS_USERNAME: ${{ secrets.REDIS_USERNAME }}
 
       - name: Clean up
         run: rm -f private_key.pem
