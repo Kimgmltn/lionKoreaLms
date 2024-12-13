@@ -6,8 +6,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
         <meta name="description" content="" />
         <meta name="author" content="" />
-        <link href="/static/css/styles.css" rel="stylesheet" />
-        <script src="/static/js/all.js" crossorigin="anonymous"></script>
+        <link href="../static/css/styles.css" rel="stylesheet" />
+        <script src="../static/js/all.js" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.14.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/jquery-3.7.1.js"></script>
         <script src="https://code.jquery.com/ui/1.14.1/jquery-ui.js"></script>
@@ -22,7 +22,7 @@
                 <!-- Navbar Search-->
                 <form class="d-none d-md-inline-block form-inline ms-auto me-0 me-md-3 my-2 my-md-0">
                     <div class="input-group">
-                        <input class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+                        <input placeholder=""  class="form-control" type="text" placeholder="Search for..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
                         <button class="btn btn-primary" id="btnNavbarSearch" type="button"><i class="fas fa-search"></i></button>
                     </div>
                 </form>
@@ -118,62 +118,62 @@
             <div id="layoutSidenav_content">
                 <main>
                     <div class="container-fluid px-4">
-                        <h1 class="mt-4 display-2"><b>프로젝트 등록</b></h1>
+                        <h1 class="mt-4"><b>프로젝트 등록</b></h1>
                         <ol class="breadcrumb mb-4">
                             <li class="breadcrumb-item"><a th:href="@{/projects/admin}" href="project-admin.html">프로젝트 관리</a></li>
                             <li class="breadcrumb-item active">프로젝트 등록</li>
-                        </ol>
-                        <div class="card border-0 mt-5">
-                            <div class="card-body shadow-lg rounded-4">
+                        </ol>                        
+                        <div class="card border-0">
+                            <div class="card-body shadow-lg rounded-4" style="max-width: 720px;">
                                 <form id="registerForm">
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputBuyerId" name="buyerId">
-                                                <input class="form-control" type="text" id="inputBuyer" required readonly data-bs-toggle="modal" data-bs-target="#buyerModal">
-                                                <label for="inputBuyer">바이어</label>
+                                                <input placeholder=""  class="form-control" type="text" id="inputBuyer" required readonly data-bs-toggle="modal" data-bs-target="#buyerModal">
+                                                <label class="text-black-50" for="inputBuyer">바이어</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="hidden" id="inputDomesticCompanyId" name="domesticCompanyId">
-                                                <input class="form-control" type="text" id="inputDomesticCompany" required readonly data-bs-toggle="modal" data-bs-target="#domesticCompanyModal">
-                                                <label for="inputDomesticCompany">국내업체</label>
+                                                <input placeholder=""  class="form-control" type="text" id="inputDomesticCompany" required readonly data-bs-toggle="modal" data-bs-target="#domesticCompanyModal">
+                                                <label class="text-black-50" for="inputDomesticCompany">국내업체</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputProjectName" type="text" name="projectName"/>
-                                                <label for="inputProjectName">프로젝트 명</label>
+                                                <input placeholder=""  class="form-control" id="inputProjectName" type="text" name="projectName"/>
+                                                <label class="text-black-50" for="inputProjectName">프로젝트 명</label>
                                             </div>
                                         </div>
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputManager" required readonly data-bs-toggle="modal" data-bs-target="#manageModal">
+                                                <input placeholder=""  class="form-control" id="inputManager" required readonly data-bs-toggle="modal" data-bs-target="#manageModal">
                                                 <input type="hidden" name="translatorId" id="translatorId">
-                                                <label for="inputManager">상담자</label>
+                                                <label class="text-black-50" for="inputManager">상담자</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
                                         <div class="col-md-6">
                                             <div class="form-floating mb-3 mb-md-0">
-                                                <input class="form-control" id="inputLanguage" type="text" name="language" required/>
-                                                <label for="inputLanguage">언어</label>
+                                                <input placeholder=""  class="form-control" id="inputLanguage" type="text" name="language" required/>
+                                                <label class="text-black-50" for="inputLanguage">언어</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="row mb-3">
 <!--                                        <div class="fw-bold mb-2">상담 시간</div>-->
-                                        <div class="form-floating col-md-2">
+                                        <div class="form-floating col-sm-6">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <input type="text" id="datepicker" class="form-control" name="consultationDate">
-                                                <label for="datepicker">상담 날짜</label>
+                                                <label class="text-black-50" for="datepicker">상담 날짜</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputHour" name="hour" required>
                                                     <option value="1" selected>1</option>
@@ -189,10 +189,10 @@
                                                     <option value="11">11</option>
                                                     <option value="12">12</option>
                                                 </select>
-                                                <label for="inputHour">시간</label>
+                                                <label class="text-black-50" for="inputHour">시간</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputMinute" name="minute" required>
                                                     <option value="00" selected>00</option>
@@ -202,22 +202,22 @@
                                                     <option value="40">40</option>
                                                     <option value="50">50</option>
                                                 </select>
-                                                <label for="inputMinute">분</label>
+                                                <label class="text-black-50" for="inputMinute">분</label>
                                             </div>
                                         </div>
-                                        <div class="form-floating col-md-1">
+                                        <div class="form-floating col">
                                             <div class="form-floating mb-3 mb-md-0">
                                                 <select class="form-select" id="inputTimePeriod" name="timePeriod" required>
                                                     <option value="AM">AM</option>
                                                     <option value="PM">PM</option>
                                                 </select>
-                                                <label for="inputTimePeriod">AM / PM</label>
+                                                <label class="text-black-50" for="inputTimePeriod">AM / PM</label>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="form-floating mb-3">
-                                        <textarea class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden"></textarea>
-                                        <label for="inputConsultationNotes">상담 내용</label>
+                                        <textarea placeholder=""  class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden"></textarea>
+                                        <label class="text-black-50" for="inputConsultationNotes">상담 내용</label>
                                     </div>
                                     <div class="mt-4 mb-0">
                                         <div class="d-grid"><button class="btn btn-primary btn-block" type="submit" id="saveBtn" href="#">프로젝트 등록</button></div>
@@ -341,8 +341,8 @@
         </div>
         <th:block th:replace="~{common :: common_js}">
             <script src="../static/js/logout.js" type="module"></script>
-            <script src="/static/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-            <script src="/static/js/scripts.js"></script>
+            <script src="../static/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+            <script src="../static/js/scripts.js"></script>
             <script>
                 window.isLocalMode = true;
             </script>
