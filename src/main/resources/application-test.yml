@@ -2,8 +2,6 @@ server:
   host: http://localhost:8080
 
 spring:
-  profiles:
-    active: test
   application:
     name: lionkorea
   jpa:

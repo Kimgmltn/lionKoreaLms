@@ -34,13 +34,17 @@ const renderMembers = async ({page = 0, size = 20}) => {
 
     const tbody = datatablesSimple.querySelector('tbody');
     tbody.innerHTML = '';
-    membersData.content.forEach((member) => {
+    const pageInfo = membersData.page
+    membersData.content.forEach((member, index) => {
 
         const tr = document.createElement('tr');
         tr.addEventListener('click',()=>{
             window.location.href = `/members/${member.memberId}`;
         })
 
+        const indexTd = document.createElement('td');
+        indexTd.innerText = pageInfo.totalElements - (pageInfo.number * pageInfo.size) - index
+        tr.appendChild(indexTd)
         Object.values(member).forEach((value, index) => {
             const td = document.createElement('td');
             td.textContent = value;
