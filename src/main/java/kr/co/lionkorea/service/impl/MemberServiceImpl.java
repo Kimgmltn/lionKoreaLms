@@ -117,9 +117,9 @@ public class MemberServiceImpl implements MemberService {
         // 최상위 관리자 계정이 아니면 비밀번호 변경 링크 보내기
         if(!request.getRole().equals("super_admin")){
             if (StringUtils.hasText(request.getTo())) {
-                // shortUrl 생성 후 Redis에 저장
+                // shortUrl 생성 후 DB에 저장
                 String key = createShortUrl();
-                shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, memberId));
+                shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, savedAccount.getId()));
 
                 String subject = "비밀변호 변경 링크입니다.";
                 String shortUrl = host + "/password/" + key;

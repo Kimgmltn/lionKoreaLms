@@ -1,5 +1,5 @@
 import {get, patch} from './api.js'
-import {createConfirmModal} from "./common.js";
+import {createConfirmModal, getLastPath} from "./common.js";
 
 let accountId;
 document.addEventListener('DOMContentLoaded', () => {
@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const checkValidUrl = async () => {
-    const key = getKey();
+    const key = getLastPath();
     const response = await get(`/api/members/${key}/valid`);
 
     if(response.ok)
@@ -24,11 +24,6 @@ const checkValidUrl = async () => {
             window.location.href = "/404"
         })
     }
-}
-
-const getKey = () => {
-    const pathname = window.location.pathname;
-    return pathname.substring(pathname.lastIndexOf('/') + 1);
 }
 
 document.getElementById('changeButton').addEventListener('click', async (event) => {
