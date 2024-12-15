@@ -42,15 +42,15 @@ public class MemberRestController {
     public ResponseEntity<FindMemberDetailResponse> findMemberById(@PathVariable(value = "memberId") Long memberId){
         return ResponseEntity.ok(memberService.findMemberById(memberId));
     }
-//    @GetMapping("/{roleName}")
-//    public ResponseEntity<PagedModel<FindMembersByRoleResponse>> findMembersByRole(@PathVariable(value = "roleName") String roleName, Pageable pageable) {
-//        return ResponseEntity.ok(memberService.findMembersByRole(roleName, pageable));
-//    }
 
     @PostMapping("/{memberId}/newAccount")
     public ResponseEntity<GrantNewAccountResponse> grantNewAccount(@PathVariable Long memberId, @RequestBody GrantNewAccountRequest request){
         return ResponseEntity.ok(memberService.grantNewAccount(memberId, request));
+    }
 
+    @PatchMapping("/{accountId}/rePassword")
+    public ResponseEntity<GrantNewAccountResponse> rePassword(@PathVariable Long accountId){
+        return ResponseEntity.ok(memberService.rePassword(accountId));
     }
 
     @GetMapping("/{memberId}/accounts")

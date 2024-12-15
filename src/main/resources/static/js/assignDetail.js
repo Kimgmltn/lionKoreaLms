@@ -201,8 +201,24 @@ document.getElementById('assignIdUpdateForm').addEventListener('submit', async (
 })
 
 // 비밀번호 변경 요청
-changePasswordButtonTag.addEventListener('click', (event)=>{
+changePasswordButtonTag.addEventListener('click', async (event)=>{
     event.preventDefault();
-    //TODO: 비밀번호 변경 요청 API
+
+    const accountId = inputAccountIdTag.value
+
+    const response = await patch(`/api/members/${accountId}/rePassword`)
+    if (response.ok) {
+        const resultData = await response.json();
+        createConfirmModal({
+                title: resultData.result
+            }, assignIdModal.hide(),
+            renderAssignedId()
+        );
+    }else{
+        const errorData = await response.json();
+        createConfirmModal({
+            title: errorData.message
+        }, null);
+    }
 
 });

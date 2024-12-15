@@ -76,5 +76,11 @@ public class Account extends BaseEntity{
 
     public void changePassword(String password) {
         this.password = password;
+        this.randomPasswordChangeYn = true;
+    }
+
+    public void resetRandomPassword(String password) {
+        this.password = password;
+        this.randomPasswordChangeYn = false;
     }
 }

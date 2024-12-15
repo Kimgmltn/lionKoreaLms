@@ -55,12 +55,12 @@ document.getElementById('changeButton').addEventListener('click', async (event) 
 document.getElementById('inputConfirmPassword').addEventListener('input', function() {
     if (isEqualPassword()) {
         // 비밀번호가 일치할 경우
-        this.setCustomValidity(''); // 오류 메시지 제거
-        this.style.borderColor = 'green'; // 스타일을 통해 일치 표시 (옵션)
+        this.setCustomValidity('');
+        this.style.borderColor = 'green';
     } else {
         // 비밀번호가 일치하지 않을 경우
         this.setCustomValidity('비밀번호가 일치하지 않습니다.');
-        this.style.borderColor = 'red'; // 스타일을 통해 불일치 표시 (옵션)
+        this.style.borderColor = 'red';
     }
 });
 

@@ -23,7 +23,7 @@ const createConfirmModal = (options, ...callbacks) => {
     // 모달 바디의 제목 h5 생성
     const modalTitle = document.createElement('h5');
     modalTitle.className = 'mb-0';
-    modalTitle.textContent = options.title || '뭔가 잘 못 되었는지요?';
+    modalTitle.textContent = options.title || '예상치 못한 에러가 발생했습니다. \n 관리자에게 문의 바랍니다.';
 
     // 모달 바디의 설명 p 생성
     // const modalText = document.createElement('p');

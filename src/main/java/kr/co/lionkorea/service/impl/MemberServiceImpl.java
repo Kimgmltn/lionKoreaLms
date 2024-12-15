@@ -59,6 +59,9 @@ public class MemberServiceImpl implements MemberService {
     @Override
     @Transactional
     public SaveMemberResponse saveMember(SaveMemberRequest request) {
+        if(memberRepository.existsByEmail(request.getEmail())){
+            throw new MemberException(HttpStatus.CONFLICT, "중복되는 eamil입니다.");
+        }
         Member savedMember = memberRepository.save(Member.dtoToEntity(request));
         return new SaveMemberResponse(savedMember.getId(), "저장되었습니다.");
     }
@@ -127,7 +130,7 @@ public class MemberServiceImpl implements MemberService {
                 emailService.sendEmail(request.getTo(), subject, shortUrl);
             }
         }
-        
+
         return new GrantNewAccountResponse(savedAccount.getLoginId(), randomPassword, "발급되었습니다.");
     }
 
@@ -199,6 +202,26 @@ public class MemberServiceImpl implements MemberService {
     @Transactional
     public void deleteShortUrlAccountIdMap(Long accountId){
         shortUrlAccountMapRepository.deleteByAccountId(accountId);
+    }
+
+    @Override
+    @Transactional
+    public GrantNewAccountResponse rePassword(Long accountId) {
+        Account account = accountRepository.findById(accountId).orElseThrow(()-> new AccountException(HttpStatus.NOT_FOUND, "존재하지 않는 계정입니다."));
+        account.resetRandomPassword(getRandomPassword());
+        String to = account.getMember().getEmail();
+        if (StringUtils.hasText(to)) {
+            // shortUrl 생성 후 DB에 저장
+            String key = createShortUrl();
+            shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, accountId));
+
+            String subject = "비밀변호 변경 링크입니다.";
+            String shortUrl = host + "/password/" + key;
+
+            emailService.sendEmail(to, subject, shortUrl);
+        }
+
+        return new GrantNewAccountResponse(null, null, "발급되었습니다.");
     }
 
     private String getRandomPassword(){

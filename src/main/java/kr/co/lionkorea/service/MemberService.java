@@ -34,8 +34,9 @@ public interface MemberService {
 
     SavePasswordResponse updatePassword(Long accountId, SavePasswordRequest request);
 
-    @Transactional
     void deleteShortUrlAccountIdMap(Long accountId);
 
     PagedModel<FindTranslatorsResponse> findTranslators(Pageable pageable, String memberName);
+
+    GrantNewAccountResponse rePassword(Long accountId);
 }

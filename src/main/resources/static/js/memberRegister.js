@@ -28,6 +28,7 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
         // 실패 처리 (예: 메시지 표시)
         alert('등록 실패: ' + error.message);
+        return
     }
 });
 
