@@ -72,7 +72,8 @@ public class DataInitializationConfig {
             memberService.grantNewAccount(superAdminMember.getMemberId(), new GrantNewAccountRequest("superAdmin", "super_admin"));
             for (int i = 0; i < 50; i++) {
                 String name = "회원" + i;
-                SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MALE, "", "", ""));
+                String email = "email" + i + "@email.com";
+                SaveMemberResponse saveMemberResponse = memberService.saveMember(new SaveMemberRequest(name, Gender.MALE, email, "", ""));
                 if(i < 25){
                     memberService.grantNewAccount(saveMemberResponse.getMemberId(), new GrantNewAccountRequest(loginId + i, "admin"));
                 }

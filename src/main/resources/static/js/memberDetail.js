@@ -2,7 +2,7 @@ import {get, patch, post} from './api.js'
 import {createConfirmModal, inputOnlyNumber, getLastPath} from './common.js'
 
 const renderInfo = {
-    name: '',
+    memberName: '',
     email: '',
     gender: '',
     cellphone: '',
@@ -66,7 +66,7 @@ const setInputValue = (data) =>
 // 수정하다가 취소 할 수 있으므로, 전역변수로 이전 값 저장
 const setInfo = (data) =>
 {
-    renderInfo.name = data.memberName || '';
+    renderInfo.memberName = data.memberName || '';
     renderInfo.email = data.email || '';
     renderInfo.gender = data.gender || '';
     renderInfo.cellphone = data.phoneNumber || '';
