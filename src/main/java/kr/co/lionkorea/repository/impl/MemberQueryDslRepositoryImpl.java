@@ -32,7 +32,9 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
                         member.memberName.as("memberName"),
                         member.email.as("email")))
                 .from(member)
-                .where(memberNameContainsIgnoreCase(memberName))
+                .where(
+                        member.memberName.ne("최상위 관리자"),
+                        memberNameContainsIgnoreCase(memberName))
                 .orderBy(member.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -40,7 +42,9 @@ public class MemberQueryDslRepositoryImpl implements MemberQueryDslRepository {
 
         long total = Optional.ofNullable(query.select(member.count())
                 .from(member)
-                .where(memberNameContainsIgnoreCase(memberName))
+                .where(
+                        member.memberName.ne("최상위 관리자"),
+                        memberNameContainsIgnoreCase(memberName))
                 .fetchOne())
                 .orElse(0L);
 
