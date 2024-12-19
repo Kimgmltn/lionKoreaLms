@@ -3,6 +3,7 @@
 const EXCLUDE_URL_LIST = ['/api/auth/login', '/api/members/*/valid', '/api/members/accounts/*/password']
 let isRefreshing = false; // Refresh 진행 여부 플래그
 let refreshSubscribers = []; // 대기 중인 요청을 저장하는 배열
+const htmlTag = document.getElementsByTagName('html')[0]
 
 const onAccessTokenRefreshed = (newAccessToken) => {
     refreshSubscribers.forEach(callback => callback(newAccessToken));
@@ -108,6 +109,7 @@ const fetchWithAuth = async (url, options = {}) => {
             reject(error); // 오류 발생 시 거부
         } finally {
             isRefreshing = false;
+            htmlTag.hidden = false;
         }
     })
 }
