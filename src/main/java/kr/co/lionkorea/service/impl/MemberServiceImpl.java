@@ -124,10 +124,10 @@ public class MemberServiceImpl implements MemberService {
                 String key = createShortUrl();
                 shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, savedAccount.getId()));
 
-                String subject = "비밀변호 변경 링크입니다.";
+                String subject = "[라이온 코리아] 비밀변호 변경 링크입니다.";
                 String shortUrl = host + "/password/" + key;
 
-                emailService.sendEmail(request.getTo(), subject, shortUrl);
+                emailService.sendUpdatePasswordEmail(request.getTo(), subject, shortUrl);
             }
         }
 
@@ -215,10 +215,10 @@ public class MemberServiceImpl implements MemberService {
             String key = createShortUrl();
             shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, accountId));
 
-            String subject = "비밀변호 변경 링크입니다.";
+            String subject = "[라이온 코리아] 비밀변호 변경 링크입니다.";
             String shortUrl = host + "/password/" + key;
 
-            emailService.sendEmail(to, subject, shortUrl);
+            emailService.sendUpdatePasswordEmail(to, subject, shortUrl);
         }
 
         return new GrantNewAccountResponse(null, null, "발급되었습니다.");
