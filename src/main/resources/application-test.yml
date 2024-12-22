@@ -3,7 +3,7 @@ server:
 
 spring:
   application:
-    name: lionkorea
+    name: translationcompany
   jpa:
     hibernate:
       ddl-auto: create-drop

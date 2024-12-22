@@ -1,9 +1,9 @@
 server:
-  host: https://lionkorea.p-e.kr
+  host: https://translationcompany.p-e.kr
 
 spring:
   application:
-    name: lionkorea
+    name: translationcompany
   jpa:
     hibernate:
       ddl-auto: validate
