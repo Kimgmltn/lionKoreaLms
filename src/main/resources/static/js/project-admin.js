@@ -16,16 +16,28 @@ document.addEventListener('DOMContentLoaded', () => {
     renderProjects({consultationDate:today})
 } );
 
-$('#datepicker').on('change', function(){
-    const selectDate = $(this).val();
-    renderProjects({consultationDate:selectDate})
+// $('#datepicker').on('change', function(){
+//     const selectDate = $(this).val();
+//     renderProjects({consultationDate:selectDate})
+// })
+
+document.getElementById('searchCondition').addEventListener('click', function (){
+    const consultationDate = document.getElementById('datepicker').value;
+    const buyerName = document.getElementById('buyerName').value;
+    const domesticCompanyName = document.getElementById('domesticCompanyName').value;
+    const translatorName = document.getElementById('translatorName').value;
+    renderProjects({consultationDate:consultationDate, buyerName:buyerName, domesticCompanyName:domesticCompanyName, translatorName:translatorName})
 })
 
-const renderProjects = async ({page = 0, size = 20, consultationDate}) => {
+
+const renderProjects = async ({page = 0, size = 20, consultationDate, buyerName, domesticCompanyName, translatorName}) => {
     const queryParams = new URLSearchParams({
         page:page,
         size:size,
-        consultationDate
+        ...(consultationDate && {consultationDate}),
+        ...(buyerName && {buyerName}),
+        ...(domesticCompanyName && {domesticCompanyName}),
+        ...(translatorName && {translatorName})
     })
 
     const datatablesSimple = document.getElementById('datatablesSimple');
@@ -97,5 +109,5 @@ const renderProjects = async ({page = 0, size = 20, consultationDate}) => {
     });
 
     const dom = document.getElementById('paginationContainer');
-    renderPagination(dom, projects.page, renderProjects, {size, consultationDate});
+    renderPagination(dom, projects.page, renderProjects, {size, consultationDate, buyerName, domesticCompanyName, translatorName});
 }

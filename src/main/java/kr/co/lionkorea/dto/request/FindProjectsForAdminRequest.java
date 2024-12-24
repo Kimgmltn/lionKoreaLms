@@ -11,4 +11,7 @@ import lombok.Setter;
 @NoArgsConstructor
 public class FindProjectsForAdminRequest {
     private String consultationDate;
+    private String buyerName;
+    private String domesticCompanyName;
+    private String translatorName;
 }

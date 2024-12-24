@@ -6,10 +6,7 @@ import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Gender;
 import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.repository.RolesRepository;
-import kr.co.lionkorea.service.CompanyService;
-import kr.co.lionkorea.service.MemberService;
-import kr.co.lionkorea.service.MenuService;
-import kr.co.lionkorea.service.RolesService;
+import kr.co.lionkorea.service.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationRunner;
@@ -17,6 +14,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Configuration
@@ -30,6 +29,7 @@ public class DataInitializationConfig {
     private final MenuService menuService;
     private final RolesService rolesService;
     private final CompanyService companyService;
+    private final ProjectService projectService;
 
     @Bean
     public ApplicationRunner initializer(){
@@ -96,6 +96,28 @@ public class DataInitializationConfig {
                 companyService.saveBuyer(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
             }
             log.info("Company 데이터 삽입 끝");
+
+            log.info("Project 데이터 삽입");
+            String localDate = LocalDate.now().toString();
+            for (int i = 0; i< 24; i++) {
+                String projectName = "프로젝트" + i;
+                long translatorId = 26L + i;
+                long buyerId =31L + i;
+                long domesticCompanyId =1L + i;
+                if(i < 12){
+                    if( i < 4){
+                        translatorId = 51L;
+                    }
+                    int h = 1 + i;
+                    String hour = String.format("%02d", h);
+                    projectService.saveProject(new SaveProjectRequest(buyerId, domesticCompanyId, projectName, translatorId, "영어", localDate, hour, "00", "AM", null));
+                }else{
+                    int h = 1 + (i - 12);
+                    String hour = String.format("%02d", h);
+                    projectService.saveProject(new SaveProjectRequest(buyerId, domesticCompanyId, projectName, translatorId, "영어", localDate, hour, "00", "PM", null));
+                }
+            }
+            log.info("Project 데이터 삽입 끝");
         };
     }
 }

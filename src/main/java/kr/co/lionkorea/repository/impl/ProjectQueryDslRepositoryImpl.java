@@ -1,5 +1,6 @@
 package kr.co.lionkorea.repository.impl;
 
+import com.querydsl.core.types.Predicate;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
@@ -13,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Optional;
@@ -75,7 +77,11 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                 .innerJoin(project.domesticCompany, domesticCompany)
                 .innerJoin(project.translator, account)
                 .innerJoin(account.member, member)
-                .where(project.consultationDate.eq(request.getConsultationDate()))
+                .where(project.consultationDate.eq(request.getConsultationDate())
+                        , buyerNameContainsIgnoreCase(request.getBuyerName())
+                        , domesticCompanyNameContainsIgnoreCase(request.getDomesticCompanyName())
+                        , translatorNameContainsIgnoreCase(request.getTranslatorName())
+                )
                 .orderBy(project.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
@@ -83,7 +89,15 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
 
         long total = Optional.ofNullable(query.select(project.count())
                         .from(project)
-                        .where(project.consultationDate.eq(request.getConsultationDate()))
+                        .innerJoin(project.buyer, buyer)
+                        .innerJoin(project.domesticCompany, domesticCompany)
+                        .innerJoin(project.translator, account)
+                        .innerJoin(account.member, member)
+                        .where(project.consultationDate.eq(request.getConsultationDate())
+                                , buyerNameContainsIgnoreCase(request.getBuyerName())
+                                , domesticCompanyNameContainsIgnoreCase(request.getDomesticCompanyName())
+                                , translatorNameContainsIgnoreCase(request.getTranslatorName())
+                        )
                         .fetchOne())
                 .orElse(0L);
         return new PagedModel<>(new PageImpl<>(result, pageable, total));
@@ -159,5 +173,17 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                         account.id.eq(accountId)
                 )
                 .fetchFirst());
+    }
+
+    private Predicate buyerNameContainsIgnoreCase(String buyerName) {
+        return StringUtils.hasText(buyerName) ? buyer.companyName.containsIgnoreCase(buyerName) : null;
+    }
+
+    private Predicate domesticCompanyNameContainsIgnoreCase(String domesticCompanyName) {
+        return StringUtils.hasText(domesticCompanyName) ? domesticCompany.companyName.containsIgnoreCase(domesticCompanyName) : null;
+    }
+
+    private Predicate translatorNameContainsIgnoreCase(String translatorName) {
+        return StringUtils.hasText(translatorName) ? member.memberName.containsIgnoreCase(translatorName) : null;
     }
 }
