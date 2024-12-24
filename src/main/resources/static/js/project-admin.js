@@ -4,7 +4,6 @@ import {PROCESS_STATUS, renderPagination} from "./common.js";
 
 document.addEventListener('DOMContentLoaded', () => {
     let today = new Date().toISOString().split('T')[0];
-    console.log(today)
     $( "#datepicker" ).datepicker({
         dateFormat: 'yy-mm-dd',
         defaultDate: today,
