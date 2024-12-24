@@ -29,6 +29,9 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public SaveProjectResponse saveProject(SaveProjectRequest request) {
+        if(projectRepository.existsByTranslatorIdAndHour(request.getTranslatorId(), request.getHour())){
+            throw new ProjectException(HttpStatus.NOT_FOUND, "담당자가 동일한 시간에<br/>다른 프로젝트에 임명되어있습니다");
+        };
         Project project = projectRepository.save(Project.dtoToEntity(request));
         return new SaveProjectResponse(project.getId(), "저장되었습니다.");
     }

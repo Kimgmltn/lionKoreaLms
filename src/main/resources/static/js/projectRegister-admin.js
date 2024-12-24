@@ -60,8 +60,9 @@ document.getElementById('registerForm').addEventListener('submit', async functio
                 window.location.href=`/projects/admin/${data.projectId}`
             });
         }else{
+            const data = await response.json();
             await createConfirmModal({
-                title: data.result
+                title: data.message
             },
             );
         }
