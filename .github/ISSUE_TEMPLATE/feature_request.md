@@ -1,8 +1,8 @@
 ---
 name: Feature request
 about: 기능 추가 관련 템플릿
-title: ''
-labels: ''
+title: "[feature]"
+labels: enhancement
 assignees: ''
 
 ---
