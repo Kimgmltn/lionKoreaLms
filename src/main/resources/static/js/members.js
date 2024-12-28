@@ -62,4 +62,25 @@ const renderMembers = async ({page = 0, size = 20}) => {
     renderPagination(dom, membersData.page, renderMembers);
 }
 
+document.getElementById('downloadExcelForm').addEventListener('click', async function () {
+    const response = await get('/api/files/download/member');
+    if(response.ok){
+        const buffer = await response.arrayBuffer();
+        downloadFile(buffer, 'input_member_form.xlsx')
+    }
+});
 
+const downloadFile = (byteBuffer, fileName, mineType) => {
+    const uint8Array = new Uint8Array(byteBuffer);
+    const blob = new Blob([uint8Array], {type: mineType});
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = fileName;
+    document.body.appendChild(link);
+    link.click();
+
+    URL.revokeObjectURL(url);
+    document.body.removeChild(link);
+}
