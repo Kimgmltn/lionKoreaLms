@@ -1,10 +1,12 @@
 package kr.co.lionkorea.config;
 
+import kr.co.lionkorea.domain.FileStorage;
 import kr.co.lionkorea.domain.Roles;
 import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.enums.Gender;
 import kr.co.lionkorea.enums.Role;
+import kr.co.lionkorea.repository.FileStorageRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.service.*;
 import lombok.RequiredArgsConstructor;
@@ -30,6 +32,7 @@ public class DataInitializationConfig {
     private final RolesService rolesService;
     private final CompanyService companyService;
     private final ProjectService projectService;
+    private final FileStorageRepository fileStorageRepository;
 
     @Bean
     public ApplicationRunner initializer(){
@@ -118,6 +121,11 @@ public class DataInitializationConfig {
                 }
             }
             log.info("Project 데이터 삽입 끝");
+
+            log.info("file storage 데이터 삽입");
+            fileStorageRepository.save(FileStorage.creatFileStorage("translationcompany-excel-form", "members", ".xlsx"));
+            fileStorageRepository.save(FileStorage.creatFileStorage("translationcompany-excel-form", "domesticCompany", ".xlsx"));
+            log.info("file storage 데이터 삽입 끝");
         };
     }
 }

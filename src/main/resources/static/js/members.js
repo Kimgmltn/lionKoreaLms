@@ -63,10 +63,29 @@ const renderMembers = async ({page = 0, size = 20}) => {
 }
 
 document.getElementById('downloadExcelForm').addEventListener('click', async function () {
-    const response = await get('/api/files/download/member');
+    const response = await get('/api/files/download/members');
     if(response.ok){
-        const buffer = await response.arrayBuffer();
-        downloadFile(buffer, 'input_member_form.xlsx')
+        const blob = await response.blob();
+
+        const url = window.URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.style.display = 'none';
+        a.href = url;
+
+        // 파일 이름 설정 (서버에서 Content-Disposition 헤더 설정이 있다면 이 부분은 선택적)
+        const contentDisposition = response.headers.get('Content-Disposition');
+
+        a.download = contentDisposition
+            ? contentDisposition.split('filename=')[1].replace(/"/g, '')
+            : "members.xlsx";
+
+        // 링크 클릭으로 파일 다운로드 실행
+        document.body.appendChild(a);
+        a.click();
+
+        // 다운로드 완료 후 URL과 링크 제거
+        window.URL.revokeObjectURL(url);
+        document.body.removeChild(a);
     }
 });
 

@@ -13,6 +13,6 @@ public class OracleCloudConfig {
     @Bean
     public ObjectStorageClient objectStorageClient() throws IOException {
         ConfigFileAuthenticationDetailsProvider provider = new ConfigFileAuthenticationDetailsProvider("~/.oci/config", "DEFAULT");
-        return new ObjectStorageClient(provider);
+        return ObjectStorageClient.builder().build(provider);
     }
 }
