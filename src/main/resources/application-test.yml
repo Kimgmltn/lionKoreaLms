@@ -48,6 +48,7 @@ spring:
 
 logging:
   level:
+    org.springframework.security.web.FilterChainProxy: DEBUG
     com.zaxxer.jikari.HikariConfig: DEBUG
     com.zaxxer.jikari: trace
     org:

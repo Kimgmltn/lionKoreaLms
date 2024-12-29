@@ -1,9 +1,9 @@
 package kr.co.lionkorea.config;
 
 import jakarta.servlet.http.HttpServletResponse;
+import kr.co.lionkorea.filter.CustomLogoutFilter;
 import kr.co.lionkorea.filter.JwtFilter;
 import kr.co.lionkorea.filter.LoginFilter;
-import kr.co.lionkorea.filter.CustomLogoutFilter;
 import kr.co.lionkorea.jwt.JwtUtil;
 import kr.co.lionkorea.service.AuthService;
 import kr.co.lionkorea.service.RedisService;
@@ -64,7 +64,7 @@ public class SecurityConfig {
         http    // 권한별 API 접근 설정
                 .authorizeHttpRequests((auth) -> auth
                         .requestMatchers("/api/auth/login", "/api/auth/reissue", "/api/members/*/valid", "/api/members/accounts/*/password").permitAll()
-                        .requestMatchers("/api/members/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers("/api/members/**", "/api/files/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .requestMatchers("/api/**").authenticated()
 //                        .requestMatchers("/login","/js/**", "/css/**", "/img/**", "/h2-console/**", "/").permitAll()
                         .anyRequest().permitAll())

@@ -32,12 +32,23 @@ public class CustomLogoutFilter extends GenericFilterBean {
         // 토큰 검증
         String requestUrl = request.getRequestURI();
         if (!requestUrl.matches("^\\/logout$")) {
-            filterChain.doFilter(request, response);
+            try{
+                filterChain.doFilter(request, response);
+            }catch (Exception ex){
+                request.setAttribute("filter.error.name", this.getClass().getSimpleName());
+                throw ex;
+            }
+
             return;
         }
         String requestMethod = request.getMethod();
         if (!requestMethod.equals("POST")) {
-            filterChain.doFilter(request, response);
+            try{
+                filterChain.doFilter(request, response);
+            }catch (Exception ex){
+                request.setAttribute("filter.error.name", this.getClass().getSimpleName());
+                throw ex;
+            }
             return;
         }
 
