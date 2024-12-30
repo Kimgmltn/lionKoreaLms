@@ -1,5 +1,5 @@
 import { get } from './api.js';
-import { renderPagination } from './common.js'
+import {downloadFile, renderPagination} from './common.js'
 
 document.addEventListener('DOMContentLoaded', ()=>{
     renderBuyers({});
@@ -46,3 +46,12 @@ const renderBuyers = async ({page = 0, size = 20, companyName}) => {
     const dom = document.getElementById('paginationContainer');
     renderPagination(dom, companiesData.page, renderBuyers, {size, companyName});
 }
+
+document.getElementById('downloadExcelForm').addEventListener('click', async function () {
+    const response = await get(`/api/files/download/buyer`);
+    if(response.ok){
+        const contentDisposition = response.headers.get('Content-Disposition')
+        const blob = await response.blob();
+        downloadFile(contentDisposition, blob);
+    }
+});

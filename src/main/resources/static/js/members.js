@@ -1,5 +1,5 @@
 import { get } from './api.js';
-import { renderPagination } from './common.js'
+import {downloadFile, renderPagination} from './common.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     /*const radioButtons = document.querySelectorAll('input[name="role"]');
@@ -63,43 +63,10 @@ const renderMembers = async ({page = 0, size = 20}) => {
 }
 
 document.getElementById('downloadExcelForm').addEventListener('click', async function () {
-    const response = await get('/api/files/download/members');
+    const response = await get(`/api/files/download/members`);
     if(response.ok){
+        const contentDisposition = response.headers.get('Content-Disposition')
         const blob = await response.blob();
-
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.style.display = 'none';
-        a.href = url;
-
-        // 파일 이름 설정 (서버에서 Content-Disposition 헤더 설정이 있다면 이 부분은 선택적)
-        const contentDisposition = response.headers.get('Content-Disposition');
-
-        a.download = contentDisposition
-            ? contentDisposition.split('filename=')[1].replace(/"/g, '')
-            : "members.xlsx";
-
-        // 링크 클릭으로 파일 다운로드 실행
-        document.body.appendChild(a);
-        a.click();
-
-        // 다운로드 완료 후 URL과 링크 제거
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        downloadFile(contentDisposition, blob);
     }
 });
-
-const downloadFile = (byteBuffer, fileName, mineType) => {
-    const uint8Array = new Uint8Array(byteBuffer);
-    const blob = new Blob([uint8Array], {type: mineType});
-
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = fileName;
-    document.body.appendChild(link);
-    link.click();
-
-    URL.revokeObjectURL(url);
-    document.body.removeChild(link);
-}

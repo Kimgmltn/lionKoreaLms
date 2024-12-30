@@ -225,4 +225,22 @@ const PROCESS_STATUS = Object.freeze({
     REJECT:'반려'
 })
 
-export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath, PROCESS_STATUS}
+const downloadFile = (contentDisposition, blob) => {
+    const url = window.URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.style.display = 'none';
+    a.href = url;
+
+    // 파일 이름 설정 (서버에서 Content-Disposition 헤더 설정이 있다면 이 부분은 선택적)
+    a.download = contentDisposition.split('filename=')[1].replace(/"/g, '')
+
+    // 링크 클릭으로 파일 다운로드 실행
+    document.body.appendChild(a);
+    a.click();
+
+    // 다운로드 완료 후 URL과 링크 제거
+    window.URL.revokeObjectURL(url);
+    document.body.removeChild(a);
+}
+
+export {createConfirmModal, inputOnlyNumber, renderPagination, parseJWT, getLastPath, PROCESS_STATUS, downloadFile}

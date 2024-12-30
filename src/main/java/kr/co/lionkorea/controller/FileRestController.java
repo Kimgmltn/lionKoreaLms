@@ -1,5 +1,6 @@
 package kr.co.lionkorea.controller;
 
+import kr.co.lionkorea.dto.response.DownloadExcelResponse;
 import kr.co.lionkorea.service.FileService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +18,9 @@ public class FileRestController {
 
     @GetMapping("/download/{fileName}")
     public ResponseEntity<byte[]> downloadExcelForm(@PathVariable("fileName") String fileName) {
-        return ResponseEntity.ok(fileService.downloadExcelForm(fileName));
+        DownloadExcelResponse downloadExcelResponse = fileService.downloadExcelForm(fileName);
+        return ResponseEntity.ok()
+                .header("Content-Disposition", "attachment; filename=\"" + downloadExcelResponse.getObjectName() + "\"")
+                .body(downloadExcelResponse.getBytes());
     }
 }

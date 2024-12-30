@@ -125,6 +125,7 @@ public class DataInitializationConfig {
             log.info("file storage 데이터 삽입");
             fileStorageRepository.save(FileStorage.creatFileStorage("translationcompany-excel-form", "members", ".xlsx"));
             fileStorageRepository.save(FileStorage.creatFileStorage("translationcompany-excel-form", "domesticCompany", ".xlsx"));
+            fileStorageRepository.save(FileStorage.creatFileStorage("translationcompany-excel-form", "buyer", ".xlsx"));
             log.info("file storage 데이터 삽입 끝");
         };
     }

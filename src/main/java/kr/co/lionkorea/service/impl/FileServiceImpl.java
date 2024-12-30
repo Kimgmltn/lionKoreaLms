@@ -6,6 +6,7 @@ import com.oracle.bmc.objectstorage.requests.GetObjectRequest;
 import com.oracle.bmc.objectstorage.responses.GetNamespaceResponse;
 import com.oracle.bmc.objectstorage.responses.GetObjectResponse;
 import kr.co.lionkorea.domain.FileStorage;
+import kr.co.lionkorea.dto.response.DownloadExcelResponse;
 import kr.co.lionkorea.exception.FileException;
 import kr.co.lionkorea.repository.FileStorageRepository;
 import kr.co.lionkorea.service.FileService;
@@ -26,24 +27,26 @@ public class FileServiceImpl implements FileService {
     private final ObjectStorageClient objectStorageClient;
 
     @Override
-    public byte[] downloadExcelForm(String fileName) {
+    public DownloadExcelResponse downloadExcelForm(String fileName) {
 
         FileStorage fileStorage = fileStorageRepository.findByObjectName(fileName).orElseThrow(() -> new FileException(HttpStatus.NOT_FOUND, "등록되지 않은 파일입니다."));
 
         GetNamespaceResponse namespaceResponse = objectStorageClient.getNamespace(GetNamespaceRequest.builder().build());
 
-        String objectName = "excel/" + fileName + fileStorage.getFileExtension();
+        String extension = fileStorage.getFileExtension();
+
+        String objectName = fileName + extension;
 
         GetObjectRequest getObjectRequest = GetObjectRequest.builder()
                 .namespaceName(namespaceResponse.getValue())
                 .bucketName(fileStorage.getBucketName())
-                .objectName(objectName)
+                .objectName("excel/" + objectName)
                 .build();
 
         GetObjectResponse getObjectResponse = objectStorageClient.getObject(getObjectRequest);
 
         try (InputStream inputStream = getObjectResponse.getInputStream()) {
-            return inputStream.readAllBytes();
+            return new DownloadExcelResponse(objectName, inputStream.readAllBytes());
         } catch (Exception e) {
             log.error("파일 다운로드 중 오류 message : {}", e.getMessage());
             log.error("파일 다운로드 중 오류 trace: {}", Arrays.toString(e.getStackTrace()));

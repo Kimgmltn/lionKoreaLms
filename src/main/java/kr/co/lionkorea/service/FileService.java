@@ -1,5 +1,7 @@
 package kr.co.lionkorea.service;
 
+import kr.co.lionkorea.dto.response.DownloadExcelResponse;
+
 public interface FileService {
-    byte[] downloadExcelForm(String fileName);
+    DownloadExcelResponse downloadExcelForm(String fileName);
 }
