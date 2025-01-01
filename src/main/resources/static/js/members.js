@@ -1,5 +1,5 @@
-import { get } from './api.js';
-import {downloadFile, renderPagination} from './common.js'
+import { get, post } from './api.js';
+import {createConfirmModal, downloadFile, renderPagination} from './common.js'
 
 document.addEventListener('DOMContentLoaded', () => {
     /*const radioButtons = document.querySelectorAll('input[name="role"]');
@@ -70,3 +70,36 @@ document.getElementById('downloadExcelForm').addEventListener('click', async fun
         downloadFile(contentDisposition, blob);
     }
 });
+
+document.getElementById('uploadExcelForm').addEventListener('click', function(){
+    document.getElementById('hiddenExcelInput').click();
+})
+
+document.getElementById('hiddenExcelInput').addEventListener('change', async function (event){
+    const file = event.target.files[0];
+    if (!file) {
+        alert("파일을 선택해주세요.")
+        return;
+    }
+
+    const fileName = file.name.toLowerCase();
+    if (!fileName.endsWith('.xlsx' && !fileName.endsWith('.xls'))) {
+        alert('엑셀 파일만 업로드 가능합니다');
+        return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const response = await post('/api/members/upload/save', formData);
+    if(response.ok || response.status === 500){
+        const body = await response.json();
+        createConfirmModal({
+            title: body.result
+        });
+    }else{
+        const errorData = await response.json();
+        createConfirmModal({
+            title: errorData.message
+        });
+    }
+})

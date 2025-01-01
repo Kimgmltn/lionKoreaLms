@@ -4,10 +4,12 @@ import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import org.apache.coyote.Response;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -71,6 +73,11 @@ public class MemberRestController {
     @GetMapping("/{shortUrl}/valid")
     public ResponseEntity<DecodeShortUrlResponse> decodeShortUrl(@PathVariable String shortUrl){
         return ResponseEntity.ok(memberService.decodeShortUrl(shortUrl));
+    }
+
+    @PostMapping("/upload/save")
+    public ResponseEntity<?> saveMembersByFile(@RequestBody MultipartFile file){
+        return ResponseEntity.ok(memberService.saveMembersByFile(file));
     }
 
 }

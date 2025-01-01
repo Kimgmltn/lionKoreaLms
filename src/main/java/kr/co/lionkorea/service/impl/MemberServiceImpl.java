@@ -6,6 +6,7 @@ import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.enums.Role;
 import kr.co.lionkorea.exception.AccountException;
+import kr.co.lionkorea.exception.FileException;
 import kr.co.lionkorea.exception.MemberException;
 import kr.co.lionkorea.repository.AccountRepository;
 import kr.co.lionkorea.repository.MemberRepository;
@@ -16,6 +17,10 @@ import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.utils.Base62;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.openxmlformats.schemas.spreadsheetml.x2006.main.impl.WorkbookDocumentImpl;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
@@ -24,7 +29,10 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
+import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -215,13 +223,31 @@ public class MemberServiceImpl implements MemberService {
             String key = createShortUrl();
             shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, accountId));
 
-            String subject = "[라이온 코리아] 비밀변호 변경 링크입니다.";
+            String subject = "[translatorCompany] 비밀변호 변경 링크입니다.";
             String shortUrl = host + "/password/" + key;
 
             emailService.sendUpdatePasswordEmail(to, subject, shortUrl);
         }
 
         return new GrantNewAccountResponse(null, null, "발급되었습니다.");
+    }
+
+    @Override
+    @Transactional
+    public UploadMemberResponse saveMembersByFile(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new FileException(HttpStatus.BAD_REQUEST, "비어있는 파일입니다.");
+        }
+
+        try(InputStream inputStream = file.getInputStream()){
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return new UploadMemberResponse("저장되었습니다");
     }
 
     private String getRandomPassword(){
