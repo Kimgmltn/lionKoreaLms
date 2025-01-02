@@ -1,5 +1,6 @@
 package kr.co.lionkorea.service.impl;
 
+import ch.qos.logback.core.encoder.EchoEncoder;
 import kr.co.lionkorea.domain.*;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.*;
@@ -13,6 +14,7 @@ import kr.co.lionkorea.repository.MemberRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.repository.ShortUrlAccountMapRepository;
 import kr.co.lionkorea.service.EmailService;
+import kr.co.lionkorea.service.FileService;
 import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.utils.Base62;
 import lombok.RequiredArgsConstructor;
@@ -35,10 +37,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import java.util.UUID;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -132,7 +131,7 @@ public class MemberServiceImpl implements MemberService {
                 String key = createShortUrl();
                 shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, savedAccount.getId()));
 
-                String subject = "[라이온 코리아] 비밀변호 변경 링크입니다.";
+                String subject = "[translatorCompany] 비밀변호 변경 링크입니다.";
                 String shortUrl = host + "/password/" + key;
 
                 emailService.sendUpdatePasswordEmail(request.getTo(), subject, shortUrl);
@@ -233,21 +232,13 @@ public class MemberServiceImpl implements MemberService {
     }
 
     @Override
-    @Transactional
-    public UploadMemberResponse saveMembersByFile(MultipartFile file) {
-        if (file.isEmpty()) {
-            throw new FileException(HttpStatus.BAD_REQUEST, "비어있는 파일입니다.");
-        }
+    public Set<String> findAllMemberEmail() {
+        return memberRepository.findAll().stream().map(Member::getEmail).collect(Collectors.toSet());
+    }
 
-        try(InputStream inputStream = file.getInputStream()){
-            Workbook workbook = WorkbookFactory.create(inputStream);
-            Sheet sheet = workbook.getSheetAt(0);
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        return new UploadMemberResponse("저장되었습니다");
+    @Override
+    public Set<String> findAllAccountLoginId() {
+        return accountRepository.findAll().stream().map(Account::getLoginId).collect(Collectors.toSet());
     }
 
     private String getRandomPassword(){

@@ -83,19 +83,30 @@ document.getElementById('hiddenExcelInput').addEventListener('change', async fun
     }
 
     const fileName = file.name.toLowerCase();
-    if (!fileName.endsWith('.xlsx' && !fileName.endsWith('.xls'))) {
+    if (!fileName.endsWith('.xlsx') && !fileName.endsWith('.xls')) {
         alert('엑셀 파일만 업로드 가능합니다');
         return;
     }
     const formData = new FormData();
     formData.append('file', file);
 
-    const response = await post('/api/members/upload/save', formData);
+    const response = await post('/api/files/upload/members', formData);
     if(response.ok || response.status === 500){
         const body = await response.json();
         createConfirmModal({
             title: body.result
         });
+    }else if(response.status===400){
+        const contentDisposition = response.headers.get('Content-Disposition')
+        const blob = await response.blob();
+
+        createConfirmModal({
+            title:"양식에 맞지 않는 엑셀입니다."
+            , function(){
+                downloadFile(contentDisposition, blob)
+            }
+        })
+        downloadFile(contentDisposition, blob);
     }else{
         const errorData = await response.json();
         createConfirmModal({

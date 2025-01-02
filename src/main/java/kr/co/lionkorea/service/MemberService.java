@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
+import java.util.Set;
 
 public interface MemberService {
     SaveMemberResponse saveMember(SaveMemberRequest request);
@@ -41,6 +42,7 @@ public interface MemberService {
 
     GrantNewAccountResponse rePassword(Long accountId);
 
-    UploadMemberResponse saveMembersByFile(MultipartFile file);
+    Set<String> findAllMemberEmail();
+    Set<String> findAllAccountLoginId();
 
 }

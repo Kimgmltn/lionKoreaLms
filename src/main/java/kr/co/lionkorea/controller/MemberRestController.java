@@ -74,10 +74,4 @@ public class MemberRestController {
     public ResponseEntity<DecodeShortUrlResponse> decodeShortUrl(@PathVariable String shortUrl){
         return ResponseEntity.ok(memberService.decodeShortUrl(shortUrl));
     }
-
-    @PostMapping("/upload/save")
-    public ResponseEntity<?> saveMembersByFile(@RequestBody MultipartFile file){
-        return ResponseEntity.ok(memberService.saveMembersByFile(file));
-    }
-
 }

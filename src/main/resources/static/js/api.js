@@ -37,7 +37,6 @@ const fetchWithAuth = async (url, options = {}) => {
     // 기본 헤더에 access 추가
     const headers = {
         ...options.headers,
-        'Content-Type': 'application/json',
         'access': accessToken ? `${accessToken}` : ''
     }
 
@@ -47,7 +46,6 @@ const fetchWithAuth = async (url, options = {}) => {
             await addRefreshSubscriber((newToken) => {
                 const retryHeader = {
                     ...options.headers,
-                    'Content-Type': 'application/json',
                     'access': `${newToken}`
                 }
                 resolve(fetch(url, {...options, headers: retryHeader}));
@@ -70,7 +68,6 @@ const fetchWithAuth = async (url, options = {}) => {
                     await addRefreshSubscriber((newToken) => {
                         const retryHeader = {
                             ...options.headers,
-                            'Content-Type': 'application/json',
                             'access': `${newToken}`
                         }
                         resolve(fetch(url, {...options, headers: retryHeader}));
@@ -96,7 +93,6 @@ const fetchWithAuth = async (url, options = {}) => {
                 // 첫 번째 요청을 새 토큰으로 재시도
                 const retryHeaders = {
                     ...options.headers,
-                    'Content-Type': 'application/json',
                     'access': `${newAccessToken}`
                 }
                 // const retryResponse = await fetch(url, {...options, retryHeader});
@@ -124,9 +120,11 @@ const get = async (endpoint, params = {}) => {
 }
 
 const post = async (endpoint, data = {}) => {
+    const isFormData = data instanceof FormData;
+
     return await fetchWithAuth(`${endpoint}`, {
         method: 'POST',
-        body: JSON.stringify(data)
+        body: isFormData ? data : JSON.stringify(data)
     });
 }
 
