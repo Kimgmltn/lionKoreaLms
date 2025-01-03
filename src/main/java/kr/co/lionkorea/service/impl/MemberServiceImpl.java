@@ -1,29 +1,24 @@
 package kr.co.lionkorea.service.impl;
 
-import ch.qos.logback.core.encoder.EchoEncoder;
 import kr.co.lionkorea.domain.*;
 import kr.co.lionkorea.dto.MemberDetails;
 import kr.co.lionkorea.dto.request.*;
 import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.enums.Role;
+import kr.co.lionkorea.event.EmailEvent;
 import kr.co.lionkorea.exception.AccountException;
-import kr.co.lionkorea.exception.FileException;
 import kr.co.lionkorea.exception.MemberException;
 import kr.co.lionkorea.repository.AccountRepository;
 import kr.co.lionkorea.repository.MemberRepository;
 import kr.co.lionkorea.repository.RolesRepository;
 import kr.co.lionkorea.repository.ShortUrlAccountMapRepository;
 import kr.co.lionkorea.service.EmailService;
-import kr.co.lionkorea.service.FileService;
 import kr.co.lionkorea.service.MemberService;
 import kr.co.lionkorea.utils.Base62;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
-import org.apache.poi.ss.usermodel.WorkbookFactory;
-import org.openxmlformats.schemas.spreadsheetml.x2006.main.impl.WorkbookDocumentImpl;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -31,10 +26,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.security.SecureRandom;
 import java.time.LocalDateTime;
 import java.util.*;
@@ -52,6 +44,7 @@ public class MemberServiceImpl implements MemberService {
     private final BCryptPasswordEncoder encoder;
     private final EmailService emailService;
     private final ShortUrlAccountMapRepository shortUrlAccountMapRepository;
+    private final ApplicationEventPublisher eventPublisher;
 
     @Value("${server.host}")
     private String host;
@@ -134,7 +127,7 @@ public class MemberServiceImpl implements MemberService {
                 String subject = "[translatorCompany] 비밀변호 변경 링크입니다.";
                 String shortUrl = host + "/password/" + key;
 
-                emailService.sendUpdatePasswordEmail(request.getTo(), subject, shortUrl);
+                eventPublisher.publishEvent(new EmailEvent(request.getTo(), subject, shortUrl));
             }
         }
 
@@ -225,7 +218,7 @@ public class MemberServiceImpl implements MemberService {
             String subject = "[translatorCompany] 비밀변호 변경 링크입니다.";
             String shortUrl = host + "/password/" + key;
 
-            emailService.sendUpdatePasswordEmail(to, subject, shortUrl);
+            eventPublisher.publishEvent(new EmailEvent(to, subject, shortUrl));
         }
 
         return new GrantNewAccountResponse(null, null, "발급되었습니다.");
@@ -239,6 +232,37 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public Set<String> findAllAccountLoginId() {
         return accountRepository.findAll().stream().map(Account::getLoginId).collect(Collectors.toSet());
+    }
+
+    @Override
+    @Transactional
+    public void saveAndGrantNewAccountByExcel(SaveMemberRequest memberRequest, GrantNewAccountRequest grantNewAccountRequest){
+        Member member = memberRepository.save(Member.dtoToEntity(memberRequest));
+        String randomPassword = getRandomPassword();
+
+        log.info("{}의 random password : {}", grantNewAccountRequest.getLoginId(), randomPassword);
+
+        grantNewAccountRequest.setPassword(encoder.encode(randomPassword));
+        Role role = Role.valueOf(("role_" + grantNewAccountRequest.getRole()).toUpperCase());
+        Roles roles = rolesRepository.findByRoleName(role);
+
+        Account savedAccount = accountRepository.save(Account.dtoToEntity(grantNewAccountRequest, member, roles));
+
+        // 최상위 관리자 계정이 아니면 비밀번호 변경 링크 보내기
+        if(!grantNewAccountRequest.getRole().equals("super_admin")){
+            if (StringUtils.hasText(member.getEmail())) {
+                // shortUrl 생성 후 DB에 저장
+                String key = createShortUrl();
+                shortUrlAccountMapRepository.save(ShortUrlAccountMap.createEntity(key, savedAccount.getId()));
+
+                String subject = "[translatorCompany] 비밀변호 변경 링크입니다.";
+                String shortUrl = host + "/password/" + key;
+
+                eventPublisher.publishEvent(new EmailEvent(member.getEmail(), subject, shortUrl));
+            }else{
+                throw new AccountException(HttpStatus.BAD_REQUEST, "수신자 정보가 없습니다.");
+            }
+        }
     }
 
     private String getRandomPassword(){

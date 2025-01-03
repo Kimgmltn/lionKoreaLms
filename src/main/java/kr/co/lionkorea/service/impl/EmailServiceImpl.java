@@ -26,10 +26,8 @@ public class EmailServiceImpl implements EmailService {
     private static final String PASSWORD_CHANGE_FORMAT = "/templates/email/password-change-format.html";
 
     @Override
-    @Async
     public void sendUpdatePasswordEmail(String to, String subject, String resetLink) {
         try {
-
             // html 양식 찾기
             Resource resource = resourceLoader.getResource("classpath:" + PASSWORD_CHANGE_FORMAT);
             String html = Files.readString(resource.getFile().toPath());
@@ -57,6 +55,5 @@ public class EmailServiceImpl implements EmailService {
             log.error("I/O 에러 발생 : {}", e.getMessage());
             throw new RuntimeException(e);
         }
-
     }
 }

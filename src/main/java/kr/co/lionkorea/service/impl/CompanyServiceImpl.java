@@ -18,6 +18,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Set;
+import java.util.stream.Collectors;
+
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -97,5 +100,15 @@ public class CompanyServiceImpl implements CompanyService {
     public FindCompanyDetailResponse findBuyerById(Long companyId) {
         Company findCompany = this.findCompanyById(companyId, "B");
         return FindCompanyDetailResponse.entityToDto(findCompany);
+    }
+
+    @Override
+    public Set<String> findDomesticCompanyRegistrationNumbers() {
+        return companyRepository.findAllByCompanyType("D").stream().map(Company::getCompanyRegistrationNumber).collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> findBuyerRegistrationNumbers() {
+        return companyRepository.findAllByCompanyType("B").stream().map(Company::getCompanyRegistrationNumber).collect(Collectors.toSet());
     }
 }

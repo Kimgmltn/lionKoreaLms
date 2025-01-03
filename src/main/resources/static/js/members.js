@@ -95,6 +95,8 @@ document.getElementById('hiddenExcelInput').addEventListener('change', async fun
         const body = await response.json();
         createConfirmModal({
             title: body.result
+        }, function (){
+            renderMembers({});
         });
     }else if(response.status===400){
         const contentDisposition = response.headers.get('Content-Disposition')

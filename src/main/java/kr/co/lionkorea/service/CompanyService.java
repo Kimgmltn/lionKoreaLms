@@ -9,6 +9,8 @@ import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 
+import java.util.Set;
+
 public interface CompanyService {
 
 //    SaveCompanyResponse saveCompany(SaveCompanyRequest request);
@@ -31,4 +33,8 @@ public interface CompanyService {
 
     SaveCompanyResponse updateDomesticCompany(Long companyId, SaveCompanyRequest request);
     SaveCompanyResponse updateBuyer(Long companyId, SaveCompanyRequest request);
+
+    Set<String> findDomesticCompanyRegistrationNumbers();
+
+    Set<String> findBuyerRegistrationNumbers();
 }

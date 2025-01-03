@@ -40,6 +40,10 @@ const fetchWithAuth = async (url, options = {}) => {
         'access': accessToken ? `${accessToken}` : ''
     }
 
+    if (!(options.body instanceof FormData)) {
+        headers['Content-Type'] = 'application/json';
+    }
+
     return new Promise(async (resolve, reject) => {
         if(isRefreshing){
             // 이미 refresh 진행 중이라면 요청을 list에 추가하고 대기

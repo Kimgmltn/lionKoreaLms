@@ -11,4 +11,8 @@ import java.util.List;
 public interface FileService {
     DownloadExcelResponse downloadExcelForm(String fileName);
     UploadExcelResponse uploadMemberByExcel(MultipartFile file);
+
+    UploadExcelResponse uploadDomesticCompanyByExcel(MultipartFile file);
+
+    UploadExcelResponse uploadBuyerByExcel(MultipartFile file);
 }

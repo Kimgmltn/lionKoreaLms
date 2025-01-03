@@ -27,4 +27,14 @@ public class FileRestController {
     public ResponseEntity<UploadExcelResponse> uploadMemberByExcel(@RequestBody MultipartFile file) {
         return ResponseEntity.ok(fileService.uploadMemberByExcel(file));
     }
+
+    @PostMapping("/upload/domesticCompany")
+    public ResponseEntity<UploadExcelResponse> uploadDomesticCompanyByExcel(@RequestBody MultipartFile file) {
+        return ResponseEntity.ok(fileService.uploadDomesticCompanyByExcel(file));
+    }
+
+    @PostMapping("/upload/buyer")
+    public ResponseEntity<UploadExcelResponse> uploadBuyerByExcel(@RequestBody MultipartFile file) {
+        return ResponseEntity.ok(fileService.uploadBuyerByExcel(file));
+    }
 }

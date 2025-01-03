@@ -7,16 +7,14 @@ import com.oracle.bmc.objectstorage.responses.GetNamespaceResponse;
 import com.oracle.bmc.objectstorage.responses.GetObjectResponse;
 import kr.co.lionkorea.domain.FileStorage;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
+import kr.co.lionkorea.dto.request.SaveCompanyRequest;
 import kr.co.lionkorea.dto.request.SaveMemberRequest;
 import kr.co.lionkorea.dto.response.DownloadExcelResponse;
-import kr.co.lionkorea.dto.response.SaveMemberResponse;
 import kr.co.lionkorea.dto.response.UploadExcelResponse;
-import kr.co.lionkorea.dto.response.UploadMemberFileResponse;
 import kr.co.lionkorea.enums.Gender;
-import kr.co.lionkorea.exception.AccountException;
 import kr.co.lionkorea.exception.FileException;
-import kr.co.lionkorea.exception.MemberException;
 import kr.co.lionkorea.repository.FileStorageRepository;
+import kr.co.lionkorea.service.CompanyService;
 import kr.co.lionkorea.service.FileService;
 import kr.co.lionkorea.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -35,14 +33,18 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
+import static kr.co.lionkorea.enums.Gender.MALE;
+
 @Service
 @RequiredArgsConstructor
 @Slf4j
+@Transactional(readOnly = true)
 public class FileServiceImpl implements FileService {
 
     private final FileStorageRepository fileStorageRepository;
     private final ObjectStorageClient objectStorageClient;
     private final MemberService memberService;
+    private final CompanyService companyService;
 
     @Override
     public DownloadExcelResponse downloadExcelForm(String fileName) {
@@ -83,17 +85,20 @@ public class FileServiceImpl implements FileService {
 
         // 입력된 데이터 갯수
         int size = 0;
+        boolean passable = true;
         try(InputStream inputStream = file.getInputStream()){
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
 
+
+            Set<String> existEmailList = memberService.findAllMemberEmail();
+            Set<String> existLoginIdList = memberService.findAllAccountLoginId();
             List<SaveMemberRequest> saveMemberRequests = new ArrayList<>();
             List<GrantNewAccountRequest> grantNewAccountRequests = new ArrayList<>();
-            List<Row> errorRows = new ArrayList<>();
 
             for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
                 Row row = sheet.getRow(rowIndex);
-                if (row == null) continue;
+                if (isRowEmpty(row, 7)) break;
 
                 String memberName = getCellValue(row.getCell(0));
                 String gender = getCellValue(row.getCell(1));
@@ -103,70 +108,206 @@ public class FileServiceImpl implements FileService {
                 String loginId = getCellValue(row.getCell(5));
                 String memo = getCellValue(row.getCell(6));
 
-                // 필수값 누락 확인
+                StringBuilder errorMessage = new StringBuilder();
+                // validation
                 if (memberName == null) {
-                    writeErrorToCell(row, 7, "필수값 누락");
-                    errorRows.add(row);
-                    continue;
+                    errorMessage.append("이름 누락; ");
                 }
                 if (gender == null) {
-                    writeErrorToCell(row, 7, "필수값 누락");
-                    errorRows.add(row);
-                    continue;
+                    errorMessage.append("성별 누락; ");
                 }
                 if (email == null) {
-                    writeErrorToCell(row, 7, "필수값 누락");
-                    errorRows.add(row);
-                    continue;
+                    errorMessage.append("email 누락; ");
                 }
                 if (loginId == null) {
-                    writeErrorToCell(row, 7, "필수값 누락");
-                    errorRows.add(row);
-                    continue;
+                    errorMessage.append("LoginId 누락; ");
+                }
+                if (email != null && existEmailList.contains(email)) {
+                    errorMessage.append("중복된 email; ");
+                }
+                if (loginId != null && existLoginIdList.contains(loginId)) {
+                    errorMessage.append("중복된 loginId; ");
                 }
 
-                Gender genderEnum = MALE.equals(gender) ? Gender.MALE : Gender.FEMALE;
-                saveMemberRequests.add(new SaveMemberRequest(memberName, genderEnum, email, phoneNumber, memo));
+                // 에러가 없으면
+                if (passable && errorMessage.isEmpty()) {
+                    Gender genderEnum = MALE.equals(gender) ? Gender.MALE : Gender.FEMALE;
+                    saveMemberRequests.add(new SaveMemberRequest(memberName, genderEnum, email, phoneNumber, memo));
 
-                String role = ADMIN.equals(position) ? "admin" : "translator";
-                grantNewAccountRequests.add(new GrantNewAccountRequest(loginId, role));
-            }
-
-            size = saveMemberRequests.size();
-            // 기존 정보 가져오기
-            Set<String> existEmailList = memberService.findAllMemberEmail();
-            Set<String> existLoginIdList = memberService.findAllAccountLoginId();
-
-            // 기존 데이터와 중복 되는 데이터 있는지 확인
-            for (int i = 0; i < size; i++) {
-                SaveMemberRequest saveMemberRequest = saveMemberRequests.get(i);
-                GrantNewAccountRequest grantNewAccountRequest = grantNewAccountRequests.get(i);
-
-                // 실제 엑셀 row와 동기화
-                Row row = sheet.getRow(i + 2);
-
-                if (existEmailList.contains(saveMemberRequest.getEmail())) {
-                    writeErrorToCell(row, 7, "중복된 이메일");
-                    errorRows.add(row);
-                    continue;
-                }
-
-                if (existLoginIdList.contains(grantNewAccountRequest.getLoginId())) {
-                    writeErrorToCell(row, 7, "중복된 LoginId");
-                    errorRows.add(row);
-                    continue;
+                    String role = ADMIN.equals(position) ? "admin" : "translator";
+                    grantNewAccountRequests.add(new GrantNewAccountRequest(loginId, role));
+                }else{
+                    passable = false;
+                    writeErrorToCell(row, 7, errorMessage.toString().trim());
                 }
             }
 
-            if (errorRows.isEmpty()) {
+            if (passable) {
+                size = saveMemberRequests.size();
                 // 에러가 없을 경우 데이터 삽입
                 for (SaveMemberRequest request : saveMemberRequests) {
-                    SaveMemberResponse memberResponse = memberService.saveMember(request);
-                    Long memberId = memberResponse.getMemberId();
-
-                    // 계정 권한 부여
                     GrantNewAccountRequest accountRequest = grantNewAccountRequests.remove(0);
-                    memberService.grantNewAccount(memberId, accountRequest);
+                    memberService.saveAndGrantNewAccountByExcel(request, accountRequest);
+                }
+            } else {
+                // 에러가 있는 경우 엑셀 반환
+                exportErrorExcel(workbook);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 에러입니다.");
+        }
+
+        String result = size + "개 저장되었습니다.";
+        return new UploadExcelResponse(result);
+    }
+
+    @Override
+    @Transactional
+    public UploadExcelResponse uploadDomesticCompanyByExcel(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new FileException(HttpStatus.BAD_REQUEST, "비어있는 파일입니다.");
+        }
+
+        // 입력된 데이터 갯수
+        int size = 0;
+        boolean passable = true;
+        try(InputStream inputStream = file.getInputStream()){
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+
+            Set<String> existRegistrationNumbers = companyService.findDomesticCompanyRegistrationNumbers();
+            List<SaveCompanyRequest> saveCompanyRequests = new ArrayList<>();
+
+            for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (isRowEmpty(row, 10)) break;
+
+                String companyName = getCellValue(row.getCell(0));
+                String englishName = getCellValue(row.getCell(1));
+                String companyRegistrationNumber = getCellValue(row.getCell(2));
+                String products = getCellValue(row.getCell(3));
+                String manager = getCellValue(row.getCell(4));
+                String email = getCellValue(row.getCell(5));
+                String phoneNumber = getCellValue(row.getCell(6));
+                String homepageUrl = getCellValue(row.getCell(7));
+                String roadNameAddress = getCellValue(row.getCell(8));
+                String memo = getCellValue(row.getCell(9));
+
+                StringBuilder errorMessage = new StringBuilder();
+                // validation
+                if (companyName == null) {
+                    errorMessage.append("회사명 누락; ");
+                }
+                if (englishName == null) {
+                    errorMessage.append("영문명 누락; ");
+                }
+                if (companyRegistrationNumber == null) {
+                    errorMessage.append("사업자 등록 번호 누락; ");
+                }
+                if (manager == null) {
+                    errorMessage.append("담당자 누락; ");
+                }
+                if (companyRegistrationNumber != null && existRegistrationNumbers.contains(companyRegistrationNumber)) {
+                    errorMessage.append("중복된 사업자 등록 번호; ");
+                }
+
+                // 에러가 없으면
+                if (passable && errorMessage.isEmpty()) {
+                    saveCompanyRequests.add(new SaveCompanyRequest(companyName, englishName, companyRegistrationNumber, roadNameAddress, products, homepageUrl, manager, email, phoneNumber, memo));
+                }else{
+                    passable = false;
+                    writeErrorToCell(row, 10, errorMessage.toString().trim());
+                }
+            }
+
+            if (passable) {
+                size = saveCompanyRequests.size();
+                // 에러가 없을 경우 데이터 삽입
+                for (SaveCompanyRequest request : saveCompanyRequests) {
+                    companyService.saveDomesticCompany(request);
+                }
+            } else {
+                // 에러가 있는 경우 엑셀 반환
+                exportErrorExcel(workbook);
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR, "내부 서버 에러입니다.");
+        }
+
+        String result = size + "개 저장되었습니다.";
+        return new UploadExcelResponse(result);
+    }
+
+    @Override
+    @Transactional
+    public UploadExcelResponse uploadBuyerByExcel(MultipartFile file) {
+        if (file.isEmpty()) {
+            throw new FileException(HttpStatus.BAD_REQUEST, "비어있는 파일입니다.");
+        }
+
+        // 입력된 데이터 갯수
+        int size = 0;
+        boolean passable = true;
+        try(InputStream inputStream = file.getInputStream()){
+            Workbook workbook = WorkbookFactory.create(inputStream);
+            Sheet sheet = workbook.getSheetAt(0);
+
+
+            Set<String> existRegistrationNumbers = companyService.findDomesticCompanyRegistrationNumbers();
+            List<SaveCompanyRequest> saveCompanyRequests = new ArrayList<>();
+
+            for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
+                Row row = sheet.getRow(rowIndex);
+                if (isRowEmpty(row, 10)) break;
+
+                String companyName = getCellValue(row.getCell(0));
+                String englishName = getCellValue(row.getCell(1));
+                String companyRegistrationNumber = getCellValue(row.getCell(2));
+                String products = getCellValue(row.getCell(3));
+                String manager = getCellValue(row.getCell(4));
+                String email = getCellValue(row.getCell(5));
+                String phoneNumber = getCellValue(row.getCell(6));
+                String homepageUrl = getCellValue(row.getCell(7));
+                String roadNameAddress = getCellValue(row.getCell(8));
+                String memo = getCellValue(row.getCell(9));
+
+                StringBuilder errorMessage = new StringBuilder();
+                // validation
+                if (companyName == null) {
+                    errorMessage.append("회사명 누락; ");
+                }
+                if (englishName == null) {
+                    errorMessage.append("영문명 누락; ");
+                }
+                if (companyRegistrationNumber == null) {
+                    errorMessage.append("사업자 등록 번호 누락; ");
+                }
+                if (manager == null) {
+                    errorMessage.append("담당자 누락; ");
+                }
+                if (companyRegistrationNumber != null && existRegistrationNumbers.contains(companyRegistrationNumber)) {
+                    errorMessage.append("중복된 사업자 등록 번호; ");
+                }
+
+                // 에러가 없으면
+                if (passable && errorMessage.isEmpty()) {
+                    saveCompanyRequests.add(new SaveCompanyRequest(companyName, englishName, companyRegistrationNumber, roadNameAddress, products, homepageUrl, manager, email, phoneNumber, memo));
+                }else{
+                    passable = false;
+                    writeErrorToCell(row, 10, errorMessage.toString().trim());
+                }
+            }
+
+            if (passable) {
+                size = saveCompanyRequests.size();
+                // 에러가 없을 경우 데이터 삽입
+                for (SaveCompanyRequest request : saveCompanyRequests) {
+                    companyService.saveBuyer(request);
                 }
             } else {
                 // 에러가 있는 경우 엑셀 반환
@@ -217,5 +358,18 @@ public class FileServiceImpl implements FileService {
             e.printStackTrace();
             throw new FileException(HttpStatus.INTERNAL_SERVER_ERROR, "에러 엑셀 파일 생성 중 오류 발생");
         }
+    }
+
+    private boolean isRowEmpty(Row row, int lastCellNum) {
+        if (row == null) {
+            return true;
+        }
+        for (int cellIndex = 0; cellIndex < lastCellNum; cellIndex++) {
+            Cell cell = row.getCell(cellIndex);
+            if (cell != null && cell.getCellType() != CellType.BLANK) {
+                return false; // 셀이 비어있지 않음
+            }
+        }
+        return true; // 모든 셀이 비어있음
     }
 }

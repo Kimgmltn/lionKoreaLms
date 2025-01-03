@@ -45,4 +45,6 @@ public interface MemberService {
     Set<String> findAllMemberEmail();
     Set<String> findAllAccountLoginId();
 
+    @Transactional
+    void saveAndGrantNewAccountByExcel(SaveMemberRequest memberRequest, GrantNewAccountRequest grantNewAccountRequest);
 }

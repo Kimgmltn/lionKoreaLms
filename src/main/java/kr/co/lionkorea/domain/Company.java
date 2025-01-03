@@ -19,11 +19,11 @@ public abstract class Company extends BaseEntity {
     @Id @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "company_id")
     private Long id;
-    @Column(name="company_name")
+    @Column(name="company_name", nullable = false)
     private String companyName;
-    @Column(name="english_name")
+    @Column(name="english_name", nullable = false)
     private String englishName;
-    @Column(name="company_registration_number")
+    @Column(name="company_registration_number", unique = true, nullable = false)
     private String companyRegistrationNumber;
     @Column(name = "road_name_address")
     private String roadNameAddress;
