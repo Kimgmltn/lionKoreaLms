@@ -23,7 +23,7 @@ const isExcludedUrl = (url) => {
 }
 
 const fetchWithAuth = async (url, options = {}) => {
-
+    options.headers = options.headers || {} // header 초기화
     const accessToken = sessionStorage.getItem('access');
 
     if (window.isLocalMode) {
