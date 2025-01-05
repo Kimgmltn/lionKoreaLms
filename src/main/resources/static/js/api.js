@@ -42,6 +42,7 @@ const fetchWithAuth = async (url, options = {}) => {
 
     if (!(options.body instanceof FormData)) {
         headers['Content-Type'] = 'application/json';
+        options.headers['Content-Type'] = 'application/json'
     }
 
     return new Promise(async (resolve, reject) => {

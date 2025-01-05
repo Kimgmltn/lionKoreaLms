@@ -90,13 +90,13 @@ public class DataInitializationConfig {
             for (int i = 0; i < 30; i++) {
                 String companyName = "회사" + i;
                 String managerName = "매니저" + i;
-                companyService.saveDomesticCompany(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
+                companyService.saveDomesticCompany(new SaveCompanyRequest(companyName, "", String.valueOf(i), "", "", "", managerName, "", "", ""));
             }
 
             for (int i = 30; i < 60; i++) {
                 String companyName = "바이어" + i;
                 String managerName = "매니저" + i;
-                companyService.saveBuyer(new SaveCompanyRequest(companyName, "", "", "", "", "", managerName, "", "", ""));
+                companyService.saveBuyer(new SaveCompanyRequest(companyName, "", String.valueOf(i), "", "", "", managerName, "", "", ""));
             }
             log.info("Company 데이터 삽입 끝");
 
