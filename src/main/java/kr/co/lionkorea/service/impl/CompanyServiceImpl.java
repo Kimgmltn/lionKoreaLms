@@ -53,6 +53,7 @@ public class CompanyServiceImpl implements CompanyService {
     public SaveCompanyResponse saveBuyer(SaveCompanyRequest request) {
         Set<String> buyerRegistrationNumbers = this.findBuyerRegistrationNumbers();
         if (buyerRegistrationNumbers.contains(request.getCompanyRegistrationNumber())) {
+            log.error("이미 존재하는 바이어ID : {}", request.getCompanyRegistrationNumber());
             throw new CompanyException(HttpStatus.CONFLICT, "이미 존재하는 바이어ID입니다.");
         }
         Company savedCompany = this.saveCompany(Buyer.dtoToEntity(request));
