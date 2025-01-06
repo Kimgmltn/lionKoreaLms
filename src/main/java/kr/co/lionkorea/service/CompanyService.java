@@ -8,12 +8,14 @@ import kr.co.lionkorea.dto.response.FindCompanyDetailResponse;
 import kr.co.lionkorea.dto.response.SaveCompanyResponse;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Set;
 
 public interface CompanyService {
 
-//    SaveCompanyResponse saveCompany(SaveCompanyRequest request);
+    @Transactional
+    Company saveCompany(Company company);
 
     SaveCompanyResponse saveDomesticCompany(SaveCompanyRequest request);
 

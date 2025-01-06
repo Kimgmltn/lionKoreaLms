@@ -12,6 +12,7 @@ import kr.co.lionkorea.exception.CompanyException;
 import kr.co.lionkorea.repository.CompanyRepository;
 import kr.co.lionkorea.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 import org.springframework.http.HttpStatus;
@@ -24,28 +25,37 @@ import java.util.stream.Collectors;
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
+@Slf4j
 public class CompanyServiceImpl implements CompanyService {
 
     private final CompanyRepository companyRepository;
 
-//    @Override
-//    @Transactional
-//    public SaveCompanyResponse saveCompany(SaveCompanyRequest request) {
-//        Company savedCompany = companyRepository.save(Company.dtoToEntity(request));
-//        return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
-//    }
+    @Override
+    @Transactional
+    public Company saveCompany(Company company) {
+        return companyRepository.save(company);
+    }
 
     @Override
     @Transactional
     public SaveCompanyResponse saveDomesticCompany(SaveCompanyRequest request) {
-        Company savedCompany = companyRepository.save(DomesticCompany.dtoToEntity(request));
+        Set<String> domesticCompanyRegistrationNumbers = this.findDomesticCompanyRegistrationNumbers();
+        if (domesticCompanyRegistrationNumbers.contains(request.getCompanyRegistrationNumber())) {
+            log.error("이미 존재하는 사업자 번호 : {}", request.getCompanyRegistrationNumber());
+            throw new CompanyException(HttpStatus.CONFLICT, "이미 존재하는 사업자 번호입니다.");
+        }
+        Company savedCompany = this.saveCompany(DomesticCompany.dtoToEntity(request));
         return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
     }
 
     @Override
     @Transactional
     public SaveCompanyResponse saveBuyer(SaveCompanyRequest request) {
-        Company savedCompany = companyRepository.save(Buyer.dtoToEntity(request));
+        Set<String> buyerRegistrationNumbers = this.findBuyerRegistrationNumbers();
+        if (buyerRegistrationNumbers.contains(request.getCompanyRegistrationNumber())) {
+            throw new CompanyException(HttpStatus.CONFLICT, "이미 존재하는 바이어ID입니다.");
+        }
+        Company savedCompany = this.saveCompany(Buyer.dtoToEntity(request));
         return new SaveCompanyResponse(savedCompany.getId(), "저장되었습니다.");
     }
 

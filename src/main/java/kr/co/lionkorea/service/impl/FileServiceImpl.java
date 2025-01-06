@@ -5,6 +5,8 @@ import com.oracle.bmc.objectstorage.requests.GetNamespaceRequest;
 import com.oracle.bmc.objectstorage.requests.GetObjectRequest;
 import com.oracle.bmc.objectstorage.responses.GetNamespaceResponse;
 import com.oracle.bmc.objectstorage.responses.GetObjectResponse;
+import kr.co.lionkorea.domain.Buyer;
+import kr.co.lionkorea.domain.DomesticCompany;
 import kr.co.lionkorea.domain.FileStorage;
 import kr.co.lionkorea.dto.request.GrantNewAccountRequest;
 import kr.co.lionkorea.dto.request.SaveCompanyRequest;
@@ -227,7 +229,7 @@ public class FileServiceImpl implements FileService {
                 size = saveCompanyRequests.size();
                 // 에러가 없을 경우 데이터 삽입
                 for (SaveCompanyRequest request : saveCompanyRequests) {
-                    companyService.saveDomesticCompany(request);
+                    companyService.saveCompany(DomesticCompany.dtoToEntity(request));
                 }
             } else {
                 // 에러가 있는 경우 엑셀 반환
@@ -258,7 +260,7 @@ public class FileServiceImpl implements FileService {
             Sheet sheet = workbook.getSheetAt(0);
 
 
-            Set<String> existRegistrationNumbers = companyService.findDomesticCompanyRegistrationNumbers();
+            Set<String> existRegistrationNumbers = companyService.findBuyerRegistrationNumbers();
             List<SaveCompanyRequest> saveCompanyRequests = new ArrayList<>();
 
             for (int rowIndex = 2; rowIndex <= sheet.getLastRowNum(); rowIndex++) {
@@ -307,7 +309,7 @@ public class FileServiceImpl implements FileService {
                 size = saveCompanyRequests.size();
                 // 에러가 없을 경우 데이터 삽입
                 for (SaveCompanyRequest request : saveCompanyRequests) {
-                    companyService.saveBuyer(request);
+                    companyService.saveCompany(Buyer.dtoToEntity(request));
                 }
             } else {
                 // 에러가 있는 경우 엑셀 반환

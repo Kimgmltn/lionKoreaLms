@@ -20,13 +20,21 @@ document.getElementById('registerForm').addEventListener('submit', async functio
 
     try {
         const response = await post('/api/company/domestic/save', companyData);
-        const data = await response.json();
+        if(response.ok){
+            const data = await response.json();
 
-        await createConfirmModal({
-            title: data.result
-        }, function(){
-            window.location.href=`/company/domestic/${data.companyId}`
-        });
+            await createConfirmModal({
+                title: data.result
+            }, function(){
+                window.location.href=`/company/domestic/${data.companyId}`
+            });
+        } else{
+            const data = await response.json();
+            await createConfirmModal({
+                title: data.message
+            });
+        }
+
 
     } catch (error) {
         console.error('Error:', error);
