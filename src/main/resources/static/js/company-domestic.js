@@ -1,6 +1,11 @@
 import {get, post} from './api.js';
 import {createConfirmModal, downloadFile, renderPagination} from './common.js'
 
+const searchDomesticCompanyName = () => {
+    const companyName = document.getElementById('searchName').value.trim()
+    renderDomesticCompanies({companyName:companyName})
+}
+
 document.addEventListener('DOMContentLoaded', ()=>{
     renderDomesticCompanies({});
 })
@@ -101,3 +106,12 @@ document.getElementById('hiddenExcelInput').addEventListener('change', async fun
         });
     }
 })
+
+document.getElementById('searchName').addEventListener('keydown', function (e) {
+    if(e.key ==='Enter'){
+        e.preventDefault();
+        searchDomesticCompanyName()
+    }
+});
+
+document.getElementById('searchNameButton').addEventListener('click', searchDomesticCompanyName)

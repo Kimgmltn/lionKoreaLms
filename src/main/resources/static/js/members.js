@@ -1,6 +1,11 @@
 import { get, post } from './api.js';
 import {createConfirmModal, downloadFile, renderPagination} from './common.js'
 
+const searchMemberName = () => {
+    const memberName = document.getElementById('searchName').value.trim()
+    renderMembers({memberName:memberName})
+}
+
 document.addEventListener('DOMContentLoaded', () => {
     /*const radioButtons = document.querySelectorAll('input[name="role"]');
 
@@ -17,10 +22,11 @@ document.addEventListener('DOMContentLoaded', () => {
     renderMembers({});
 });
 
-const renderMembers = async ({page = 0, size = 20}) => {
+const renderMembers = async ({page = 0, size = 20, memberName}) => {
     const queryParams = new URLSearchParams({
         page:page,
-        size:size
+        size:size,
+        ...(memberName && {memberName})
     })
     const datatablesSimple = document.getElementById('datatablesSimple');
 
@@ -59,7 +65,7 @@ const renderMembers = async ({page = 0, size = 20}) => {
     });
 
     const dom = document.getElementById('paginationContainer');
-    renderPagination(dom, membersData.page, renderMembers);
+    renderPagination(dom, membersData.page, renderMembers, {size, memberName});
 }
 
 document.getElementById('downloadExcelForm').addEventListener('click', async function () {
@@ -116,3 +122,12 @@ document.getElementById('hiddenExcelInput').addEventListener('change', async fun
         });
     }
 })
+
+document.getElementById('searchName').addEventListener('keydown', function (e) {
+    if(e.key ==='Enter'){
+        e.preventDefault();
+        searchMemberName()
+    }
+});
+
+document.getElementById('searchNameButton').addEventListener('click', searchMemberName)
