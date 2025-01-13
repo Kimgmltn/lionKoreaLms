@@ -5,7 +5,7 @@ const renderInfo = {
     memberName: '',
     email: '',
     gender: '',
-    cellphone: '',
+    phoneNumber: '',
     memo: ''
 }
 // 회원 상세정보 창
@@ -69,7 +69,7 @@ const setInfo = (data) =>
     renderInfo.memberName = data.memberName || '';
     renderInfo.email = data.email || '';
     renderInfo.gender = data.gender || '';
-    renderInfo.cellphone = data.phoneNumber || '';
+    renderInfo.phoneNumber = data.phoneNumber || '';
     renderInfo.memo = data.memo || '';
 }
 
@@ -147,10 +147,11 @@ document.getElementById('updateForm').addEventListener('submit', async function(
         {
             const resultData = await response.json();
             createConfirmModal({
-                title: resultData.result
-            }, function(){
-                renderMember()
-            });
+                    title: resultData.result
+                },
+                showUpdateButtonSet(),
+                cancelSave()
+            );
         }
         else
         {
