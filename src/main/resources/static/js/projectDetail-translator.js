@@ -1,4 +1,4 @@
-import {get, patch, post} from './api.js'
+import {get, patch} from './api.js'
 import {createConfirmModal, getLastPath, PROCESS_STATUS} from './common.js'
 
 const buttonBox = document.getElementById('buttonBox')
@@ -65,7 +65,7 @@ startButton.addEventListener('click', async function(event){
         startButton.hidden = true
         completeButton.hidden = false
         consultationNotes.disabled = false
-        caption.classList = 'badge fs-6 position-absolute top-0 start-0 bg-warning';
+        caption.classList = 'badge fs-6 top-0 start-0 bg-warning';
         caption.textContent = PROCESS_STATUS.PROGRESS
     }
 })
@@ -80,7 +80,7 @@ reStartButton.addEventListener('click', async function(event){
         completeButton.hidden = false
         consultationNotes.disabled = false
         rejectReasonDiv.hidden = true
-        caption.classList = 'badge fs-6 position-absolute top-0 start-0 bg-warning';
+        caption.classList = 'badge fs-6 top-0 start-0 bg-warning';
         caption.textContent = PROCESS_STATUS.PROGRESS
     }
 })
@@ -88,9 +88,18 @@ reStartButton.addEventListener('click', async function(event){
 completeButton.addEventListener('click', async function(event){
     event.preventDefault();
 
-    const request = {
-        consultationNotes: consultationNotes.value
+    const value = consultationNotes.value;
+    if(!value){
+        createConfirmModal({
+            title: '상담 내용은 필수 입니다.'
+        }, function (){
+            consultationNotes.focus();
+        })
     }
+    const request = {
+        consultationNotes: value
+    }
+
 
     const response = await patch(`/api/projects/translator/${projectId}/complete`, request)
     if (response.ok) {

@@ -1,5 +1,5 @@
 import {get, patch} from './api.js'
-import {createConfirmModal, inputOnlyNumber} from "./common.js";
+import {createConfirmModal, getLastPath, inputOnlyNumber, PROCESS_STATUS, renderPagination} from "./common.js";
 
 const renderInfo = {
     companyName: '',
@@ -34,6 +34,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         return;
     }
     renderCompany();
+    renderProjects({});
 })
 
 const renderCompany = async () => {
@@ -194,3 +195,82 @@ document.getElementById('updateForm').addEventListener('submit', async function(
         alert('등록 실패: ' + error.message);
     }
 });
+
+const renderProjects = async ({page = 0, size = 5}) => {
+    let companyId = getLastPath();
+    const queryParams = new URLSearchParams({
+        page:page,
+        size:size,
+    })
+
+    const datatablesSimple = document.getElementById('datatablesSimple');
+    if (!datatablesSimple) {
+        console.error('No datatablesSimple element found on the page.');
+        return;
+    }
+
+    const response = await get(`/api/projects/${companyId}?${queryParams.toString()}`);
+
+    const projects = await response.json()
+
+    const tbody = datatablesSimple.querySelector('tbody');
+    tbody.innerHTML = '';
+    projects.content.forEach((project) => {
+
+        const tr = document.createElement('tr');
+        tr.addEventListener('click',()=>{
+            window.location.href = `/projects/admin/${project.projectId}`;
+        })
+
+        const projectIdTd = document.createElement('td')
+        projectIdTd.hidden = true
+        projectIdTd.innerHTML = project.projectId
+        const projectNameTd = document.createElement('td')
+        projectNameTd.innerHTML = project.projectName
+        const buyerNameTd = document.createElement('td')
+        buyerNameTd.innerHTML = project.buyerName
+        const domesticCompanyNameTd = document.createElement('td')
+        domesticCompanyNameTd.innerHTML = project.domesticCompanyName
+        const translatorNameTd = document.createElement('td')
+        translatorNameTd.innerHTML = project.translatorName
+        const languageTd = document.createElement('td')
+        languageTd.innerHTML = project.language
+        const timeTd = document.createElement('td')
+        timeTd.innerHTML = `${project.hour}:${project.minute} ${project.timePeriod}`
+        const processStatusTd = document.createElement('td')
+        const processStatusSpan = document.createElement('span')
+        switch(project.processStatus){
+            case "WAITING":
+                processStatusSpan.classList= 'badge bg-secondary';
+                processStatusSpan.textContent = PROCESS_STATUS.WAITING
+                break;
+            case "PROGRESS":
+                processStatusSpan.classList= 'badge bg-warning';
+                processStatusSpan.textContent = PROCESS_STATUS.PROGRESS
+                break;
+            case "COMPLETED":
+                processStatusSpan.classList= 'badge bg-success';
+                processStatusSpan.textContent = PROCESS_STATUS.COMPLETED
+                break;
+            case "REJECT":
+                processStatusSpan.classList= 'badge bg-danger';
+                processStatusSpan.textContent = PROCESS_STATUS.REJECT
+                break;
+        }
+        processStatusTd.appendChild(processStatusSpan)
+
+        tr.appendChild(projectIdTd)
+        tr.appendChild(projectNameTd)
+        tr.appendChild(buyerNameTd)
+        tr.appendChild(domesticCompanyNameTd)
+        tr.appendChild(translatorNameTd)
+        tr.appendChild(languageTd)
+        tr.appendChild(timeTd)
+        tr.appendChild(processStatusTd)
+
+        tbody.appendChild(tr);
+    });
+
+    const dom = document.getElementById('paginationContainer');
+    renderPagination(dom, projects.page, renderProjects, {size});
+}

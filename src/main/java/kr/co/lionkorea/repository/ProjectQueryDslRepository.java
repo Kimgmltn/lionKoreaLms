@@ -2,10 +2,7 @@ package kr.co.lionkorea.repository;
 
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
 import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
-import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectDetailForTranslatorResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForTranslatorResponse;
+import kr.co.lionkorea.dto.response.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PagedModel;
 
@@ -19,4 +16,6 @@ public interface ProjectQueryDslRepository {
     PagedModel<FindProjectsForTranslatorResponse> findProjectsForTranslator(FindProjectsForTranslatorRequest request, Pageable pageable, Long accountId);
 
     Optional<FindProjectDetailForTranslatorResponse> findProjectDetailForTranslator(Long projectId, Long accountId);
+
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable);
 }

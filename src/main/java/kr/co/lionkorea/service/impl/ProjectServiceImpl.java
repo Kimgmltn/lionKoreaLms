@@ -15,9 +15,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
-import java.util.Optional;
-
 @Service
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
@@ -81,5 +78,10 @@ public class ProjectServiceImpl implements ProjectService {
         project.completeProject(request.getConsultationNotes());
         projectRepository.save(project);
         return new SaveCompleteConsultationResponse("저장되었습니다.");
+    }
+
+    @Override
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable) {
+        return projectRepository.findProjectByCompanyId(companyId, pageable);
     }
 }

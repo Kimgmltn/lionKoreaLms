@@ -5,10 +5,7 @@ import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQueryFactory;
 import kr.co.lionkorea.dto.request.FindProjectsForAdminRequest;
 import kr.co.lionkorea.dto.request.FindProjectsForTranslatorRequest;
-import kr.co.lionkorea.dto.response.FindProjectDetailForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectDetailForTranslatorResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForAdminResponse;
-import kr.co.lionkorea.dto.response.FindProjectsForTranslatorResponse;
+import kr.co.lionkorea.dto.response.*;
 import kr.co.lionkorea.repository.ProjectQueryDslRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageImpl;
@@ -173,6 +170,38 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                         account.id.eq(accountId)
                 )
                 .fetchFirst());
+    }
+
+    @Override
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable) {
+        List<FindProjectsByCompanyIdResponse> result = query
+                .select(Projections.fields(FindProjectsByCompanyIdResponse.class,
+                        project.id.as("projectId"),
+                        buyer.id.as("buyerId"),
+                        domesticCompany.id.as("domesticCompanyId"),
+                        buyer.companyName.as("buyerName"),
+                        domesticCompany.companyName.as("domesticCompanyName"),
+                        project.projectName.as("projectName"),
+                        project.processStatus,
+                        project.consultationDate
+                ))
+                .from(project)
+                .innerJoin(project.buyer, buyer)
+                .innerJoin(project.domesticCompany, domesticCompany)
+                .where(domesticCompany.id.eq(companyId))
+                .orderBy(project.consultationDate.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = Optional.ofNullable(query.select(project.count())
+                        .from(project)
+                        .innerJoin(project.buyer, buyer)
+                        .innerJoin(project.domesticCompany, domesticCompany)
+                        .where(domesticCompany.id.eq(companyId))
+                        .fetchOne())
+                .orElse(0L);
+        return new PagedModel<>(new PageImpl<>(result, pageable, total));
     }
 
     private Predicate buyerNameContainsIgnoreCase(String buyerName) {

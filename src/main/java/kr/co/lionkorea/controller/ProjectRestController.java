@@ -28,6 +28,11 @@ public class ProjectRestController {
         return ResponseEntity.ok(projectService.findProjectDetailForAdmin(projectId));
     }
 
+    @GetMapping("/{companyId}")
+    public ResponseEntity<PagedModel<FindProjectsByCompanyIdResponse>> findProjectByCompanyId(@PathVariable("companyId") Long companyId, Pageable pageable) {
+        return ResponseEntity.ok(projectService.findProjectByCompanyId(companyId, pageable));
+    }
+
     @PatchMapping("/admin/{projectId}/reject")
     public ResponseEntity<SaveRejectProjectResponse> rejectProject(@PathVariable Long projectId, @RequestBody SaveRejectProjectRequest request){
         return ResponseEntity.ok(projectService.rejectProject(projectId, request));

@@ -22,4 +22,6 @@ public interface ProjectService {
     Void startConsultation(Long projectId);
 
     SaveCompleteConsultationResponse completeConsultation(Long projectId, SaveCompleteConsultationRequest request);
+
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable);
 }
