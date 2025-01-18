@@ -17,5 +17,6 @@ public interface ProjectQueryDslRepository {
 
     Optional<FindProjectDetailForTranslatorResponse> findProjectDetailForTranslator(Long projectId, Long accountId);
 
-    PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable);
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByDomesticCompanyId(Long companyId, Pageable pageable);
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByBuyerCompanyId(Long companyId, Pageable pageable);
 }

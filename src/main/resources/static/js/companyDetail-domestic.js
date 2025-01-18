@@ -1,6 +1,12 @@
 import {get, patch} from './api.js'
 import {createConfirmModal, getLastPath, inputOnlyNumber, PROCESS_STATUS, renderPagination} from "./common.js";
 
+const projectTag = document.getElementById('projectModal');
+const projectModal = new bootstrap.Modal(projectTag,{
+    backdrop: 'static',
+    keyboard: true
+})
+
 const renderInfo = {
     companyName: '',
     englishName: '',
@@ -19,7 +25,7 @@ const inputCompanyName = document.getElementById('inputCompanyName');
 const inputCompanyEnglishName = document.getElementById('inputCompanyEnglishName');
 const inputRegistrationNumber = document.getElementById('inputRegistrationNumber');
 const inputProduct = document.getElementById('inputProduct');
-const inputManager = document.getElementById('inputManager');
+const inputCompanyManager = document.getElementById('inputCompanyManager');
 const inputManagerEmail = document.getElementById('inputManagerEmail');
 const inputManagerPhoneNumber = document.getElementById('inputManagerPhoneNumber');
 const inputHomepageUrl = document.getElementById('inputHomepageUrl');
@@ -67,7 +73,7 @@ const setInputValue = (data) => {
     inputCompanyEnglishName.value = data.englishName || '';
     inputRegistrationNumber.value = data.companyRegistrationNumber || '';
     inputProduct.value = data.products || '';
-    inputManager.value = data.manager || '';
+    inputCompanyManager.value = data.manager || '';
     inputManagerEmail.value = data.email || '';
     inputManagerPhoneNumber.value = data.phoneNumber || '';
     inputHomepageUrl.value = data.homepageUrl || '';
@@ -139,7 +145,7 @@ const changeDisableInputTag = (tureOrFalse) => {
     inputCompanyEnglishName.disabled = tureOrFalse;
     inputRegistrationNumber.disabled = tureOrFalse;
     inputProduct.disabled = tureOrFalse;
-    inputManager.disabled = tureOrFalse;
+    inputCompanyManager.disabled = tureOrFalse;
     inputManagerEmail.disabled = tureOrFalse;
     inputManagerPhoneNumber.disabled = tureOrFalse;
     inputHomepageUrl.disabled = tureOrFalse;
@@ -209,7 +215,7 @@ const renderProjects = async ({page = 0, size = 5}) => {
         return;
     }
 
-    const response = await get(`/api/projects/${companyId}?${queryParams.toString()}`);
+    const response = await get(`/api/projects/domestic/${companyId}?${queryParams.toString()}`);
 
     const projects = await response.json()
 
@@ -218,13 +224,14 @@ const renderProjects = async ({page = 0, size = 5}) => {
     projects.content.forEach((project) => {
 
         const tr = document.createElement('tr');
+        tr.setAttribute('data-bs-toggle', 'modal')
+        tr.setAttribute('data-bs-target', '#projectModal')
         tr.addEventListener('click',()=>{
-            window.location.href = `/projects/admin/${project.projectId}`;
+            createProjectModal(`/api/projects/admin/${project.projectId}`)
         })
 
-        const projectIdTd = document.createElement('td')
-        projectIdTd.hidden = true
-        projectIdTd.innerHTML = project.projectId
+        const consultationDateTd = document.createElement('td')
+        consultationDateTd.innerHTML = project.consultationDate
         const projectNameTd = document.createElement('td')
         projectNameTd.innerHTML = project.projectName
         const buyerNameTd = document.createElement('td')
@@ -233,10 +240,6 @@ const renderProjects = async ({page = 0, size = 5}) => {
         domesticCompanyNameTd.innerHTML = project.domesticCompanyName
         const translatorNameTd = document.createElement('td')
         translatorNameTd.innerHTML = project.translatorName
-        const languageTd = document.createElement('td')
-        languageTd.innerHTML = project.language
-        const timeTd = document.createElement('td')
-        timeTd.innerHTML = `${project.hour}:${project.minute} ${project.timePeriod}`
         const processStatusTd = document.createElement('td')
         const processStatusSpan = document.createElement('span')
         switch(project.processStatus){
@@ -259,13 +262,9 @@ const renderProjects = async ({page = 0, size = 5}) => {
         }
         processStatusTd.appendChild(processStatusSpan)
 
-        tr.appendChild(projectIdTd)
+        tr.appendChild(consultationDateTd)
         tr.appendChild(projectNameTd)
         tr.appendChild(buyerNameTd)
-        tr.appendChild(domesticCompanyNameTd)
-        tr.appendChild(translatorNameTd)
-        tr.appendChild(languageTd)
-        tr.appendChild(timeTd)
         tr.appendChild(processStatusTd)
 
         tbody.appendChild(tr);
@@ -273,4 +272,45 @@ const renderProjects = async ({page = 0, size = 5}) => {
 
     const dom = document.getElementById('paginationContainer');
     renderPagination(dom, projects.page, renderProjects, {size});
+}
+
+const createProjectModal = async (url) => {
+    const response = await get(url)
+    if(response.ok) {
+        const projectDetail = await response.json()
+        document.getElementById('inputBuyer').value = projectDetail.buyerName;
+        document.getElementById('inputDomesticCompany').value = projectDetail.domesticCompanyName;
+        document.getElementById('inputProjectName').value = projectDetail.projectName;
+        document.getElementById('inputManager').value = projectDetail.translatorName;
+        document.getElementById('inputLanguage').value = projectDetail.language;
+        document.getElementById('datepicker').value = projectDetail.consultationDate;
+        document.getElementById('inputHour').value = projectDetail.hour;
+        document.getElementById('inputMinute').value = projectDetail.minute;
+        document.getElementById('inputTimePeriod').value = projectDetail.timePeriod;
+        document.getElementById('inputConsultationNotes').value = projectDetail.consultationNotes;
+        const caption = document.getElementById('caption');
+        switch(projectDetail.processStatus){
+            case "WAITING":
+                caption.classList.add('bg-secondary');
+                caption.textContent = PROCESS_STATUS.WAITING
+                break;
+            case "PROGRESS":
+                caption.classList.add('bg-warning');
+                caption.textContent = PROCESS_STATUS.PROGRESS
+                break;
+            case "COMPLETED":
+                caption.classList.add('bg-success');
+                caption.textContent = PROCESS_STATUS.COMPLETED
+                break;
+            case "REJECT":
+                caption.classList.add('bg-danger');
+                caption.textContent = PROCESS_STATUS.REJECT
+                document.getElementById('inputRejectReason').value = projectDetail.rejectReason
+                document.getElementById('inputRejectReason').disabled = true;
+                document.getElementById('rejectButton').hidden = true;
+                break;
+        }
+    }else{
+        console.error("네트워크 오류 or 없는 프로젝트")
+    }
 }

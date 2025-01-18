@@ -155,8 +155,8 @@
                                         <div class="row mb-3">
                                             <div class="col-md-6">
                                                 <div class="form-floating mb-3 mb-md-0">
-                                                    <input placeholder=""  class="form-control" id="inputManager" type="text" name="manager" required disabled/>
-                                                    <label class="text-black-50" for="inputManager">담당자</label>
+                                                    <input placeholder=""  class="form-control" id="inputCompanyManager" type="text" name="manager" required disabled/>
+                                                    <label class="text-black-50" for="inputCompanyManager">담당자</label>
                                                 </div>
                                             </div>
                                             <div class="col-md-6">
@@ -223,16 +223,28 @@
                                             </tbody>
                                         </table>
                                     </div>
+                                    <nav aria-label="Page navigation">
+                                        <ul id="paginationContainer" class="pagination justify-content-center">
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Previous</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">1</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">2</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">  3</a>
+                                            </li>
+                                            <li class="page-item">
+                                                <a class="page-link" href="#">Next</a>
+                                            </li>
+                                        </ul>
+                                    </nav>
                                 </div>
                             </div>
-                            <nav aria-label="Page navigation">
-                                <ul id="paginationContainer" class="pagination justify-content-center">
-
-                                </ul>
-                            </nav>
                         </div>
-
-
                     </div>
                 </main>
                 <footer th:replace="~{footer :: main_footer}">
@@ -249,6 +261,124 @@
                         </div>
                     </footer>
                 </footer>
+            </div>
+        </div>
+
+        <div class="modal fade show" id="projectModal" tabindex="-1" aria-labelledby="inputModalLabel" aria-hidden="true">
+            <div class="modal-dialog" style="max-width: 720px; width: auto">
+                <div class="modal-content">
+                    <div class="modal-body">
+                        <div>
+                            <span id="caption" class="badge bg-secondary fs-6 top-0 start-0" th:class="'badge fs-6 top-0 start-0'" style="margin-top:-30px">캡션</span>
+                        </div>
+                        <div class="card border-0">
+                            <div class="card-body shadow-lg rounded-4" style="max-width: 720px;">
+                                <form id="registerForm">
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input type="hidden" id="inputBuyerId">
+                                                <input placeholder=""  class="form-control" type="text" id="inputBuyer" disabled>
+                                                <input type="hidden" name="buyerId">
+                                                <label class="text-black-50" for="inputBuyer">바이어</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input type="hidden" id="inputDomesticCompanyId">
+                                                <input placeholder=""  class="form-control" type="text" id="inputDomesticCompany" disabled>
+                                                <input type="hidden" name="domesticCompanyId">
+                                                <label class="text-black-50" for="inputDomesticCompany">국내업체</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input placeholder=""  class="form-control" id="inputProjectName" type="text" name="projectName" disabled/>
+                                                <label class="text-black-50" for="inputProjectName">프로젝트 명</label>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input placeholder=""  class="form-control" id="inputManager" disabled>
+                                                <input type="hidden" name="translatorId">
+                                                <label class="text-black-50" for="inputManager">상담자</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input placeholder=""  class="form-control" id="inputLanguage" type="text" name="language" disabled/>
+                                                <label class="text-black-50" for="inputLanguage">언어</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <!--                                        <div class="fw-bold mb-2">상담 시간</div>-->
+                                        <div class="form-floating col-sm-6">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <input type="text" id="datepicker" class="form-control" name="consultationDate" disabled>
+                                                <label class="text-black-50" for="datepicker">상담 날짜</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select class="form-select" id="inputHour" name="hour" disabled>
+                                                    <option value="01" selected>1</option>
+                                                    <option value="02">2</option>
+                                                    <option value="03">3</option>
+                                                    <option value="04">4</option>
+                                                    <option value="05">5</option>
+                                                    <option value="06">6</option>
+                                                    <option value="07">7</option>
+                                                    <option value="08">8</option>
+                                                    <option value="09">9</option>
+                                                    <option value="10">10</option>
+                                                    <option value="11">11</option>
+                                                    <option value="12">12</option>
+                                                </select>
+                                                <label class="text-black-50" for="inputHour">시간</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select class="form-select" id="inputMinute" name="minute" disabled>
+                                                    <option value="00" selected>00</option>
+                                                    <option value="10">10</option>
+                                                    <option value="20">20</option>
+                                                    <option value="30">30</option>
+                                                    <option value="40">40</option>
+                                                    <option value="50">50</option>
+                                                </select>
+                                                <label class="text-black-50" for="inputMinute">분</label>
+                                            </div>
+                                        </div>
+                                        <div class="form-floating col">
+                                            <div class="form-floating mb-3 mb-md-0">
+                                                <select class="form-select" id="inputTimePeriod" name="timePeriod" disabled>
+                                                    <option value="AM">AM</option>
+                                                    <option value="PM">PM</option>
+                                                </select>
+                                                <label class="text-black-50" for="inputTimePeriod">AM / PM</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-floating mb-3">
+                                        <textarea placeholder=""  class="form-control" id="inputConsultationNotes" name="consultationNotes" rows="1" style="resize:none; overflow: hidden" disabled></textarea>
+                                        <label class="text-black-50" for="inputConsultationNotes">상담 내용</label>
+                                    </div>
+                                </form>
+                                <div class="mt-4 mb-0">
+                                    <div class="d-flex justify-content-end gap-2">
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <th:block th:replace="~{common :: common_js}">

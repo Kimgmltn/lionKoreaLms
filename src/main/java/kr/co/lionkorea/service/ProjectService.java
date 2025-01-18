@@ -23,5 +23,7 @@ public interface ProjectService {
 
     SaveCompleteConsultationResponse completeConsultation(Long projectId, SaveCompleteConsultationRequest request);
 
-    PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable);
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByDomesticCompanyId(Long companyId, Pageable pageable);
+
+    PagedModel<FindProjectsByCompanyIdResponse> findProjectByBuyerCompanyId(Long companyId, Pageable pageable);
 }

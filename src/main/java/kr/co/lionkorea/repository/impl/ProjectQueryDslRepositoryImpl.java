@@ -173,7 +173,7 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
     }
 
     @Override
-    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable) {
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByDomesticCompanyId(Long companyId, Pageable pageable) {
         List<FindProjectsByCompanyIdResponse> result = query
                 .select(Projections.fields(FindProjectsByCompanyIdResponse.class,
                         project.id.as("projectId"),
@@ -189,7 +189,7 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                 .innerJoin(project.buyer, buyer)
                 .innerJoin(project.domesticCompany, domesticCompany)
                 .where(domesticCompany.id.eq(companyId))
-                .orderBy(project.consultationDate.desc())
+                .orderBy(project.consultationDate.desc(), project.id.desc())
                 .offset(pageable.getOffset())
                 .limit(pageable.getPageSize())
                 .fetch();
@@ -199,6 +199,38 @@ public class ProjectQueryDslRepositoryImpl implements ProjectQueryDslRepository 
                         .innerJoin(project.buyer, buyer)
                         .innerJoin(project.domesticCompany, domesticCompany)
                         .where(domesticCompany.id.eq(companyId))
+                        .fetchOne())
+                .orElse(0L);
+        return new PagedModel<>(new PageImpl<>(result, pageable, total));
+    }
+
+    @Override
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByBuyerCompanyId(Long companyId, Pageable pageable) {
+        List<FindProjectsByCompanyIdResponse> result = query
+                .select(Projections.fields(FindProjectsByCompanyIdResponse.class,
+                        project.id.as("projectId"),
+                        buyer.id.as("buyerId"),
+                        domesticCompany.id.as("domesticCompanyId"),
+                        buyer.companyName.as("buyerName"),
+                        domesticCompany.companyName.as("domesticCompanyName"),
+                        project.projectName.as("projectName"),
+                        project.processStatus,
+                        project.consultationDate
+                ))
+                .from(project)
+                .innerJoin(project.buyer, buyer)
+                .innerJoin(project.domesticCompany, domesticCompany)
+                .where(buyer.id.eq(companyId))
+                .orderBy(project.consultationDate.desc(), project.id.desc())
+                .offset(pageable.getOffset())
+                .limit(pageable.getPageSize())
+                .fetch();
+
+        long total = Optional.ofNullable(query.select(project.count())
+                        .from(project)
+                        .innerJoin(project.buyer, buyer)
+                        .innerJoin(project.domesticCompany, domesticCompany)
+                        .where(buyer.id.eq(companyId))
                         .fetchOne())
                 .orElse(0L);
         return new PagedModel<>(new PageImpl<>(result, pageable, total));

@@ -28,9 +28,14 @@ public class ProjectRestController {
         return ResponseEntity.ok(projectService.findProjectDetailForAdmin(projectId));
     }
 
-    @GetMapping("/{companyId}")
-    public ResponseEntity<PagedModel<FindProjectsByCompanyIdResponse>> findProjectByCompanyId(@PathVariable("companyId") Long companyId, Pageable pageable) {
-        return ResponseEntity.ok(projectService.findProjectByCompanyId(companyId, pageable));
+    @GetMapping("/domestic/{companyId}")
+    public ResponseEntity<PagedModel<FindProjectsByCompanyIdResponse>> findProjectByDomesticCompanyId(@PathVariable("companyId") Long companyId, Pageable pageable) {
+        return ResponseEntity.ok(projectService.findProjectByDomesticCompanyId(companyId, pageable));
+    }
+
+    @GetMapping("/buyer/{companyId}")
+    public ResponseEntity<PagedModel<FindProjectsByCompanyIdResponse>> findProjectByBuyerCompanyId(@PathVariable("companyId") Long companyId, Pageable pageable) {
+        return ResponseEntity.ok(projectService.findProjectByBuyerCompanyId(companyId, pageable));
     }
 
     @PatchMapping("/admin/{projectId}/reject")

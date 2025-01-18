@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         minDate:0
         // onSelect:
     });
-} );
+});
 
 const buyerTag = document.getElementById('buyerModal');
 const buyerModal = new bootstrap.Modal(buyerTag,{

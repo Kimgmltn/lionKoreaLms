@@ -26,7 +26,7 @@ public class ProjectServiceImpl implements ProjectService {
     @Override
     @Transactional
     public SaveProjectResponse saveProject(SaveProjectRequest request) {
-        if(projectRepository.existsByTranslatorIdAndHour(request.getTranslatorId(), request.getHour())){
+        if(projectRepository.existsByTranslatorIdAndHourAndTimePeriodAndConsultationDate(request.getTranslatorId(), request.getHour(), request.getTimePeriod(), request.getConsultationDate())){
             throw new ProjectException(HttpStatus.NOT_FOUND, "담당자가 동일한 시간에<br/>다른 프로젝트에 임명되어있습니다");
         };
         Project project = projectRepository.save(Project.dtoToEntity(request));
@@ -81,7 +81,12 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByCompanyId(Long companyId, Pageable pageable) {
-        return projectRepository.findProjectByCompanyId(companyId, pageable);
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByDomesticCompanyId(Long companyId, Pageable pageable) {
+        return projectRepository.findProjectByDomesticCompanyId(companyId, pageable);
+    }
+
+    @Override
+    public PagedModel<FindProjectsByCompanyIdResponse> findProjectByBuyerCompanyId(Long companyId, Pageable pageable) {
+        return projectRepository.findProjectByBuyerCompanyId(companyId, pageable);
     }
 }
